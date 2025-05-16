@@ -3,28 +3,10 @@ import prisma from "@/lib/prisma";
 import { getAuth } from "firebase-admin/auth";
 import jwt from "jsonwebtoken"; 
 import { v4 as uuidv4 } from "uuid";
-import * as admin from "firebase-admin";
 import { generateAccessToken, generateRefreshToken } from "@/lib/jwt";
-import { getAppleSigningKey } from "./apple_auth";
+import { getAppleSigningKey, getFirebaseAdminApp } from "./auth";
 import { string } from "zod";
 
-let app: admin.app.App | null = null;
-
-export function getFirebaseAdminApp() {
-  if (app) return app;
-
-  if (!admin.apps.length) {
-    app = admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      }),
-    });
-  }
-
-  return app;
-}
   
 
 

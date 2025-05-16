@@ -1,6 +1,11 @@
 // lib/auth/appleAuth.ts
 import jwksClient from "jwks-rsa";
 import { JwtHeader, SigningKeyCallback } from "jsonwebtoken";
+import * as admin from "firebase-admin";
+
+let app: admin.app.App | null = null;
+
+
 
 const client = jwksClient({
   jwksUri: "https://appleid.apple.com/auth/keys",
@@ -27,4 +32,21 @@ export function getAppleSigningKey(
 
     callback(null, signingKey);
   });
+}
+
+
+export function getFirebaseAdminApp() {
+  if (app) return app;
+
+  if (!admin.apps.length) {
+    app = admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      }),
+    });
+  }
+
+  return app;
 }
