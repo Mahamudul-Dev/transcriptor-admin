@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auth API Test</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      gap: 20px;
+    }
+    .form-container {
+      flex: 1;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    label {
+      font-weight: bold;
+    }
+    input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 10px;
+      background-color: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0051a8;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-height: 100px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Auth API Test</h1>
+  
+  <div class="container">
+    <!-- Signup Form -->
+    <div class="form-container">
+      <h2>Signup Test</h2>
+      <form id="signupForm">
+        <div>
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" name="fullName" value="Test User" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="test@example.com" required>
+        </div>
+        <div>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" value="Password123!" required>
+        </div>
+        <div>
+          <label for="profession">Profession</label>
+          <input type="text" id="profession" name="profession" value="Developer">
+        </div>
+        <div>
+          <label for="country">Country</label>
+          <input type="text" id="country" name="country" value="United States">
+        </div>
+        <div>
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" value="New York">
+        </div>
+        <button type="submit">Test Signup</button>
+      </form>
+      <div class="result" id="signupResult">Results will appear here...</div>
+    </div>
+    
+    <!-- Login Form -->
+    <div class="form-container">
+      <h2>Login Test</h2>
+      <form id="loginForm">
+        <div>
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" name="email" value="test@example.com" required>
+        </div>
+        <div>
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" name="password" value="Password123!" required>
+        </div>
+        <button type="submit">Test Login</button>
+      </form>
+      <div class="result" id="loginResult">Results will appear here...</div>
+    </div>
+  </div>
+
+  <script>
+    // Signup form handler
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const resultDiv = document.getElementById('signupResult');
+      resultDiv.textContent = 'Sending request...';
+      
+      const formData = new FormData(e.target);
+      const userData = {
+        fullName: formData.get('fullName'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        profession: formData.get('profession'),
+        country: formData.get('country'),
+        city: formData.get('city')
+      };
+      
+      try {
+        const response = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+        
+        const data = await response.json();
+        resultDiv.textContent = `Status: ${response.status}\n\nResponse:\n${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    });
+    
+    // Login form handler
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const resultDiv = document.getElementById('loginResult');
+      resultDiv.textContent = 'Sending request...';
+      
+      const formData = new FormData(e.target);
+      const credentials = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        redirect: false,
+      };
+      
+      try {
+        const response = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(credentials)
+        });
+        
+        const data = await response.json();
+        resultDiv.textContent = `Status: ${response.status}\n\nResponse:\n${JSON.stringify(data, null, 2)}`;
+      } catch (error) {
+        resultDiv.textContent = `Error: ${error.message}`;
+      }
+    });
+  </script>
+</body>
+</html>

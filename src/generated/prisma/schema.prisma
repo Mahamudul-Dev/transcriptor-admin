@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for both mobile app users and admin dashboard
+model User {
+  id          String    @id @default(cuid())
+  fullName    String
+  email       String    @unique
+  password    String
+  profession  String?
+  country     String?
+  city        String?
+  deviceId    String? // For mobile app users
+  isAdmin     Boolean   @default(false) // To distinguish between regular users and admins
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  lastLoginAt DateTime?
+
+  // Relations
+  userModules  UserModule[]
+  userPackages UserPackage[]
+  moduleUsage  ModuleUsage[]
+}
+
+// Module model
+model Module {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  status      String   @default("active") // active, hold, deleted
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  tiers          ModuleTier[]
+  userModules    UserModule[]
+  packageModules PackageModule[]
+  moduleUsage    ModuleUsage[]
+}
+
+// Module tier model
+model ModuleTier {
+  id                    String   @id @default(cuid())
+  moduleId              String
+  tier                  String // basic, plus, premium
+  entitlementName       String   @unique
+  revCatEntitlementName String // The entitlement name from RevenueCat
+  webviewUrl            String? // URL for webview (nullable)
+  zipFileUrl            String?
+  iconUrl               String?
+  hasTextProduction     Boolean  @default(false)
+  hasConclusion         Boolean  @default(false)
+  hasMap                Boolean  @default(false)
+  price                 Decimal? @db.Decimal(10, 2)
+  usageLimit            Int      @default(50) // -1 for unlimited
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}
+
+// Package model
+model Package {
+  id              String   @id @default(cuid())
+  entitlementName String   @unique
+  name            String
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  packageModules PackageModule[]
+  userPackages   UserPackage[]
+}
+
+// Package-Module relationship
+model PackageModule {
+  id        String   @id @default(cuid())
+  packageId String
+  moduleId  String
+  createdAt DateTime @default(now())
+
+  // Relations
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  module  Module  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([packageId, moduleId])
+}
+
+// User access to modules
+model UserModule {
+  id         String    @id @default(cuid())
+  userId     String
+  moduleId   String
+  assignedAt DateTime  @default(now())
+  expiresAt  DateTime?
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleId])
+}
+
+// User access to packages
+model UserPackage {
+  id         String    @id @default(cuid())
+  userId     String
+  packageId  String
+  assignedAt DateTime  @default(now())
+  expiresAt  DateTime?
+
+  // Relations
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package Package @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, packageId])
+}
+
+// Module usage tracking
+model ModuleUsage {
+  id          String   @id @default(cuid())
+  userId      String
+  moduleId    String
+  usageCount  Int      @default(0)
+  lastUpdated DateTime @default(now())
+
+  // Relations
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+}

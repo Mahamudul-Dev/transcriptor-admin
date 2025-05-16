@@ -1,0 +1,3821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudio Eco Doppler Venoso MMII Bilateral v3.7 (Completo)</title>
+    <style>
+
+body { font-family: sans-serif; }
+        .oculto { display: none; }
+        .remove-btn { margin-left: 10px; color: red; cursor: pointer; font-weight: bold; border: none; background: none;}
+        #acc-sistema-profundo .details-content { padding-left: 0; border-left: none; margin-left: 0;}
+        #acc-sistema-profundo details { margin-left: 10px; margin-bottom: 5px; }
+        #acc-sistema-profundo details > summary { font-weight: bold; cursor: pointer; padding: 3px 5px; background-color: #f8f8f8; border: 1px solid #ddd; margin-bottom: -1px; position: relative; z-index: 1;}
+        #acc-sistema-profundo details[open] > summary { background-color: #eee; border-bottom-color: #ddd; }
+        #acc-sistema-profundo details > .details-content { padding: 10px; border: 1px solid #ddd; border-top: none; margin-left: 0; }
+        #acc-sistema-profundo .vaso-profundo-item { border: none; margin-bottom: 5px; padding: 5px; background-color: #fff; }
+        #acc-sistema-profundo .vaso-profundo-item legend { font-weight: normal; font-size: 0.9em; margin-bottom: 5px; display: block; color: #333; }
+        .accordion-section > summary { font-weight: bold; cursor: pointer; padding: 5px; background-color: #f0f0f0; border: 1px solid #ccc; margin-top: 5px; }
+        .accordion-section > div.accordion-content { border: 1px solid #ccc; border-top: none; padding: 10px;}
+        .accordion-section[open] > summary { background-color: #e0e0e0; }
+        fieldset { margin-bottom: 10px; border: 1px solid #ddd; padding: 10px;}
+        legend { font-weight: bold; }
+        label { margin-right: 5px;}
+        input[type="text"], input[type="number"], select { margin-right: 10px; margin-bottom: 5px; padding: 4px; border: 1px solid #ccc; border-radius: 3px;}
+        input[type="checkbox"], input[type="radio"] { margin-right: 2px;}
+        input::placeholder { color: #bbb; }
+        .vaso-profundo-item .subcampo { margin-top: 5px; padding-left: 15px; border-left: 1px dashed #ccc;}
+        .vaso-profundo-item .subcampo label { display: inline-block; width: 80px;}
+        .borrar-btn { float: right; font-size: 0.8em; padding: 2px 5px;}
+        #side-selector { margin-bottom: 15px; border-bottom: 1px solid #ccc; padding-bottom: 10px; background-color: #f9f9f9; padding: 10px; border-radius: 4px;}
+        #side-selector label { font-weight: normal; }
+        #side-selector label.selector-title { font-weight: bold; margin-right: 10px; }
+        #side-selector input[type="radio"] { margin-left: 15px; }
+        #seccion_posttx details { border: 1px solid #ccc; border-radius: 4px; margin-bottom: 5px; background-color: #f9f9f9; }
+        #seccion_posttx details summary { font-weight: bold; padding: 8px 12px; cursor: pointer; background-color: #eee; list-style: none; position: relative; border-radius: 3px; font-size: 0.95em; }
+        #seccion_posttx details summary::before { content: '►'; position: absolute; left: 5px; top: 50%; transform: translateY(-50%); font-size: 0.8em; transition: transform 0.2s; }
+        #seccion_posttx details[open] > summary::before { transform: translateY(-50%) rotate(90deg); }
+        #seccion_posttx details[open] > summary { background-color: #ddd; border-bottom: 1px solid #ccc; border-radius: 3px 3px 0 0; }
+        #seccion_posttx .details-content { padding: 10px 15px; }
+        #seccion_posttx .level-1 > summary { background-color: #ddeeff; font-size: 1.05em; } #seccion_posttx .level-2 > summary { background-color: #eef5ff; margin-left: 10px; font-size: 1em; } #seccion_posttx .level-3 > summary { background-color: #f5faff; margin-left: 20px; font-size: 0.95em;} #seccion_posttx .level-4 > summary { background-color: #fafcff; margin-left: 30px; font-size: 0.9em;} #seccion_posttx .level-5 { margin-left: 0px; }
+        #seccion_posttx .posttx-hallazgos-container { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed #eee; margin-left: 30px; font-size: 0.9em; } #seccion_posttx .posttx-hallazgos-container span { font-weight: normal; flex-grow: 1; margin-right: 10px;} #seccion_posttx .hallazgos-btn { padding: 3px 8px; font-size: 0.85em; cursor: pointer; margin-left: 3px; background-color: #e9e9e9; border: 1px solid #ccc; border-radius: 3px; white-space: nowrap; } #seccion_posttx .hallazgos-btn:hover { background-color: #d0d0d0; } #seccion_posttx .hallazgos-btn.has-findings { font-weight: bold; background-color: #aae0aa; border-color: #8bc38b;}
+        #seccion_posttx .dynamic-item { border: 1px solid #e0e8f0; padding: 10px; margin-bottom: 10px; background-color: #f8fbff; border-radius: 4px; } #seccion_posttx .dynamic-item label { display: block; margin-bottom: 3px; font-size: 0.9em;} #seccion_posttx .dynamic-item input, #seccion_posttx .dynamic-item select { margin-bottom: 5px; width: calc(100% - 22px); padding: 4px; font-size: 0.9em;} #seccion_posttx .dynamic-item .remove-btn { background-color: #dc3545; color: white; border: none; padding: 2px 6px; font-size: 0.8em; cursor: pointer; float: right; margin-left: 5px; }
+        #posttx-modal {display: none; border: 2px solid black; background: white; padding: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); border-radius: 8px; max-width: 400px;} #posttx-modal h4 { margin-top: 0; font-size: 1.1em;} #posttx-modal label.hallazgo-label { display: block; margin-bottom: 8px; font-weight: normal !important; font-size: 0.95em; } #posttx-modal input[type="checkbox"] { margin-right: 5px; } #posttx-modal button { margin-right: 10px; padding: 5px 10px; cursor: pointer; } #posttx-modal #posttx_hallazgo_munon_cm {font-size: 0.9em;}
+        #texto_bilateral_completo { background:#f8fff8; padding:10px; white-space: pre-line; border: 1px solid #cce; min-height: 200px; margin-top: 5px; font-family: monospace; font-size: 0.9em; }
+        #texto_unificado { background:#eef; padding:10px; white-space: pre-line; border: 1px solid #ccc; min-height: 250px; }
+
+    </style>
+</head>
+<body>
+
+<div class="formulario-doppler" style="padding:15px;">
+    <h1 id="main-title">Estudio Eco Doppler Venoso MMII Completo - Lado Derecho</h1>
+
+    <div id="side-selector">
+        <label class="selector-title">Lado Activo:</label>
+        <input type="radio" id="lado_derecho_radio" name="lado_activo" value="derecho" checked>
+        <label for="lado_derecho_radio">Derecho</label>
+        <input type="radio" id="lado_izquierdo_radio" name="lado_activo" value="izquierdo">
+        <label for="lado_izquierdo_radio">Izquierdo</label>
+    </div>
+
+    <form id="doppler-form-completo-final-v35" action="#" method="post">
+
+        <fieldset>
+            <legend>Información General</legend>
+            <label for="nombre">Nombre:</label> <input type="text" id="nombre" name="nombre">
+            <label for="nombre">apellido:</label> <input type="text" id="apellido" name="apellido">
+            <label for="documento">Doc:</label> <input type="text" id="documento" name="documento"><br>
+            <label for="edad">Edad:</label> <input type="number" name="edad" id="edad" min="1" max="110"> <span id="edad_error" style="color:red; display:none;">Inv.</span>
+            <label for="sexo">Sexo:</label> <select id="sexo" name="sexo"><option value="Masculino">M</option><option value="Femenino">F</option></select>
+            <label><input type="checkbox" id="usar_fecha_hora_actual"> Fecha/Hora Actual</label><br>
+            <label for="fecha_hora">Fecha/Hora Estudio:</label> <input type="datetime-local" id="fecha_hora" name="fecha_hora"><br>
+        </fieldset>
+
+        <details class="accordion-section" id="acc-safena-mayor">
+            <summary class="accordion-header">Vena Safena Mayor</summary>
+            <div class="accordion-content">
+                <fieldset>
+                    <label>Unión safeno-femoral:</label> <select id="usf_competencia"> <option value="competente">Competente</option> <option value="incompetente">Incompetente</option> </select>
+                    <label>Diámetro USF (mm):</label> <input type="text" id="usf_diametro" placeholder="##,#"><br>
+                    <label>Trayecto fascial:</label> <select id="trayecto_fascial_mayor"> <option value="intrafascial" selected>Intrafascial</option> <option value="epifascial">Epifascial</option> </select><br>
+                    <div id="epifascial_segmentario_mayor" style="display:none;">
+                        <label>Localización trayecto epifascial:</label><br>
+                        <strong>Muslo:</strong> <input type="checkbox" class="epif_segmento_mayor" data-region="muslo" value="proximal" id="epi_sm_m_p"><label for="epi_sm_m_p">Proximal</label> <input type="checkbox" class="epif_segmento_mayor" data-region="muslo" value="medio" id="epi_sm_m_m"><label for="epi_sm_m_m">Medio</label> <input type="checkbox" class="epif_segmento_mayor" data-region="muslo" value="distal" id="epi_sm_m_d"><label for="epi_sm_m_d">Distal</label><br>
+                        <strong>Pierna:</strong> <input type="checkbox" class="epif_segmento_mayor" data-region="pierna" value="proximal" id="epi_sm_p_p"><label for="epi_sm_p_p">Proximal</label> <input type="checkbox" class="epif_segmento_mayor" data-region="pierna" value="medio" id="epi_sm_p_m"><label for="epi_sm_p_m">Medio</label> <input type="checkbox" class="epif_segmento_mayor" data-region="pierna" value="distal" id="epi_sm_p_d"><label for="epi_sm_p_d">Distal</label><br>
+                    </div>
+                    <label>Estado funcional:</label> <select id="tipo_incompetencia_safena_mayor"> <option value="competente">Competente</option> <option value="axial">Incompetencia axial</option> <option value="segmentaria">Incompetencia segmentaria</option> </select><br>
+                    <div id="segmentos_tercios_mayor" style="display:none;">
+                        <strong>Evaluación por Tercios:</strong><br>
+                        <strong>Muslo:</strong><br>
+                        <div class="bloque_tercio_mayor" data-region="muslo" data-tercio="proximal"><label>Proximal:</label><select class="estado_tercio_mayor"></select><input type="text" class="diametro_tercio_mayor" id="mayor_muslo_proximal_diametro" placeholder="##,# mm"><br></div>
+                        <div class="bloque_tercio_mayor" data-region="muslo" data-tercio="medio"><label>Medio:</label><select class="estado_tercio_mayor"></select><input type="text" class="diametro_tercio_mayor" id="mayor_muslo_medio_diametro" placeholder="##,# mm"><br></div>
+                        <div class="bloque_tercio_mayor" data-region="muslo" data-tercio="distal"><label>Distal:</label><select class="estado_tercio_mayor"></select><input type="text" class="diametro_tercio_mayor" id="mayor_muslo_distal_diametro" placeholder="##,# mm"><br></div>
+                        <strong>Pierna:</strong><br>
+                        <div class="bloque_tercio_mayor" data-region="pierna" data-tercio="proximal"><label>Proximal:</label><select class="estado_tercio_mayor"></select><input type="text" class="diametro_tercio_mayor" id="mayor_pierna_proximal_diametro" placeholder="##,# mm"><br></div>
+                        <div class="bloque_tercio_mayor" data-region="pierna" data-tercio="medio"><label>Medio:</label><select class="estado_tercio_mayor"></select><input type="text" class="diametro_tercio_mayor" id="mayor_pierna_medio_diametro" placeholder="##,# mm"><br></div>
+                        <div class="bloque_tercio_mayor" data-region="pierna" data-tercio="distal"><label>Distal:</label><select class="estado_tercio_mayor"></select><input type="text" class="diametro_tercio_mayor" id="mayor_pierna_distal_diametro" placeholder="##,# mm"><br></div>
+                    </div>
+                </fieldset>
+            </div>
+        </details>
+
+        <details class="accordion-section" id="acc-safena-anterior">
+             <summary class="accordion-header">Vena Safena Anterior</summary>
+             <div class="accordion-content">
+                <fieldset>
+                    <label>Trayecto fascial:</label> <select id="trayecto_fascial_anterior"> <option value="intrafascial" selected>Intrafascial</option> <option value="epifascial">Epifascial</option> </select><br>
+                    <div id="epifascial_segmentario_anterior" style="display:none; margin-top:10px;">
+                        <label>Localización trayecto epifascial:</label><br>
+                        <input type="checkbox" class="epif_segmento_anterior" value="proximal" id="epi_sa_p"> <label for="epi_sa_p">Tercio Proximal Muslo</label>
+                        <input type="checkbox" class="epif_segmento_anterior" value="medio" id="epi_sa_m"> <label for="epi_sa_m">Tercio Medio Muslo</label>
+                        <input type="checkbox" class="epif_segmento_anterior" value="distal" id="epi_sa_d"> <label for="epi_sa_d">Tercio Distal Muslo</label><br>
+                    </div>
+                    <div style="margin-top:15px;">
+                        <label>Evaluación por segmentos (Muslo):</label><br>
+                        Proximal: <input type="radio" id="a_p_c" name="anterior_proximal_estado" value="competente" checked><label for="a_p_c">Competente</label> <input type="radio" id="a_p_i" name="anterior_proximal_estado" value="incompetente"><label for="a_p_i">Incompetente</label> <input type="text" id="anterior_proximal_diametro" name="anterior_proximal_diametro" placeholder="##,# mm"><br>
+                        Medio:   <input type="radio" id="a_m_c" name="anterior_medio_estado" value="competente" checked><label for="a_m_c">Competente</label> <input type="radio" id="a_m_i" name="anterior_medio_estado" value="incompetente"><label for="a_m_i">Incompetente</label> <input type="text" id="anterior_medio_diametro" name="anterior_medio_diametro" placeholder="##,# mm"><br>
+                        Distal:  <input type="radio" id="a_d_c" name="anterior_distal_estado" value="competente" checked><label for="a_d_c">Competente</label> <input type="radio" id="a_d_i" name="anterior_distal_estado" value="incompetente"><label for="a_d_i">Incompetente</label> <input type="text" id="anterior_distal_diametro" name="anterior_distal_diametro" placeholder="##,# mm"><br>
+                    </div>
+                </fieldset>
+            </div>
+        </details>
+
+        <details class="accordion-section" id="acc-safena-menor">
+             <summary class="accordion-header">Vena Safena Menor y Relacionadas</summary>
+             <div class="accordion-content">
+                <fieldset>
+                    <label>¿Unión Safeno-Poplítea visible?</label>
+                    <input type="radio" id="usp_visible_si" name="usp_visible" value="si" checked><label for="usp_visible_si">Sí</label>
+                    <input type="radio" id="usp_visible_no" name="usp_visible" value="no"><label for="usp_visible_no">No</label>
+                    <div id="campo_diametro_usp" style="display:block; margin-left: 20px; border-left: 1px solid #eee; padding-left: 10px;">
+                        <label>Competencia:</label>
+                        <input type="radio" id="usp_c_c" name="usp_competencia" value="competente" checked><label for="usp_c_c">Competente</label>
+                        <input type="radio" id="usp_c_i" name="usp_competencia" value="incompetente"><label for="usp_c_i">Incompetente</label><br>
+                        <label>Diámetro (mm):</label> <input type="text" id="usp_diametro_sm" name="usp_diametro" placeholder="##,#">
+                    </div>
+                </fieldset>
+                <fieldset><legend>Safena Menor - Pierna</legend>
+                    Proximal: <input type="radio" id="sm_p_c" name="sm_proximal_estado" value="competente" checked><label for="sm_p_c">Comp.</label> <input type="radio" id="sm_p_i" name="sm_proximal_estado" value="incompetente"><label for="sm_p_i">Incomp.</label> <label>Diám (mm):</label><input type="text" id="sm_proximal_diametro" name="sm_proximal_diametro" placeholder="##,#"> <label>Trayecto:</label><select id="sm_proximal_trayecto" name="sm_proximal_trayecto"><option value="intrafascial">Intrafascial</option><option value="epifascial">Epifascial</option></select><br>
+                    Medio: <input type="radio" id="sm_m_c" name="sm_medio_estado" value="competente" checked><label for="sm_m_c">Comp.</label> <input type="radio" id="sm_m_i" name="sm_medio_estado" value="incompetente"><label for="sm_m_i">Incomp.</label> <label>Diám (mm):</label><input type="text" id="sm_medio_diametro" name="sm_medio_diametro" placeholder="##,#"> <label>Trayecto:</label><select id="sm_medio_trayecto" name="sm_medio_trayecto"><option value="intrafascial">Intrafascial</option><option value="epifascial">Epifascial</option></select><br>
+                    Distal: <input type="radio" id="sm_d_c" name="sm_distal_estado" value="competente" checked><label for="sm_d_c">Comp.</label> <input type="radio" id="sm_d_i" name="sm_distal_estado" value="incompetente"><label for="sm_d_i">Incomp.</label> <label>Diám (mm):</label><input type="text" id="sm_distal_diametro" name="sm_distal_diametro" placeholder="##,#"> <label>Trayecto:</label><select id="sm_distal_trayecto" name="sm_distal_trayecto"><option value="intrafascial">Intrafascial</option><option value="epifascial">Epifascial</option></select>
+                </fieldset>
+                <fieldset>
+                    <label><input type="checkbox" id="giacomini_presente"> Presencia de Vena de Giacomini</label>
+                    <div id="giacominiCampos" style="display:none; padding-left: 15px;">
+                        <label>Evaluación por segmentos (Muslo):</label><br>
+                        Proximal: <input type="radio" name="giacomini_proximal_estado" value="competente" checked> Competente <input type="radio" name="giacomini_proximal_estado" value="incompetente"> Incompetente <input type="text" id="giacomini_proximal_diametro" name="giacomini_proximal_diametro" placeholder="##,# mm"><br>
+                        Medio:   <input type="radio" name="giacomini_medio_estado" value="competente" checked> Competente <input type="radio" name="giacomini_medio_estado" value="incompetente"> Incompetente <input type="text" id="giacomini_medio_diametro" name="giacomini_medio_diametro" placeholder="##,# mm"><br>
+                        Distal:  <input type="radio" name="giacomini_distal_estado" value="competente" checked> Competente <input type="radio" name="giacomini_distal_estado" value="incompetente"> Incompetente <input type="text" id="giacomini_distal_diametro" name="giacomini_distal_diametro" placeholder="##,# mm"><br>
+                    </div>
+                 </fieldset>
+                 <fieldset>
+                    <label><input type="checkbox" id="extension_muslo"> ¿Extensión Craneal a Muslo?</label>
+                    <div id="extensionCampos" style="display:none; padding-left: 15px;">
+                        <label>Competencia:</label> <input type="radio" id="muslo_c_c" name="muslo_comp" value="competente" checked><label for="muslo_c_c">Competente</label> <input type="radio" id="muslo_c_i" name="muslo_comp" value="incompetente"><label for="muslo_c_i">Incompetente</label><br>
+                        <label>Diámetro (mm):</label> <input type="text" id="muslo_diametro" name="muslo_diametro" placeholder="##,#"><br>
+                        <label>Terminación:</label> <select id="muslo_terminacion" name="muslo_terminacion"> <option value="">Seleccionar...</option> <option value="Vena Safena Mayor o Anterior">Vena Safena Mayor o Anterior</option> <option value="ramas subcutáneas">Ramas subcutáneas</option> <option value="tributarias del muslo">Tributarias del muslo</option> <option value="venas musculares">Venas musculares</option> <option value="Perforante">Perforante</option> <option value="venas glúteas o pélvicas">Venas glúteas o pélvicas</option> </select>
+                    </div>
+                </fieldset>
+            </div>
+        </details>
+
+        <details class="accordion-section" id="acc-sistema-profundo">
+             <summary class="accordion-header">Sistema Venoso Profundo</summary>
+             <div class="accordion-content">
+                <div id="vasos-profundos-container">
+                    </div>
+            </div>
+        </details>
+
+        <details class="accordion-section" id="acc-abd-pelvicas">
+             <summary class="accordion-header">Tributarias Abdominales o Pélvicas</summary>
+             <div class="accordion-content">
+                <fieldset>
+                    <label><strong>¿Se observan?</strong></label> <input type="radio" name="abd_perineales_observadas" value="no" checked id="abd_obs_no"><label for="abd_obs_no">No</label> <input type="radio" name="abd_perineales_observadas" value="si" id="abd_obs_si"><label for="abd_obs_si">Sí</label>
+                </fieldset>
+                <div id="formulario_abd_perineales" style="display: none; margin-top: 15px;">
+                <fieldset>
+                    <label><strong>Origen:</strong></label> <input type="checkbox" name="abd_per_origen[]" value="abdominal" id="abd_or_abd"><label for="abd_or_abd">Abdominal</label> <input type="checkbox" name="abd_per_origen[]" value="perineal" id="abd_or_per"><label for="abd_or_per">Perineal</label> <input type="checkbox" name="abd_per_origen[]" value="pudendo" id="abd_or_pud"><label for="abd_or_pud">Pudendo</label> <input type="checkbox" name="abd_per_origen[]" value="gluteo" id="abd_or_glu"><label for="abd_or_glu">Glúteo</label><br>
+                    <label><strong>Trayecto:</strong></label> <input type="checkbox" name="abd_per_trayecto[]" value="anterior" id="abd_tr_ant"><label for="abd_tr_ant">Anterior</label> <input type="checkbox" name="abd_per_trayecto[]" value="posterior" id="abd_tr_pos"><label for="abd_tr_pos">Posterior</label> <input type="checkbox" name="abd_per_trayecto[]" value="medial" id="abd_tr_med"><label for="abd_tr_med">Medial</label><br>
+                    <label><strong>Drenaje:</strong></label> <select id="abd_per_drenaje" name="abd_per_drenaje"> <option value="Unión Safeno-Femoral">a Unión Safeno-Femoral</option> <option value="Colaterales del Muslo">a Colaterales del Muslo</option> <option value="Vena Safena Mayor">a Vena Safena Mayor</option> <option value="Vena Safena Anterior">a Vena Safena Anterior</option> <option value="No Identificado">No Identificado</option></select><br>
+                    <label><input type="checkbox" name="abd_per_reflujo" value="si" id="abd_reflujo"> Con Reflujo Centrífugo</label>
+                </fieldset>
+                </div>
+            </div>
+        </details>
+
+        <details class="accordion-section" id="acc-tributarias">
+            <summary class="accordion-header">Tributarias Incompetentes MMII</summary>
+             <div class="accordion-content">
+                <fieldset> <label><input type="checkbox" id="hay_tributarias"> ¿Se identifican?</label> </fieldset>
+                <fieldset id="grupo_tributarias" style="display:none;"> <div id="contenedor_tributarias"></div> <button type="button" onclick="agregarTributaria()">+ Agregar tributaria</button> </fieldset>
+            </div>
+        </details>
+
+        <details class="accordion-section" id="acc-perforantes">
+            <summary class="accordion-header">Perforantes Incompetentes MMII</summary>
+             <div class="accordion-content">
+                <fieldset> <label><input type="checkbox" id="hay_perforantes"> ¿Se identifican?</label> </fieldset>
+                <fieldset id="grupo_perforantes" style="display:none;"> <div id="contenedor_perforantes"></div> <button type="button" onclick="agregarPerforante()">+ Agregar perforante</button> </fieldset>
+            </div>
+        </details>
+
+        <fieldset style="margin-top: 20px; border-top: 2px solid blue; padding-top: 10px;">
+             <legend>Evaluación Post-Tratamiento</legend>
+             <label>
+                <input type="checkbox" id="incluir_posttx" name="incluir_posttx" onchange="toggleSeccionPostTx()">
+                Incluir Hallazgos Específicos Post-Tratamiento en el Informe
+            </label>
+         </fieldset>
+
+        <div id="seccion_posttx" style="display:none; margin-top: 10px; padding: 15px; border: 1px dashed blue; border-radius: 5px;">
+            <h3 style="margin-top:0;">Hallazgos Específicos Post-Tratamiento</h3>
+            <p style="font-size:0.9em; color:#555;">Seleccione los hallazgos para cada segmento tratado. El informe se actualizará automáticamente.</p>
+             <details class="level-1" id="posttx-det-superficial-grupo">
+                 <summary>Sistema Venoso Superficial, Tributarias y Perforantes Tratadas</summary>
+                 <div class="details-content">
+                    <details class="level-2" id="posttx-det-gsv">
+                        <summary>Vena Safena Mayor</summary>
+                        <div class="details-content">
+                            <details class="level-3" id="posttx-det-usf"> <summary>Unión Safeno-Femoral</summary> <div class="details-content level-4 posttx-hallazgos-container"> <span>Unión Safeno-Femoral:</span> <button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_usf', this)">Hallazgos</button> </div> </details>
+                            <details class="level-3" id="posttx-det-gsv-muslo"> <summary>Muslo</summary> <div class="details-content"> <details class="level-4" id="posttx-det-gsv-muslo-prox"><summary>Tercio Proximal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Mayor - Muslo Proximal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_gsv_muslo_prox', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-gsv-muslo-medio"><summary>Tercio Medio</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Mayor - Muslo Medio:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_gsv_muslo_medio', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-gsv-muslo-distal"><summary>Tercio Distal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Mayor - Muslo Distal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_gsv_muslo_distal', this)">Hallazgos</button></div></details> </div> </details>
+                            <details class="level-3" id="posttx-det-gsv-pierna"> <summary>Pierna</summary> <div class="details-content"> <details class="level-4" id="posttx-det-gsv-pierna-prox"><summary>Tercio Proximal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Mayor - Pierna Proximal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_gsv_pierna_prox', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-gsv-pierna-medio"><summary>Tercio Medio</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Mayor - Pierna Medio:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_gsv_pierna_medio', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-gsv-pierna-distal"><summary>Tercio Distal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Mayor - Pierna Distal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_gsv_pierna_distal', this)">Hallazgos</button></div></details> </div> </details>
+                        </div>
+                    </details>
+                     <details class="level-2" id="posttx-det-ssv-grupo">
+                        <summary>Vena Safena Menor y Relacionadas</summary>
+                          <div class="details-content">
+                              <details class="level-3" id="posttx-det-usp"> <summary>Unión Safeno-Poplítea</summary> <div class="details-content level-4 posttx-hallazgos-container"> <span>Unión Safeno-Poplítea:</span> <button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_usp', this)">Hallazgos</button> </div> </details>
+                              <details class="level-3" id="posttx-det-ssv-pierna"> <summary>Safena Menor - Pierna</summary> <div class="details-content"> <details class="level-4" id="posttx-det-ssv-pierna-prox"><summary>Tercio Proximal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Menor - Pierna Proximal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_ssv_pierna_prox', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-ssv-pierna-medio"><summary>Tercio Medio</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Menor - Pierna Medio:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_ssv_pierna_medio', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-ssv-pierna-distal"><summary>Tercio Distal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Menor - Pierna Distal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_ssv_pierna_distal', this)">Hallazgos</button></div></details> </div> </details>
+                              <details class="level-3" id="posttx-det-giacomini"> <summary>Vena de Giacomini</summary> <div class="details-content"> <details class="level-4" id="posttx-det-giacomini-prox"><summary>Tercio Proximal (Muslo)</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Giacomini - Muslo Proximal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_giacomini_prox', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-giacomini-medio"><summary>Tercio Medio (Muslo)</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Giacomini - Muslo Medio:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_giacomini_medio', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-giacomini-distal"><summary>Tercio Distal (Muslo)</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Giacomini - Muslo Distal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_giacomini_distal', this)">Hallazgos</button></div></details> </div> </details>
+                              <details class="level-3" id="posttx-det-ext-ssv-muslo"> <summary>Extensión Safena Menor al Muslo</summary> <div class="details-content level-4 posttx-hallazgos-container"> <span>Extensión Safena Menor al Muslo:</span> <button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_ext_ssv_muslo', this)">Hallazgos</button> </div> </details>
+                          </div>
+                     </details>
+                     <details class="level-2" id="posttx-det-aasv">
+                          <summary>Vena Safena Anterior</summary>
+                          <div class="details-content">
+                              <details class="level-3" id="posttx-det-aasv-muslo"> <summary>Muslo</summary> <div class="details-content"> <details class="level-4" id="posttx-det-aasv-muslo-prox"><summary>Tercio Proximal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Anterior - Muslo Proximal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_aasv_muslo_prox', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-aasv-muslo-medio"><summary>Tercio Medio</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Anterior - Muslo Medio:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_aasv_muslo_medio', this)">Hallazgos</button></div></details> <details class="level-4" id="posttx-det-aasv-muslo-distal"><summary>Tercio Distal</summary><div class="details-content level-5 posttx-hallazgos-container"><span>Safena Anterior - Muslo Distal:</span><button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('posttx_aasv_muslo_distal', this)">Hallazgos</button></div></details> </div> </details>
+                          </div>
+                     </details>
+                     <details class="level-2" id="posttx-det-tributarias">
+                          <summary>Tributarias Tratadas</summary>
+                          <div class="details-content"> <div id="posttx-tributarias-container"></div> <button type="button" onclick="addPostTxTributaria()">[+] Añadir Tributaria Post-Tx</button> </div>
+                     </details>
+                     <details class="level-2" id="posttx-det-perforantes">
+                          <summary>Perforantes Tratadas</summary>
+                          <div class="details-content"> <div id="posttx-perforantes-container"></div> <button type="button" onclick="addPostTxPerforante()">[+] Añadir Perforante Post-Tx</button> </div>
+                     </details>
+                 </div>
+             </details>
+        </div>
+
+        <fieldset>
+            <legend>Previsualización Texto (Lado Activo: <span id="preview-active-side">Derecho</span>)</legend>
+            <div id="texto_unificado"></div>
+        </fieldset>
+        
+        <button type="button" id="btn_copiar_texto" style="margin-top: 15px; padding: 8px 15px; cursor: pointer;">Generar Informe y Copiar al Portapapeles</button>
+        <fieldset style="margin-top: 20px; border: 1px solid #aaa; background-color: #f0f5f0;">
+            <legend>Informe Bilateral Completo (Vista Previa Final)</legend>
+            <div id="texto_bilateral_completo"></div>
+        </fieldset>
+
+    </form>
+
+    <div id="posttx-modal" style="display: none; border: 2px solid black; background: white; padding: 20px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; box-shadow: 5px 5px 15px rgba(0,0,0,0.3); border-radius: 8px; max-width: 400px;">
+        <h4>Seleccionar Hallazgos Post-Tx para: <span id="posttx-hallazgo-target-label" style="color: #007bff;"></span></h4>
+        <input type="hidden" id="posttx-hallazgo-target-id">
+        <div id="posttx-hallazgos-checklist-options">
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Ausencia" onchange="handleHallazgoChangePostTx(this)"> Ausencia Total / Ablación Exitosa</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Trombosis Aguda/Subaguda" onchange="handleHallazgoChangePostTx(this)"> Trombosis Aguda/Subaguda / EHIT</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Trombosis Crónica Organizada" onchange="handleHallazgoChangePostTx(this)"> Trombosis Crónica Organizada</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Fibrosis/Cicatriz/Cordón Fibrótico" onchange="handleHallazgoChangePostTx(this)"> Fibrosis/Cicatriz/Cordón Fibrótico</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Recanalización Parcial" onchange="handleHallazgoChangePostTx(this)"> Recanalización Parcial</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Recanalización Completa (Permeable)" onchange="handleHallazgoChangePostTx(this)"> Recanalización Completa (Permeable)</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Reflujo (Persistente/Nuevo)" onchange="handleHallazgoChangePostTx(this)"> Reflujo (Persistente/Nuevo)</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Neovascularización (en zona de unión)" onchange="handleHallazgoChangePostTx(this)"> Neovascularización (en zona de unión)</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Colaterales Incompetentes Conectadas (en unión)" onchange="handleHallazgoChangePostTx(this)"> Colaterales Incompetentes Conectadas (en unión)</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Remanente Safeno Conectado (en unión)" onchange="handleHallazgoChangePostTx(this)"> Remanente Safeno Conectado (en unión)</label>
+             <label class="hallazgo-label"><input type="checkbox" name="posttx_hallazgo" value="Muñón Residual (en unión)" onchange="handleHallazgoChangePostTx(this)"> Muñón Residual (en unión)</label>
+             <input type="number" id="posttx_hallazgo_munon_cm" name="posttx_hallazgo_munon_cm" placeholder="Longitud Muñón (cm)" step="0.1" style="margin-left: 20px; width: 150px; display: none;" oninput="handleHallazgoChangePostTx(this)">
+        </div>
+        <hr>
+        <div>
+            <button type="button" onclick="guardarYCerrarModalPostTx()">Aceptar</button>
+            <button type="button" onclick="cerrarModalHallazgosPostTx()">Cancelar</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+// --- Estado Global para Bilateral ---
+let datosEstudio = { derecho: null, izquierdo: null };
+let ladoActivo = "derecho";
+
+// --- Funciones Auxiliares Generales (Completas) ---
+function clasificar(mm) {
+    if (isNaN(mm)) return "";
+    if (mm <= 5) return "sin dilatación";
+    if (mm <= 7) return "dilatación leve";
+    if (mm <= 10) return "dilatación moderada";
+    if (mm <= 20) return "dilatación severa";
+    return "aneurisma venoso";
+}
+function obtenerValor(id) {
+    const el = document.getElementById(id);
+    if (!el) {
+        /*console.warn(`obtenerValor: Elemento ${id} no encontrado`);*/ return "";
+    }
+    return el.value;
+}
+function obtenerNumero(id) {
+    const el = document.getElementById(id);
+    if (!el || !el.value) {
+        /*console.warn(`obtenerNumero: Elemento ${id} no encontrado o vacío`);*/ return NaN;
+    }
+    const val = el.value.replace(",", ".");
+    return parseFloat(val);
+}
+function obtenerRadioValor(name) {
+    const radio = document.querySelector(`input[name="${name}"]:checked`);
+    return radio ? radio.value : null;
+}
+const unirFrases = (frases) => {
+    return (
+        frases
+            .filter((f) => f && typeof f === "string" && f.trim() !== "")
+            .join(". ")
+            .replace(/\.+$/, "") + "."
+    );
+}; // Mejorado para evitar múltiples puntos
+function describirTercios(listaTercios) {
+    if (!listaTercios || listaTercios.length === 0) return "";
+    const orden = ["proximal", "medio", "distal"];
+    const terciosValidos = listaTercios.filter((t) => orden.includes(t));
+    terciosValidos.sort((a, b) => orden.indexOf(a) - orden.indexOf(b));
+    if (terciosValidos.length === 3) return "toda la extensión";
+    if (terciosValidos.length === 2)
+        return `los tercios ${terciosValidos[0]} y ${terciosValidos[1]}`;
+    if (terciosValidos.length === 1) return `el tercio ${terciosValidos[0]}`;
+    return "";
+}
+function describirPatronCompetencia(estados, regionText) {
+    const incompetentes = estados
+        .filter((e) => e.estado === "incompetente")
+        .map((e) => e.tercio);
+    const totalTercios = estados.length;
+    if (incompetentes.length === 0)
+        return `competente en toda su extensión ${regionText}`;
+    if (incompetentes.length === totalTercios)
+        return `con incompetencia axial (en toda su extensión ${regionText})`;
+    const orden = ["proximal", "medio", "distal"];
+    incompetentes.sort((a, b) => orden.indexOf(a) - orden.indexOf(b));
+    let descTercio = "";
+    if (incompetentes.length === 1) {
+        descTercio = `el tercio ${incompetentes[0]}`;
+    } else if (incompetentes.length === 2) {
+        if (incompetentes[0] === "proximal" && incompetentes[1] === "medio") {
+            descTercio = "los dos tercios proximales";
+        } else if (
+            incompetentes[0] === "medio" &&
+            incompetentes[1] === "distal"
+        ) {
+            descTercio = "los dos tercios distales";
+        } else {
+            descTercio = `los tercios ${incompetentes[0]} y ${incompetentes[1]}`;
+        }
+    }
+    return `con incompetencia segmentaria en ${descTercio} ${regionText}`;
+}
+function describirDiametros(estados) {
+    const conDiametro = estados.filter(
+        (e) => e.diametro !== undefined && !isNaN(e.diametro)
+    );
+    if (conDiametro.length === 0) return "";
+    const orden = ["proximal", "medio", "distal"];
+    conDiametro.sort(
+        (a, b) => orden.indexOf(a.tercio) - orden.indexOf(b.tercio)
+    );
+    const descripciones = conDiametro.map((e) => {
+        const clasifStr = e.clasif ? `(${e.clasif})` : "";
+        return `en el tercio ${e.tercio} ${e.diametro.toFixed(
+            1
+        )} mm ${clasifStr}`;
+    });
+    let frase = "";
+    if (descripciones.length === 1) {
+        const e = conDiametro[0];
+        const clasifStr = e.clasif ? `(${e.clasif})` : "";
+        frase = `El diámetro medido en el tercio ${
+            e.tercio
+        } es ${e.diametro.toFixed(1)} mm ${clasifStr}`;
+    } else if (descripciones.length === 2) {
+        frase = `Los diámetros medidos son: ${descripciones[0]} y ${descripciones[1]}`;
+    } else if (descripciones.length === 3) {
+        frase = `Los diámetros medidos son: ${descripciones[0]}, ${descripciones[1]} y ${descripciones[2]}`;
+    }
+    return frase;
+}
+function agruparTercios(region, estados) {
+    const mapa = { 0: "proximal", 1: "medio", 2: "distal" };
+    const estVal = estados.filter((e) => e && e.estado);
+    if (estVal.length !== 3) return "indeterminado";
+    const iIncomp = estVal
+        .map((e, i) => (e.estado === "incompetente" ? i : null))
+        .filter((i) => i !== null);
+    const iComp = estVal
+        .map((e, i) => (e.estado === "competente" ? i : null))
+        .filter((i) => i !== null);
+    const zona = region === "pierna" ? "de la pierna" : "del muslo";
+    if (iIncomp.length === 3)
+        return `incompetente en toda la extensión ${zona}`;
+    if (iComp.length === 3) return `competente en toda la extensión ${zona}`;
+    if (iIncomp.length === 2) {
+        if (iIncomp[0] === 0 && iIncomp[1] === 1)
+            return `incompetente en los dos tercios proximales ${zona}`;
+        if (iIncomp[0] === 0 && iIncomp[1] === 2)
+            return `incompetente en los tercios proximal y distal ${zona}`;
+        if (iIncomp[0] === 1 && iIncomp[1] === 2)
+            return `incompetente en los dos tercios distales ${zona}`;
+    }
+    if (iIncomp.length === 1)
+        return `incompetente en el tercio ${mapa[iIncomp[0]]} ${zona}`;
+    return `con patrón mixto de competencia en ${zona}`;
+}
+function formatearListaHallazgos(hallazgosTraducidos) {
+    if (!hallazgosTraducidos || hallazgosTraducidos.length === 0) {
+        return "";
+    }
+    if (hallazgosTraducidos.length === 1) {
+        return hallazgosTraducidos[0];
+    }
+    if (hallazgosTraducidos.length === 2) {
+        let hallazgo2 = hallazgosTraducidos[1];
+        if (
+            hallazgo2 &&
+            hallazgo2.length > 0 &&
+            hallazgo2[0] === hallazgo2[0].toUpperCase() &&
+            hallazgo2.split(" ").length === 1
+        ) {
+        } else if (hallazgo2) {
+            hallazgo2 = hallazgo2.charAt(0).toLowerCase() + hallazgo2.slice(1);
+        }
+        return `${hallazgosTraducidos[0]} y ${hallazgo2}`;
+    }
+    const ultimo = hallazgosTraducidos.pop();
+    let ultimoLower = ultimo;
+    if (
+        ultimo &&
+        ultimo.length > 0 &&
+        ultimo[0] === ultimo[0].toUpperCase() &&
+        ultimo.split(" ").length === 1
+    ) {
+    } else if (ultimo) {
+        ultimoLower = ultimo.charAt(0).toLowerCase() + ultimo.slice(1);
+    }
+    const intermediosLower = hallazgosTraducidos.map((item, index) => {
+        if (index > 0) {
+            if (
+                item &&
+                item.length > 0 &&
+                item[0] === item[0].toUpperCase() &&
+                item.split(" ").length === 1
+            ) {
+                return item;
+            } else if (item) {
+                return item.charAt(0).toLowerCase() + item.slice(1);
+            }
+        }
+        return item;
+    });
+    return `${intermediosLower.join(", ")}, y ${ultimoLower}`;
+}
+function formatearListaConY(items) {
+    if (!items || items.length === 0) return "";
+    if (items.length === 1) return items[0];
+    if (items.length === 2) return `${items[0]} y ${items[1]}`;
+    const ultimo = items.pop();
+    return `${items.join(", ")}, y ${ultimo}`;
+}
+// --- Nueva Función Auxiliar para Chequear Post-Tx ---
+function hayIntervencionPostTxSignificativa(
+    hallazgosPostTxLado,
+    listaDeClavesPostTx
+) {
+    // Si no hay datos post-tx para este lado, no hay intervención
+    if (!hallazgosPostTxLado || Object.keys(hallazgosPostTxLado).length === 0) {
+        return false;
+    }
+
+    // Lista de hallazgos que consideramos indican intervención significativa
+    const hallazgosIndicandoTratamiento = [
+        "Ausencia", // Ausencia Total / Ablación Exitosa
+        "Trombosis Aguda/Subaguda", // Trombosis Aguda/Subaguda / EHIT
+        "Trombosis Crónica Organizada",
+        "Fibrosis/Cicatriz/Cordón Fibrótico",
+        "Muñón Residual (en unión)", // También indica una intervención previa
+        // Podríamos añadir otros si fuera necesario, ej. 'Recanalización Parcial'? Quizás no indica intervención *siempre*.
+    ];
+
+    // Revisar cada clave de segmento relevante (ej. 'posttx_gsv_muslo_prox', 'posttx_gsv_muslo_medio', ...)
+    for (const key of listaDeClavesPostTx) {
+        // Verificar si existe entrada para esta clave y si tiene hallazgos registrados
+        if (
+            hallazgosPostTxLado[key] &&
+            hallazgosPostTxLado[key].hallazgos &&
+            hallazgosPostTxLado[key].hallazgos.length > 0
+        ) {
+            // Verificar si alguno de los hallazgos registrados está en nuestra lista de indicadores
+            const encontrado = hallazgosPostTxLado[key].hallazgos.some(
+                (hallazgoRegistrado) =>
+                    hallazgosIndicandoTratamiento.includes(hallazgoRegistrado)
+            );
+            if (encontrado) {
+                // Si encontramos uno, ya sabemos que hubo intervención en este grupo de segmentos
+                // console.log(`[DEBUG hayIntervencion] Encontrado en ${key}: ${hallazgosPostTxLado[key].hallazgos.join(', ')}`); // Log opcional
+                return true;
+            }
+        }
+    }
+
+    // Si terminamos el bucle sin encontrar ningún indicador, devolvemos false
+    return false;
+}
+// --- Fin Nueva Función Auxiliar ---
+// --- Contadores Globales y Datos (Completos) ---
+let contadorTrib = 0;
+let contadorPerf = 0;
+const vasosProfundos = [
+    { id: "femoral_comun", nombre: "Vena femoral común", iliaca: true },
+    { id: "femoral_prox", nombre: "Tercio proximal", grupo: "femoral" },
+    { id: "femoral_medio", nombre: "Tercio medio", grupo: "femoral" },
+    { id: "femoral_distal", nombre: "Tercio distal", grupo: "femoral" },
+    { id: "poplitea", nombre: "Vena poplítea" },
+    {
+        id: "tibial_anterior",
+        nombre: "Venas tibiales anteriores",
+        grupo: "infracondilea",
+    },
+    {
+        id: "tibial_posterior",
+        nombre: "Venas tibiales posteriores",
+        grupo: "infracondilea",
+    },
+    { id: "peronea", nombre: "Venas peroneas", grupo: "infracondilea" },
+    {
+        id: "muscular_medial",
+        nombre: "Venas musculares mediales",
+        grupo: "infracondilea",
+    },
+    {
+        id: "muscular_lateral",
+        nombre: "Venas musculares laterales",
+        grupo: "infracondilea",
+    },
+];
+const traductorHallazgosTrombosis = {
+    Dilatación: "dilatación venosa",
+    "Trombo Hipoecoico": "ocupación luminal por material hipoecoico",
+    Incompresible: "falta de compresibilidad",
+    "Flujo Ausente": "ausencia de flujo",
+    "Fasicidad Ausente": "ausencia de fasicidad",
+    "Trombo Iso/Hiperecoico": "presencia de material luminal iso/hiperecoico",
+    "Compresión Parcial":
+        "solo es posible realizar compresión parcial con el transductor",
+    "Recanalización Parcial": "se observa recanalización parcial",
+    "Engrosamiento Parietal": "engrosamiento de la pared venosa",
+    Recanalización: "signos de recanalización",
+    "Bandas/Septos": "presencia de bandas y/o septos intraluminales",
+    "Deterioro Valvular":
+        "válvulas de aspecto deteriorado (engrosadas/rígidas)",
+    "Flujo Presente/Ausente": "alteraciones residuales en el flujo Doppler",
+    "Compresibilidad Parcial/Total": "compresibilidad parcial",
+};
+
+// --- Variables y Estado Post-Tx (Completas) ---
+let hallazgosPostTx = {};
+let postTxTributariaCounter = 0;
+let postTxPerforanteCounter = 0;
+let currentPostTxEditingButton = null;
+
+// --- Funciones de Estado (Completas) ---
+function getDefaultState() {
+    return {
+        usf_competencia: "competente",
+        usf_diametro: "",
+        trayecto_fascial_mayor: "intrafascial",
+        epi_sm_m_p: false,
+        epi_sm_m_m: false,
+        epi_sm_m_d: false,
+        epi_sm_p_p: false,
+        epi_sm_p_m: false,
+        epi_sm_p_d: false,
+        tipo_incompetencia_safena_mayor: "competente",
+        mayor_muslo_proximal_estado: "competente",
+        mayor_muslo_proximal_diametro: "",
+        mayor_muslo_medio_estado: "competente",
+        mayor_muslo_medio_diametro: "",
+        mayor_muslo_distal_estado: "competente",
+        mayor_muslo_distal_diametro: "",
+        mayor_pierna_proximal_estado: "competente",
+        mayor_pierna_proximal_diametro: "",
+        mayor_pierna_medio_estado: "competente",
+        mayor_pierna_medio_diametro: "",
+        mayor_pierna_distal_estado: "competente",
+        mayor_pierna_distal_diametro: "",
+        trayecto_fascial_anterior: "intrafascial",
+        epi_sa_p: false,
+        epi_sa_m: false,
+        epi_sa_d: false,
+        anterior_proximal_estado: "competente",
+        anterior_proximal_diametro: "",
+        anterior_medio_estado: "competente",
+        anterior_medio_diametro: "",
+        anterior_distal_estado: "competente",
+        anterior_distal_diametro: "",
+        usp_visible: "si",
+        usp_competencia: "competente",
+        usp_diametro_sm: "",
+        sm_proximal_estado: "competente",
+        sm_proximal_diametro: "",
+        sm_proximal_trayecto: "intrafascial",
+        sm_medio_estado: "competente",
+        sm_medio_diametro: "",
+        sm_medio_trayecto: "intrafascial",
+        sm_distal_estado: "competente",
+        sm_distal_diametro: "",
+        sm_distal_trayecto: "intrafascial",
+        giacomini_presente: false,
+        giacomini_proximal_estado: "competente",
+        giacomini_proximal_diametro: "",
+        giacomini_medio_estado: "competente",
+        giacomini_medio_diametro: "",
+        giacomini_distal_estado: "competente",
+        giacomini_distal_diametro: "",
+        extension_muslo: false,
+        muslo_comp: "competente",
+        muslo_diametro: "",
+        muslo_terminacion: "",
+        sistema_profundo: vasosProfundos.map((v) => ({
+            id: v.id,
+            competencia: "competente",
+            trombosis: "no",
+            tiempo_trombo: "",
+            hallazgos_trombo: [],
+            iliaca_ext: false,
+        })),
+        abd_perineales_observadas: "no",
+        abd_per_origen: [],
+        abd_per_trayecto: [],
+        abd_per_drenaje: "Unión Safeno-Femoral",
+        abd_per_reflujo: false,
+        hay_tributarias: false,
+        tributarias: [],
+        hay_perforantes: false,
+        perforantes: [],
+        incluir_posttx: false,
+        hallazgosPostTx: {},
+        postTxTributariaCounter: 0,
+        postTxPerforanteCounter: 0,
+    };
+}
+
+function hasAnyChange(side) {
+    const defaultState = getDefaultState();
+
+    const currentState = datosEstudio[side] || getDefaultState();
+
+    // Comparamos cada propiedad del estado actual con el estado por defecto
+    for (const key in defaultState) {
+        if (defaultState.hasOwnProperty(key)) {
+            const defaultValue = defaultState[key];
+            const currentValue = currentState[key];
+
+            // Si los valores son diferentes, hay un cambio
+            if (JSON.stringify(defaultValue) !== JSON.stringify(currentValue)) {
+                return true; // Hay cambios
+            }
+        }
+    }
+
+    return false; // No hay cambios
+}
+
+function saveCurrentFormState(side) {
+    console.log(`Guardando estado para: ${side}`);
+    const estado = getDefaultState();
+    try {
+        estado.usf_competencia = obtenerValor("usf_competencia");
+        estado.usf_diametro = obtenerValor("usf_diametro");
+        estado.trayecto_fascial_mayor = obtenerValor("trayecto_fascial_mayor");
+        estado.epi_sm_m_p = document.getElementById("epi_sm_m_p")?.checked;
+        estado.epi_sm_m_m = document.getElementById("epi_sm_m_m")?.checked;
+        estado.epi_sm_m_d = document.getElementById("epi_sm_m_d")?.checked;
+        estado.epi_sm_p_p = document.getElementById("epi_sm_p_p")?.checked;
+        estado.epi_sm_p_m = document.getElementById("epi_sm_p_m")?.checked;
+        estado.epi_sm_p_d = document.getElementById("epi_sm_p_d")?.checked;
+        estado.tipo_incompetencia_safena_mayor = obtenerValor(
+            "tipo_incompetencia_safena_mayor"
+        );
+        if (estado.tipo_incompetencia_safena_mayor === "segmentaria") {
+            estado.mayor_muslo_proximal_estado =
+                document.querySelector(
+                    '.bloque_tercio_mayor[data-region="muslo"][data-tercio="proximal"] .estado_tercio_mayor'
+                )?.value || "competente";
+            estado.mayor_muslo_medio_estado =
+                document.querySelector(
+                    '.bloque_tercio_mayor[data-region="muslo"][data-tercio="medio"] .estado_tercio_mayor'
+                )?.value || "competente";
+            estado.mayor_muslo_distal_estado =
+                document.querySelector(
+                    '.bloque_tercio_mayor[data-region="muslo"][data-tercio="distal"] .estado_tercio_mayor'
+                )?.value || "competente";
+            estado.mayor_pierna_proximal_estado =
+                document.querySelector(
+                    '.bloque_tercio_mayor[data-region="pierna"][data-tercio="proximal"] .estado_tercio_mayor'
+                )?.value || "competente";
+            estado.mayor_pierna_medio_estado =
+                document.querySelector(
+                    '.bloque_tercio_mayor[data-region="pierna"][data-tercio="medio"] .estado_tercio_mayor'
+                )?.value || "competente";
+            estado.mayor_pierna_distal_estado =
+                document.querySelector(
+                    '.bloque_tercio_mayor[data-region="pierna"][data-tercio="distal"] .estado_tercio_mayor'
+                )?.value || "competente";
+        }
+        estado.mayor_muslo_proximal_diametro = obtenerValor(
+            "mayor_muslo_proximal_diametro"
+        );
+        estado.mayor_muslo_medio_diametro = obtenerValor(
+            "mayor_muslo_medio_diametro"
+        );
+        estado.mayor_muslo_distal_diametro = obtenerValor(
+            "mayor_muslo_distal_diametro"
+        );
+        estado.mayor_pierna_proximal_diametro = obtenerValor(
+            "mayor_pierna_proximal_diametro"
+        );
+        estado.mayor_pierna_medio_diametro = obtenerValor(
+            "mayor_pierna_medio_diametro"
+        );
+        estado.mayor_pierna_distal_diametro = obtenerValor(
+            "mayor_pierna_distal_diametro"
+        );
+        estado.trayecto_fascial_anterior = obtenerValor(
+            "trayecto_fascial_anterior"
+        );
+        estado.epi_sa_p = document.getElementById("epi_sa_p")?.checked;
+        estado.epi_sa_m = document.getElementById("epi_sa_m")?.checked;
+        estado.epi_sa_d = document.getElementById("epi_sa_d")?.checked;
+        estado.anterior_proximal_estado = obtenerRadioValor(
+            "anterior_proximal_estado"
+        );
+        estado.anterior_proximal_diametro = obtenerValor(
+            "anterior_proximal_diametro"
+        );
+        estado.anterior_medio_estado = obtenerRadioValor(
+            "anterior_medio_estado"
+        );
+        estado.anterior_medio_diametro = obtenerValor(
+            "anterior_medio_diametro"
+        );
+        estado.anterior_distal_estado = obtenerRadioValor(
+            "anterior_distal_estado"
+        );
+        estado.anterior_distal_diametro = obtenerValor(
+            "anterior_distal_diametro"
+        );
+        estado.usp_visible = obtenerRadioValor("usp_visible");
+        estado.usp_competencia = obtenerRadioValor("usp_competencia");
+        estado.usp_diametro_sm = obtenerValor("usp_diametro_sm");
+        estado.sm_proximal_estado = obtenerRadioValor("sm_proximal_estado");
+        estado.sm_proximal_diametro = obtenerValor("sm_proximal_diametro");
+        estado.sm_proximal_trayecto = obtenerValor("sm_proximal_trayecto");
+        estado.sm_medio_estado = obtenerRadioValor("sm_medio_estado");
+        estado.sm_medio_diametro = obtenerValor("sm_medio_diametro");
+        estado.sm_medio_trayecto = obtenerValor("sm_medio_trayecto");
+        estado.sm_distal_estado = obtenerRadioValor("sm_distal_estado");
+        estado.sm_distal_diametro = obtenerValor("sm_distal_diametro");
+        estado.sm_distal_trayecto = obtenerValor("sm_distal_trayecto");
+        estado.giacomini_presente =
+            document.getElementById("giacomini_presente")?.checked;
+        estado.giacomini_proximal_estado = obtenerRadioValor(
+            "giacomini_proximal_estado"
+        );
+        estado.giacomini_proximal_diametro = obtenerValor(
+            "giacomini_proximal_diametro"
+        );
+        estado.giacomini_medio_estado = obtenerRadioValor(
+            "giacomini_medio_estado"
+        );
+        estado.giacomini_medio_diametro = obtenerValor(
+            "giacomini_medio_diametro"
+        );
+        estado.giacomini_distal_estado = obtenerRadioValor(
+            "giacomini_distal_estado"
+        );
+        estado.giacomini_distal_diametro = obtenerValor(
+            "giacomini_distal_diametro"
+        );
+        estado.extension_muslo =
+            document.getElementById("extension_muslo")?.checked;
+        estado.muslo_comp = obtenerRadioValor("muslo_comp");
+        estado.muslo_diametro = obtenerValor("muslo_diametro");
+        estado.muslo_terminacion = obtenerValor("muslo_terminacion");
+        estado.sistema_profundo = vasosProfundos.map((vaso) => {
+            const hallazgosChecks = document.querySelectorAll(
+                `input[name="profundo_hallazgo_${vaso.id}"]:checked`
+            );
+            return {
+                id: vaso.id,
+                competencia: obtenerValor(`profundo_${vaso.id}_competencia`),
+                trombosis: obtenerRadioValor(`profundo_trombosis_${vaso.id}`),
+                tiempo_trombo: obtenerValor(
+                    `profundo_${vaso.id}_tiempo_trombo`
+                ),
+                hallazgos_trombo: Array.from(hallazgosChecks).map(
+                    (cb) => cb.value
+                ),
+                iliaca_ext: vaso.iliaca
+                    ? document.getElementById(`profundo_${vaso.id}_iliaca_ext`)
+                          ?.checked
+                    : false,
+            };
+        });
+        estado.abd_perineales_observadas = obtenerRadioValor(
+            "abd_perineales_observadas"
+        );
+        estado.abd_per_origen = Array.from(
+            document.querySelectorAll('input[name="abd_per_origen[]"]:checked')
+        ).map((cb) => cb.value);
+        estado.abd_per_trayecto = Array.from(
+            document.querySelectorAll(
+                'input[name="abd_per_trayecto[]"]:checked'
+            )
+        ).map((cb) => cb.value);
+        estado.abd_per_drenaje = obtenerValor("abd_per_drenaje");
+        estado.abd_per_reflujo =
+            document.getElementById("abd_reflujo")?.checked;
+        estado.hay_tributarias =
+            document.getElementById("hay_tributarias")?.checked;
+        estado.tributarias = [];
+        if (estado.hay_tributarias) {
+            document
+                .querySelectorAll("#contenedor_tributarias .tributaria")
+                .forEach((div, i) => {
+                    // Usar el índice 'i' o un data-index si se implementó de forma más robusta
+                    // Asumiendo que los names usan el índice secuencial 'i' al momento de guardar
+                    const index_name = i; // O extraer de data-index si existe
+                    const tribData = {
+                        zona: div.querySelector(
+                            `select[name="trib_zona_${index_name}"]`
+                        )?.value,
+                        orientacion: div.querySelector(
+                            `select[name="trib_orientacion_${index_name}"]`
+                        )?.value,
+                        distancia: div.querySelector(
+                            `input[name="trib_distancia_${index_name}"]`
+                        )?.value,
+                        referencia: div.querySelector(
+                            `select[name="trib_referencia_${index_name}"]`
+                        )?.value,
+                        origen: div.querySelector(
+                            `select[name="trib_origen_${index_name}"]`
+                        )?.value,
+                        conecta: div.querySelector(
+                            `select[name="trib_conecta_${index_name}"]`
+                        )?.value,
+                        // **** LÍNEA AÑADIDA ****
+                        estado:
+                            div.querySelector(
+                                `select[name="trib_estado_${index_name}"]`
+                            )?.value || "incompetente",
+                    };
+                    estado.tributarias.push(tribData);
+                });
+        }
+        estado.hay_perforantes =
+            document.getElementById("hay_perforantes")?.checked;
+        estado.perforantes = [];
+        if (estado.hay_perforantes) {
+            document
+                .querySelectorAll("#contenedor_perforantes .perforante")
+                .forEach((div, i) => {
+                    const index_name = i; // Misma consideración que tributarias sobre índice
+                    const perfData = {
+                        zona: div.querySelector(
+                            `select[name="perf_zona_${index_name}"]`
+                        )?.value,
+                        cara: div.querySelector(
+                            `select[name="perf_cara_${index_name}"]`
+                        )?.value,
+                        distancia: div.querySelector(
+                            `input[name="perf_distancia_${index_name}"]`
+                        )?.value,
+                        referencia: div.querySelector(
+                            `select[name="perf_referencia_${index_name}"]`
+                        )?.value,
+                        nombre: div.querySelector(
+                            `input[name="perf_nombre_${index_name}"]`
+                        )?.value,
+                        conexion: div.querySelector(
+                            `select[name="perf_conexion_${index_name}"]`
+                        )?.value,
+                        // Aquí no añadimos estado, solo era para tributarias
+                    };
+                    estado.perforantes.push(perfData);
+                });
+        }
+        estado.incluir_posttx =
+            document.getElementById("incluir_posttx")?.checked;
+        estado.hallazgosPostTx = JSON.parse(JSON.stringify(hallazgosPostTx));
+        estado.postTxTributariaCounter = postTxTributariaCounter;
+        estado.postTxPerforanteCounter = postTxPerforanteCounter;
+        // Pendiente: Guardar datos de tributarias/perforantes post-tx dinámicas
+    } catch (e) {
+        console.error(
+            `Error recolectando datos en saveCurrentFormState para ${side}:`,
+            e
+        );
+    }
+    datosEstudio[side] = estado;
+    // console.log(`Estado guardado para ${side}:`, datosEstudio[side]); // Descomentar si necesitas depurar más
+}
+
+function loadFormState(side) {
+    console.log(`--- Iniciando loadFormState para: ${side} ---`);
+    console.log("Verificando elementos clave...");
+    console.log(
+        "Elemento 'usf_competencia':",
+        document.getElementById("usf_competencia")
+    );
+    console.log(
+        "Elemento 'trayecto_fascial_mayor':",
+        document.getElementById("trayecto_fascial_mayor")
+    );
+    console.log(
+        "Elemento 'anterior_proximal_diametro':",
+        document.getElementById("anterior_proximal_diametro")
+    );
+    console.log(
+        "Elemento 'usp_diametro_sm':",
+        document.getElementById("usp_diametro_sm")
+    );
+    console.log(
+        "Contenedor Profundo:",
+        document.getElementById("vasos-profundos-container")
+    );
+    console.log(
+        "Contenedor Tributarias:",
+        document.getElementById("contenedor_tributarias")
+    );
+    console.log("--- Fin Verificación ---");
+    const estado = datosEstudio[side] || getDefaultState();
+    datosEstudio[side] = estado;
+    try {
+        document.getElementById("contenedor_tributarias").innerHTML = "";
+        contadorTrib = 0;
+        document.getElementById("contenedor_perforantes").innerHTML = "";
+        contadorPerf = 0;
+        document.getElementById("posttx-tributarias-container").innerHTML = "";
+        postTxTributariaCounter = estado.postTxTributariaCounter || 0;
+        document.getElementById("posttx-perforantes-container").innerHTML = "";
+        postTxPerforanteCounter = estado.postTxPerforanteCounter || 0;
+    } catch (e) {
+        console.error("Error limpiando contenedores:", e);
+    }
+    try {
+        document.getElementById("usf_competencia").value =
+            estado.usf_competencia;
+    } catch (e) {
+        console.error("Error seteando usf_competencia", e);
+    }
+    try {
+        document.getElementById("usf_diametro").value = estado.usf_diametro;
+    } catch (e) {
+        console.error("Error seteando usf_diametro", e);
+    }
+    try {
+        document.getElementById("trayecto_fascial_mayor").value =
+            estado.trayecto_fascial_mayor;
+    } catch (e) {
+        console.error("Error seteando trayecto_fascial_mayor", e);
+    }
+    try {
+        document.getElementById("epi_sm_m_p").checked = !!estado.epi_sm_m_p;
+    } catch (e) {
+        console.error("Error seteando epi_sm_m_p", e);
+    }
+    try {
+        document.getElementById("epi_sm_m_m").checked = !!estado.epi_sm_m_m;
+    } catch (e) {
+        console.error("Error seteando epi_sm_m_m", e);
+    }
+    try {
+        document.getElementById("epi_sm_m_d").checked = !!estado.epi_sm_m_d;
+    } catch (e) {
+        console.error("Error seteando epi_sm_m_d", e);
+    }
+    try {
+        document.getElementById("epi_sm_p_p").checked = !!estado.epi_sm_p_p;
+    } catch (e) {
+        console.error("Error seteando epi_sm_p_p", e);
+    }
+    try {
+        document.getElementById("epi_sm_p_m").checked = !!estado.epi_sm_p_m;
+    } catch (e) {
+        console.error("Error seteando epi_sm_p_m", e);
+    }
+    try {
+        document.getElementById("epi_sm_p_d").checked = !!estado.epi_sm_p_d;
+    } catch (e) {
+        console.error("Error seteando epi_sm_p_d", e);
+    }
+    try {
+        document.getElementById("tipo_incompetencia_safena_mayor").value =
+            estado.tipo_incompetencia_safena_mayor;
+    } catch (e) {
+        console.error("Error seteando tipo_incompetencia_safena_mayor", e);
+    }
+    try {
+        document
+            .getElementById("trayecto_fascial_mayor")
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error dispatchEvent trayecto_fascial_mayor", e);
+    }
+    try {
+        document
+            .getElementById("tipo_incompetencia_safena_mayor")
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error dispatchEvent tipo_incompetencia_safena_mayor", e);
+    }
+    if (estado.tipo_incompetencia_safena_mayor === "segmentaria") {
+        setTimeout(() => {
+            try {
+                const selMusloP = document.querySelector(
+                    '.bloque_tercio_mayor[data-region="muslo"][data-tercio="proximal"] .estado_tercio_mayor'
+                );
+                if (selMusloP)
+                    selMusloP.value = estado.mayor_muslo_proximal_estado;
+                const selMusloM = document.querySelector(
+                    '.bloque_tercio_mayor[data-region="muslo"][data-tercio="medio"] .estado_tercio_mayor'
+                );
+                if (selMusloM)
+                    selMusloM.value = estado.mayor_muslo_medio_estado;
+                const selMusloD = document.querySelector(
+                    '.bloque_tercio_mayor[data-region="muslo"][data-tercio="distal"] .estado_tercio_mayor'
+                );
+                if (selMusloD)
+                    selMusloD.value = estado.mayor_muslo_distal_estado;
+                const selPiernaP = document.querySelector(
+                    '.bloque_tercio_mayor[data-region="pierna"][data-tercio="proximal"] .estado_tercio_mayor'
+                );
+                if (selPiernaP)
+                    selPiernaP.value = estado.mayor_pierna_proximal_estado;
+                const selPiernaM = document.querySelector(
+                    '.bloque_tercio_mayor[data-region="pierna"][data-tercio="medio"] .estado_tercio_mayor'
+                );
+                if (selPiernaM)
+                    selPiernaM.value = estado.mayor_pierna_medio_estado;
+                const selPiernaD = document.querySelector(
+                    '.bloque_tercio_mayor[data-region="pierna"][data-tercio="distal"] .estado_tercio_mayor'
+                );
+                if (selPiernaD)
+                    selPiernaD.value = estado.mayor_pierna_distal_estado;
+            } catch (e) {
+                console.error("Error seteando selects estado VSM tercios", e);
+            }
+        }, 50);
+    }
+    try {
+        document.getElementById("mayor_muslo_proximal_diametro").value =
+            estado.mayor_muslo_proximal_diametro;
+    } catch (e) {
+        console.error("Error seteando mayor_muslo_proximal_diametro", e);
+    }
+    try {
+        document.getElementById("mayor_muslo_medio_diametro").value =
+            estado.mayor_muslo_medio_diametro;
+    } catch (e) {
+        console.error("Error seteando mayor_muslo_medio_diametro", e);
+    }
+    try {
+        document.getElementById("mayor_muslo_distal_diametro").value =
+            estado.mayor_muslo_distal_diametro;
+    } catch (e) {
+        console.error("Error seteando mayor_muslo_distal_diametro", e);
+    }
+    try {
+        document.getElementById("mayor_pierna_proximal_diametro").value =
+            estado.mayor_pierna_proximal_diametro;
+    } catch (e) {
+        console.error("Error seteando mayor_pierna_proximal_diametro", e);
+    }
+    try {
+        document.getElementById("mayor_pierna_medio_diametro").value =
+            estado.mayor_pierna_medio_diametro;
+    } catch (e) {
+        console.error("Error seteando mayor_pierna_medio_diametro", e);
+    }
+    try {
+        document.getElementById("mayor_pierna_distal_diametro").value =
+            estado.mayor_pierna_distal_diametro;
+    } catch (e) {
+        console.error("Error seteando mayor_pierna_distal_diametro", e);
+    }
+    try {
+        document.getElementById("trayecto_fascial_anterior").value =
+            estado.trayecto_fascial_anterior;
+    } catch (e) {
+        console.error("Error seteando trayecto_fascial_anterior", e);
+    }
+    try {
+        document.getElementById("epi_sa_p").checked = !!estado.epi_sa_p;
+    } catch (e) {
+        console.error("Error seteando epi_sa_p", e);
+    }
+    try {
+        document.getElementById("epi_sa_m").checked = !!estado.epi_sa_m;
+    } catch (e) {
+        console.error("Error seteando epi_sa_m", e);
+    }
+    try {
+        document.getElementById("epi_sa_d").checked = !!estado.epi_sa_d;
+    } catch (e) {
+        console.error("Error seteando epi_sa_d", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="anterior_proximal_estado"][value="${
+                estado.anterior_proximal_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando anterior_proximal_estado", e);
+    }
+    try {
+        document.getElementById("anterior_proximal_diametro").value =
+            estado.anterior_proximal_diametro;
+    } catch (e) {
+        console.error("Error seteando anterior_proximal_diametro", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="anterior_medio_estado"][value="${
+                estado.anterior_medio_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando anterior_medio_estado", e);
+    }
+    try {
+        document.getElementById("anterior_medio_diametro").value =
+            estado.anterior_medio_diametro;
+    } catch (e) {
+        console.error("Error seteando anterior_medio_diametro", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="anterior_distal_estado"][value="${
+                estado.anterior_distal_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando anterior_distal_estado", e);
+    }
+    try {
+        document.getElementById("anterior_distal_diametro").value =
+            estado.anterior_distal_diametro;
+    } catch (e) {
+        console.error("Error seteando anterior_distal_diametro", e);
+    }
+    try {
+        document
+            .getElementById("trayecto_fascial_anterior")
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error dispatchEvent trayecto_fascial_anterior", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="usp_visible"][value="${estado.usp_visible || "si"}"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando usp_visible", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="usp_competencia"][value="${
+                estado.usp_competencia || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando usp_competencia", e);
+    }
+    try {
+        document.getElementById("usp_diametro_sm").value =
+            estado.usp_diametro_sm;
+    } catch (e) {
+        console.error("Error seteando usp_diametro_sm", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="sm_proximal_estado"][value="${
+                estado.sm_proximal_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando sm_proximal_estado", e);
+    }
+    try {
+        document.getElementById("sm_proximal_diametro").value =
+            estado.sm_proximal_diametro;
+    } catch (e) {
+        console.error("Error seteando sm_proximal_diametro", e);
+    }
+    try {
+        document.getElementById("sm_proximal_trayecto").value =
+            estado.sm_proximal_trayecto || "intrafascial";
+    } catch (e) {
+        console.error("Error seteando sm_proximal_trayecto", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="sm_medio_estado"][value="${
+                estado.sm_medio_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando sm_medio_estado", e);
+    }
+    try {
+        document.getElementById("sm_medio_diametro").value =
+            estado.sm_medio_diametro;
+    } catch (e) {
+        console.error("Error seteando sm_medio_diametro", e);
+    }
+    try {
+        document.getElementById("sm_medio_trayecto").value =
+            estado.sm_medio_trayecto || "intrafascial";
+    } catch (e) {
+        console.error("Error seteando sm_medio_trayecto", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="sm_distal_estado"][value="${
+                estado.sm_distal_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando sm_distal_estado", e);
+    }
+    try {
+        document.getElementById("sm_distal_diametro").value =
+            estado.sm_distal_diametro;
+    } catch (e) {
+        console.error("Error seteando sm_distal_diametro", e);
+    }
+    try {
+        document.getElementById("sm_distal_trayecto").value =
+            estado.sm_distal_trayecto || "intrafascial";
+    } catch (e) {
+        console.error("Error seteando sm_distal_trayecto", e);
+    }
+    try {
+        document.getElementById("giacomini_presente").checked =
+            !!estado.giacomini_presente;
+    } catch (e) {
+        console.error("Error seteando giacomini_presente", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="giacomini_proximal_estado"][value="${
+                estado.giacomini_proximal_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando giacomini_proximal_estado", e);
+    }
+    try {
+        document.getElementById("giacomini_proximal_diametro").value =
+            estado.giacomini_proximal_diametro;
+    } catch (e) {
+        console.error("Error seteando giacomini_proximal_diametro", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="giacomini_medio_estado"][value="${
+                estado.giacomini_medio_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando giacomini_medio_estado", e);
+    }
+    try {
+        document.getElementById("giacomini_medio_diametro").value =
+            estado.giacomini_medio_diametro;
+    } catch (e) {
+        console.error("Error seteando giacomini_medio_diametro", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="giacomini_distal_estado"][value="${
+                estado.giacomini_distal_estado || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando giacomini_distal_estado", e);
+    }
+    try {
+        document.getElementById("giacomini_distal_diametro").value =
+            estado.giacomini_distal_diametro;
+    } catch (e) {
+        console.error("Error seteando giacomini_distal_diametro", e);
+    }
+    try {
+        document.getElementById("extension_muslo").checked =
+            !!estado.extension_muslo;
+    } catch (e) {
+        console.error("Error seteando extension_muslo", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="muslo_comp"][value="${
+                estado.muslo_comp || "competente"
+            }"]`
+        ).checked = true;
+    } catch (e) {
+        console.error("Error seteando muslo_comp", e);
+    }
+    try {
+        document.getElementById("muslo_diametro").value = estado.muslo_diametro;
+    } catch (e) {
+        console.error("Error seteando muslo_diametro", e);
+    }
+    try {
+        document.getElementById("muslo_terminacion").value =
+            estado.muslo_terminacion;
+    } catch (e) {
+        console.error("Error seteando muslo_terminacion", e);
+    }
+    try {
+        document
+            .querySelector('input[name="usp_visible"]:checked')
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error dispatchEvent usp_visible", e);
+    }
+    try {
+        document
+            .getElementById("giacomini_presente")
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error dispatchEvent giacomini_presente", e);
+    }
+    try {
+        document
+            .getElementById("extension_muslo")
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error dispatchEvent extension_muslo", e);
+    }
+    try {
+        if (
+            estado.sistema_profundo &&
+            estado.sistema_profundo.length === vasosProfundos.length
+        ) {
+            estado.sistema_profundo.forEach((vasoData, vasoIndex) => {
+                try {
+                    const compSelect = document.getElementById(
+                        `profundo_${vasoData.id}_competencia`
+                    );
+                    if (compSelect)
+                        compSelect.value = vasoData.competencia || "competente";
+                    else
+                        console.warn(
+                            `Elemento profundo_${vasoData.id}_competencia no encontrado`
+                        );
+
+                    const trombRadio = document.querySelector(
+                        `input[name="profundo_trombosis_${
+                            vasoData.id
+                        }"][value="${vasoData.trombosis || "no"}"]`
+                    );
+                    if (trombRadio) trombRadio.checked = true;
+                    else
+                        console.warn(
+                            `Radio profundo_trombosis_${
+                                vasoData.id
+                            } con valor ${
+                                vasoData.trombosis || "no"
+                            } no encontrado`
+                        );
+
+                    const checkedTrombRadio = document.querySelector(
+                        `input[name="profundo_trombosis_${vasoData.id}"]:checked`
+                    );
+                    if (checkedTrombRadio)
+                        checkedTrombRadio.dispatchEvent(new Event("change"));
+                    else
+                        console.warn(
+                            `No se pudo disparar change en profundo_trombosis_${vasoData.id}`
+                        );
+
+                    setTimeout(() => {
+                        try {
+                            const tiempoSelect = document.getElementById(
+                                `profundo_${vasoData.id}_tiempo_trombo`
+                            );
+                            if (tiempoSelect)
+                                tiempoSelect.value =
+                                    vasoData.tiempo_trombo || "";
+                            else
+                                console.warn(
+                                    `Elemento profundo_${vasoData.id}_tiempo_trombo no encontrado`
+                                );
+                            if (tiempoSelect)
+                                tiempoSelect.dispatchEvent(new Event("change"));
+                            else
+                                console.warn(
+                                    `No se pudo disparar change en tiempoSelect para ${vasoData.id}`
+                                );
+
+                            setTimeout(() => {
+                                try {
+                                    const hallazgosContainer =
+                                        document.getElementById(
+                                            `hallazgos_trombo_${vasoData.id}`
+                                        );
+                                    if (hallazgosContainer) {
+                                        hallazgosContainer
+                                            .querySelectorAll(
+                                                'input[type="checkbox"]'
+                                            )
+                                            .forEach((cb) => {
+                                                try {
+                                                    cb.checked =
+                                                        vasoData.hallazgos_trombo?.includes(
+                                                            cb.value
+                                                        );
+                                                } catch (e) {
+                                                    console.error(
+                                                        `Error seteando checkbox hallazgo ${cb.value} para ${vasoData.id}`,
+                                                        e
+                                                    );
+                                                }
+                                            });
+                                    } else {
+                                        console.warn(
+                                            `Contenedor hallazgos_trombo_${vasoData.id} no encontrado`
+                                        );
+                                    }
+                                    const iliacaCheck = document.getElementById(
+                                        `profundo_${vasoData.id}_iliaca_ext`
+                                    );
+                                    if (iliacaCheck)
+                                        iliacaCheck.checked =
+                                            !!vasoData.iliaca_ext;
+                                    else if (vasoData.id === "femoral_comun")
+                                        console.warn(
+                                            `Checkbox profundo_femoral_comun_iliaca_ext no encontrado`
+                                        );
+                                } catch (e) {
+                                    console.error(
+                                        `Error en setTimeout interno hallazgos/iliaca para ${vasoData.id}`,
+                                        e
+                                    );
+                                }
+                            }, 50);
+                        } catch (e) {
+                            console.error(
+                                `Error en setTimeout externo tiempo/hallazgos para ${vasoData.id}`,
+                                e
+                            );
+                        }
+                    }, 50);
+                } catch (e) {
+                    console.error(
+                        `Error cargando estado para vaso profundo ${vasoData.id} (índice ${vasoIndex})`,
+                        e
+                    );
+                }
+            });
+        }
+    } catch (e) {
+        console.error("Error general cargando sistema profundo", e);
+    }
+    try {
+        document.querySelector(
+            `input[name="abd_perineales_observadas"][value="${
+                estado.abd_perineales_observadas || "no"
+            }"]`
+        ).checked = true;
+        document
+            .querySelectorAll('input[name="abd_per_origen[]"]')
+            .forEach(
+                (cb) => (cb.checked = estado.abd_per_origen?.includes(cb.value))
+            );
+        document
+            .querySelectorAll('input[name="abd_per_trayecto[]"]')
+            .forEach(
+                (cb) =>
+                    (cb.checked = estado.abd_per_trayecto?.includes(cb.value))
+            );
+        document.getElementById("abd_per_drenaje").value =
+            estado.abd_per_drenaje || "Unión Safeno-Femoral";
+        document.getElementById("abd_reflujo").checked =
+            !!estado.abd_per_reflujo;
+        document
+            .querySelector('input[name="abd_perineales_observadas"]:checked')
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error cargando Abd/Pelv", e);
+    }
+    try {
+        document.getElementById("hay_tributarias").checked =
+            !!estado.hay_tributarias;
+        if (estado.hay_tributarias && estado.tributarias) {
+            estado.tributarias.forEach((tribData, index_original) => {
+                try {
+                    agregarTributaria(); // Llama a la función que crea el HTML y los listeners
+                    const i = contadorTrib - 1; // Obtiene el índice que USÓ agregarTributaria
+                    const div = document.querySelector(
+                        `#contenedor_tributarias .tributaria:nth-last-child(1)`
+                    ); // Encuentra el último div creado
+                    if (div) {
+                        const zonaSel = div.querySelector(
+                            `select[name="trib_zona_${i}"]`
+                        );
+                        if (zonaSel) zonaSel.value = tribData.zona || "pierna";
+                        const oriSel = div.querySelector(
+                            `select[name="trib_orientacion_${i}"]`
+                        );
+                        if (oriSel)
+                            oriSel.value = tribData.orientacion || "medial";
+                        // Disparar change ANTES de setear la referencia dependiente
+                        if (zonaSel) zonaSel.dispatchEvent(new Event("change"));
+                        if (oriSel) oriSel.dispatchEvent(new Event("change"));
+                        const distIn = div.querySelector(
+                            `input[name="trib_distancia_${i}"]`
+                        );
+                        if (distIn) distIn.value = tribData.distancia || "";
+                        const refSel = div.querySelector(
+                            `select[name="trib_referencia_${i}"]`
+                        );
+                        setTimeout(() => {
+                            if (refSel)
+                                refSel.value = tribData.referencia || "";
+                        }, 50); // Delay para asegurar que las opciones de referencia estén listas
+                        const origSel = div.querySelector(
+                            `select[name="trib_origen_${i}"]`
+                        );
+                        if (origSel)
+                            origSel.value = tribData.origen || "Desconocido";
+                        const conSel = div.querySelector(
+                            `select[name="trib_conecta_${i}"]`
+                        );
+                        if (conSel)
+                            conSel.value =
+                                tribData.conecta || "sin conexión visible";
+                        // **** LÍNEAS AÑADIDAS (Paso 3) ****
+                        const estadoSel = div.querySelector(
+                            `select[name="trib_estado_${i}"]`
+                        );
+                        if (estadoSel)
+                            estadoSel.value = tribData.estado || "incompetente"; // Setear estado guardado
+                        // **** FIN LÍNEAS AÑADIDAS ****
+                    } else {
+                        console.error(
+                            `[loadFormState] No se pudo encontrar el div para la Tributaria índice ${i} justo después de agregarla.`
+                        );
+                    }
+                } catch (e) {
+                    console.error(
+                        `Error procesando tributaria guardada ${index_original}`,
+                        e
+                    );
+                }
+            });
+        }
+        document
+            .getElementById("hay_tributarias")
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error cargando tributarias", e);
+    }
+    try {
+        document.getElementById("hay_perforantes").checked =
+            !!estado.hay_perforantes;
+        if (estado.hay_perforantes && estado.perforantes) {
+            estado.perforantes.forEach((perfData, index_original) => {
+                try {
+                    agregarPerforante();
+                    const i = contadorPerf - 1;
+                    const div = document.querySelector(
+                        `#contenedor_perforantes .perforante:nth-last-child(1)`
+                    );
+                    if (div) {
+                        const zonaSel = div.querySelector(
+                            `select[name="perf_zona_${i}"]`
+                        );
+                        if (zonaSel) zonaSel.value = perfData.zona || "pierna";
+                        const caraSel = div.querySelector(
+                            `select[name="perf_cara_${i}"]`
+                        );
+                        if (caraSel) caraSel.value = perfData.cara || "medial";
+                        if (zonaSel) zonaSel.dispatchEvent(new Event("change"));
+                        if (caraSel) caraSel.dispatchEvent(new Event("change"));
+                        const distIn = div.querySelector(
+                            `input[name="perf_distancia_${i}"]`
+                        );
+                        if (distIn) distIn.value = perfData.distancia || "";
+                        const refSel = div.querySelector(
+                            `select[name="perf_referencia_${i}"]`
+                        );
+                        setTimeout(() => {
+                            if (refSel)
+                                refSel.value = perfData.referencia || "";
+                        }, 50);
+                        const nomIn = div.querySelector(
+                            `input[name="perf_nombre_${i}"]`
+                        );
+                        if (nomIn) nomIn.value = perfData.nombre || "";
+                        const conSel = div.querySelector(
+                            `select[name="perf_conexion_${i}"]`
+                        );
+                        if (conSel)
+                            conSel.value =
+                                perfData.conexion ||
+                                "sin conexión superficial visible";
+                    } else {
+                        console.error(
+                            `[loadFormState] No se pudo encontrar el div para la Perforante índice ${i} justo después de agregarla.`
+                        );
+                    }
+                } catch (e) {
+                    console.error(
+                        `Error procesando perforante guardada ${index_original}`,
+                        e
+                    );
+                }
+            });
+        }
+        document
+            .getElementById("hay_perforantes")
+            .dispatchEvent(new Event("change"));
+    } catch (e) {
+        console.error("Error cargando perforantes", e);
+    }
+    try {
+        document.getElementById("incluir_posttx").checked =
+            !!estado.incluir_posttx;
+        hallazgosPostTx = JSON.parse(
+            JSON.stringify(estado.hallazgosPostTx || {})
+        );
+        document
+            .getElementById("incluir_posttx")
+            .dispatchEvent(new Event("change"));
+        setTimeout(updateAllPostTxButtonStyles, 50);
+    } catch (e) {
+        console.error("Error cargando postTx", e);
+    }
+    updateLivePreview();
+    console.log(`Estado cargado para ${side}`);
+}
+
+function switchSide(newSide) {
+    if (newSide === ladoActivo) return;
+    console.log(`Cambiando de ${ladoActivo} a ${newSide}`);
+    try {
+        saveCurrentFormState(ladoActivo);
+        ladoActivo = newSide;
+    } catch (e) {
+        console.error(`Error guardando estado ${ladoActivo}:`, e);
+    }
+    try {
+        loadFormState(newSide);
+    } catch (e) {
+        console.error(`Error cargando estado ${newSide}:`, e);
+    }
+
+    try {
+        document.getElementById(
+            "main-title"
+        ).textContent = `Estudio Eco Doppler Venoso MMII Completo - Lado ${
+            newSide === "derecho" ? "Derecho" : "Izquierdo"
+        }`;
+        document.getElementById("preview-active-side").textContent =
+            ladoActivo === "derecho" ? "Derecho" : "Izquierdo";
+        document.getElementById(`lado_${newSide}_radio`).checked = true;
+    } catch (e) {
+        console.error("Error actualizando UI en switchSide:", e);
+    }
+}
+
+// --- Generación de Texto (Refactorizada y Completa - Corrección Preamble) ---
+function generarTextoParaLado(side, data) {
+    if (!data) {
+        console.warn(`generarTextoParaLado llamado para ${side} sin datos.`);
+        return "";
+    }
+    let textoLado = "";
+    const nombreLado = side === "derecho" ? "Derecho" : "Izquierdo";
+    try {
+        const nombre = obtenerValor("nombre");
+        const apellido = obtenerValor("apellido");
+        const documento = obtenerValor("documento");
+        const sexo = obtenerValor("sexo");
+        const fechaHora = obtenerValor("fecha_hora");
+        let preamble =
+            "Se realiza estudio con transductor lineal de alta resolución en modo B, Doppler color y Doppler pulsado. ";
+        preamble += sexo === "Femenino" ? "La paciente" : "El paciente";
+        if (nombre) preamble += ` ${nombre} ${apellido}`;
+        if (documento)
+            preamble += ` con documento de identidad No. ${documento}`;
+        preamble += sexo === "Femenino" ? " fue evaluada" : " fue evaluado";
+        if (fechaHora) {
+            try {
+                const fechaObj = new Date(fechaHora);
+                if (!isNaN(fechaObj.getTime())) {
+                    preamble += ` el ${fechaObj.toLocaleDateString("es-CO", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    })} a las ${fechaObj.toLocaleTimeString("es-CO", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                    })}, `;
+                } else {
+                    preamble += `, `;
+                }
+            } catch (e) {
+                preamble += `, `;
+            }
+        } else {
+            preamble += ", ";
+        }
+        preamble +=
+            "en posición ortostática y/o en Trendelenburg inverso según el segmento. Se emplearon maniobras de compresión distal y Valsalva. Se valoró el sistema venoso superficial, profundo y perforante según recomendaciones de la UIP.\n\n";
+        textoLado += preamble;
+        // Párrafo 2: Vena Safena Mayor (Lógica PostTx Integrada v1b)
+        let frasesMayor = [];
+        const nombreLadoVSM = side === "derecho" ? "Derecho" : "Izquierdo"; // Usar variable local para nombre lado
+        try {
+            // Añadir try-catch específico para esta sección
+            const usfComp = data?.usf_competencia || "competente";
+            const usfDiam = parseFloat(
+                String(data?.usf_diametro || "").replace(",", ".")
+            );
+            const trayectoMayor =
+                data?.trayecto_fascial_mayor || "intrafascial";
+            const tipoIncompMayor =
+                data?.tipo_incompetencia_safena_mayor || "competente";
+
+            // 1. Añadir USF y Trayecto (Siempre)
+            let fraseUSF = `Unión safeno-femoral ${usfComp}`;
+            if (!isNaN(usfDiam))
+                fraseUSF += ` (${usfDiam.toFixed(1)} mm, ${clasificar(
+                    usfDiam
+                )})`;
+            frasesMayor.push(fraseUSF);
+
+            if (trayectoMayor === "epifascial") {
+                const regs = [];
+                if (data?.epi_sm_m_p) regs.push("proximal");
+                if (data?.epi_sm_m_m) regs.push("medio");
+                if (data?.epi_sm_m_d) regs.push("distal");
+                if (data?.epi_sm_p_p) regs.push("proximal");
+                if (data?.epi_sm_p_m) regs.push("medio");
+                if (data?.epi_sm_p_d) regs.push("distal");
+                let regionEpiMayor =
+                    data?.epi_sm_p_p || data?.epi_sm_p_m || data?.epi_sm_p_d
+                        ? "de la pierna"
+                        : "del muslo";
+                if (regs.length > 0) {
+                    frasesMayor.push(
+                        `Trayecto epifascial en ${describirTercios(
+                            regs
+                        )} ${regionEpiMayor}`
+                    );
+                } else {
+                    frasesMayor.push(
+                        `Trayecto epifascial (región no especificada)`
+                    );
+                }
+            } else {
+                frasesMayor.push(`Trayecto intrafascial`);
+            }
+
+            // 2. Verificar si hay intervención Post-Tx relevante para VSM
+            let postTxModificaCompetenciaVSM = false;
+            if (data?.incluir_posttx && data?.hallazgosPostTx) {
+                const vsmPostTxKeys = [
+                    "posttx_usf",
+                    "posttx_gsv_muslo_prox",
+                    "posttx_gsv_muslo_medio",
+                    "posttx_gsv_muslo_distal",
+                    "posttx_gsv_pierna_prox",
+                    "posttx_gsv_pierna_medio",
+                    "posttx_gsv_pierna_distal",
+                ];
+                // Llamar a la función auxiliar que creamos en el paso anterior
+                postTxModificaCompetenciaVSM =
+                    hayIntervencionPostTxSignificativa(
+                        data.hallazgosPostTx,
+                        vsmPostTxKeys
+                    );
+                // console.log(`[DEBUG VSM] Check PostTx VSM: ${postTxModificaCompetenciaVSM}`); // Log opcional
+            }
+
+            // 3. Generar frase de Competencia (modificada si aplica - Opción 1B)
+            if (tipoIncompMayor === "competente") {
+                if (postTxModificaCompetenciaVSM) {
+                    // Opción 1b: Reemplazar/Modificar si era competente pero hubo intervención
+                    frasesMayor.push(
+                        "Presenta hallazgos post-tratamiento (ver sección correspondiente más abajo)."
+                    );
+                } else {
+                    // Competente sin intervención relevante
+                    frasesMayor.push("Competente en toda su extensión");
+                }
+            } else {
+                // Axial o Segmentaria inicialmente
+                frasesMayor.push(
+                    `Presenta ${
+                        tipoIncompMayor.includes("axial")
+                            ? "incompetencia axial"
+                            : "incompetencia segmentaria"
+                    }`
+                );
+                // Añadir detalles segmentarios solo si es segmentaria
+                if (tipoIncompMayor.includes("segmentaria")) {
+                    ["muslo", "pierna"].forEach((region) => {
+                        const tercios = ["proximal", "medio", "distal"];
+                        const estadosMayorTercio = tercios.map((t) => {
+                            const est =
+                                data?.[`mayor_${region}_${t}_estado`] ||
+                                "competente";
+                            const diam = parseFloat(
+                                String(
+                                    data?.[`mayor_${region}_${t}_diametro`] ||
+                                        ""
+                                ).replace(",", ".")
+                            );
+                            return {
+                                tercio: t,
+                                estado: est,
+                                diametro: diam,
+                                clasif: isNaN(diam) ? "" : clasificar(diam),
+                            };
+                        });
+                        frasesMayor.push(
+                            `En ${
+                                region === "pierna" ? "la pierna" : "el muslo"
+                            } es ${agruparTercios(region, estadosMayorTercio)}`
+                        );
+                    });
+                }
+                // Opcional: Podríamos añadir un aviso aquí también si era incompetente Y hubo post-tx
+                // if (postTxModificaCompetenciaVSM) { frasesMayor.push("(Ver detalles adicionales en hallazgos post-tratamiento)"); }
+            }
+
+            // 4. Añadir Diámetros (Siempre, si existen)
+            ["muslo", "pierna"].forEach((region) => {
+                const tercios = ["proximal", "medio", "distal"];
+                const estadosMayorTercioDiam = tercios.map((t) => {
+                    const diam = parseFloat(
+                        String(
+                            data?.[`mayor_${region}_${t}_diametro`] || ""
+                        ).replace(",", ".")
+                    );
+                    return {
+                        tercio: t,
+                        diametro: diam,
+                        clasif: isNaN(diam) ? "" : clasificar(diam),
+                    };
+                });
+                const fraseDiamsMayor = describirDiametros(
+                    estadosMayorTercioDiam
+                );
+                if (fraseDiamsMayor) {
+                    const descRegion =
+                        region === "pierna" ? "la pierna" : "el muslo";
+                    let diamText = fraseDiamsMayor
+                        .replace(/^El diámetro medido/, "diámetro medido")
+                        .replace(
+                            /^Los diámetros medidos son:/,
+                            "diámetros medidos:"
+                        );
+                    frasesMayor.push(`Diámetros en ${descRegion}: ${diamText}`);
+                }
+            });
+
+            // 5. Unir frases y añadir al texto general
+            textoLado += `**Vena Safena Mayor ${nombreLadoVSM}:**\n- ${unirFrases(
+                frasesMayor
+            )}\n\n`;
+        } catch (errorVSM) {
+            console.error(
+                `Error generando sección VSM para lado ${side}:`,
+                errorVSM
+            );
+            textoLado += `\n\n *** ERROR AL GENERAR SECCIÓN VENA SAFENA MAYOR ***\n\n`;
+        }
+        // --- Fin Sección VSM ---
+        // Párrafo 3: Vena Safena Anterior (Lógica PostTx Integrada v1c y Logs Opcionales)
+        let frasesAnterior = [];
+        const nombreLadoVSA = side === "derecho" ? "Derecho" : "Izquierdo"; // Variable local para nombre lado
+        try {
+            // console.log(`[DEBUG genText VSA] Iniciando sección VSA para ${side}`); // Log opcional
+            const trayectoAnterior =
+                data?.trayecto_fascial_anterior || "intrafascial";
+            if (trayectoAnterior === "epifascial") {
+                const terciosEpiAnterior = [];
+                if (data?.epi_sa_p) terciosEpiAnterior.push("proximal");
+                if (data?.epi_sa_m) terciosEpiAnterior.push("medio");
+                if (data?.epi_sa_d) terciosEpiAnterior.push("distal");
+                // console.log(`[DEBUG genText VSA] Tercios Epi leídos: ${terciosEpiAnterior.join(', ')}`); // Log opcional
+                if (terciosEpiAnterior.length > 0) {
+                    frasesAnterior.push(
+                        `Trayecto epifascial en ${describirTercios(
+                            terciosEpiAnterior
+                        )} del muslo`
+                    );
+                } else {
+                    frasesAnterior.push(
+                        `Trayecto epifascial (segmento no especificado) del muslo`
+                    );
+                }
+            } else {
+                frasesAnterior.push(`Trayecto intrafascial en el muslo`);
+            }
+
+            const estadosAnterior = ["proximal", "medio", "distal"].map(
+                (tercio) => {
+                    const estado =
+                        data?.[`anterior_${tercio}_estado`] || "competente";
+                    const diametro = parseFloat(
+                        String(
+                            data?.[`anterior_${tercio}_diametro`] || ""
+                        ).replace(",", ".")
+                    );
+                    return {
+                        tercio: tercio,
+                        estado: estado,
+                        diametro: diametro,
+                        clasif: isNaN(diametro) ? "" : clasificar(diametro),
+                    };
+                }
+            );
+            // console.log(`[DEBUG genText VSA] Estados/Diámetros procesados:`, JSON.stringify(estadosAnterior)); // Log opcional
+
+            // --- Inicio Modificación Competencia VSA ---
+            let descCompAnt = describirPatronCompetencia(
+                estadosAnterior,
+                "del muslo"
+            );
+            let competenciaInicialVSAEraCompetente =
+                descCompAnt.startsWith("competente"); // Verifica si la descripción inicial indica competencia
+
+            // Verificar si hay intervención Post-Tx relevante para VSA
+            let postTxModificaCompetenciaVSA = false;
+            if (data?.incluir_posttx && data?.hallazgosPostTx) {
+                const vsaPostTxKeys = [
+                    "posttx_aasv_muslo_prox",
+                    "posttx_aasv_muslo_medio",
+                    "posttx_aasv_muslo_distal",
+                ];
+                // Llamar a la función auxiliar
+                postTxModificaCompetenciaVSA =
+                    hayIntervencionPostTxSignificativa(
+                        data.hallazgosPostTx,
+                        vsaPostTxKeys
+                    );
+                // console.log(`[DEBUG genText VSA] Check PostTx VSA: ${postTxModificaCompetenciaVSA}`); // Log opcional
+            }
+
+            // Generar frase de Competencia (modificada si aplica - User Suggestion)
+            if (
+                competenciaInicialVSAEraCompetente &&
+                postTxModificaCompetenciaVSA
+            ) {
+                frasesAnterior.push(
+                    "Presenta hallazgos post-tratamiento (ver sección correspondiente)."
+                );
+                // console.log(`[DEBUG genText VSA] Frase competencia MODIFICADA añadida.`); // Log opcional
+            } else {
+                // Usar descripción original si era incompetente o no hubo intervención relevante
+                frasesAnterior.push(
+                    descCompAnt.charAt(0).toUpperCase() + descCompAnt.slice(1)
+                );
+                // console.log(`[DEBUG genText VSA] Frase competencia ORIGINAL añadida: ${descCompAnt}`); // Log opcional
+            }
+            // --- Fin Modificación Competencia VSA ---
+
+            const fraseDiametrosAnterior = describirDiametros(estadosAnterior);
+            if (fraseDiametrosAnterior) {
+                frasesAnterior.push(
+                    fraseDiametrosAnterior
+                        .replace(/^El diámetro medido/, "Diámetro medido")
+                        .replace(
+                            /^Los diámetros medidos son:/,
+                            "Diámetros medidos:"
+                        )
+                );
+            }
+
+            const textoAnteriorUnido = unirFrases(frasesAnterior);
+            // console.log(`[DEBUG genText VSA] Texto VSA unido: ${textoAnteriorUnido}`); // Log opcional
+
+            if (textoAnteriorUnido && textoAnteriorUnido !== ".") {
+                // Verificar que no esté vacío o sea solo un punto
+                textoLado += `**Vena Safena Anterior ${nombreLadoVSA}:**\n- ${textoAnteriorUnido}\n\n`;
+            } else {
+                // Añadir un placeholder si no se generó nada útil, para indicar que se procesó
+                textoLado += `**Vena Safena Anterior ${nombreLadoVSA}:**\n- (No se reportaron hallazgos significativos para VSA)\n\n`;
+            }
+        } catch (errorVSA) {
+            console.error(
+                `Error generando sección VSA para lado ${side}:`,
+                errorVSA
+            );
+            textoLado += `\n\n *** ERROR AL GENERAR SECCIÓN VENA SAFENA ANTERIOR ***\n\n`;
+        }
+        // --- Fin Sección VSA ---
+        // Párrafo 4: Vena Safena Menor y Relacionadas (Lógica PostTx Integrada v1c)
+        let textoMenor = ""; // Inicializar variable para esta sección
+        const nombreLadoVSMenor = side === "derecho" ? "Derecho" : "Izquierdo";
+        try {
+            // try-catch específico para esta sección compleja
+            textoMenor = `**Vena Safena Menor ${nombreLadoVSMenor} y Relacionadas:**\n`;
+            let frasesMenor = []; // Frases para el tronco principal de la VSMenor
+            const uspVisible = data?.usp_visible || "si";
+
+            // 1. Manejar Unión Safeno-Poplítea (USP)
+            if (uspVisible === "si") {
+                const compUSPInicial = data?.usp_competencia || "competente";
+                const diamUSP = parseFloat(
+                    String(data?.usp_diametro_sm || "").replace(",", ".")
+                );
+                let postTxModificaCompetenciaUSP = false;
+                if (data?.incluir_posttx && data?.hallazgosPostTx) {
+                    // Usar la función auxiliar para la clave específica de USP
+                    postTxModificaCompetenciaUSP =
+                        hayIntervencionPostTxSignificativa(
+                            data.hallazgosPostTx,
+                            ["posttx_usp"]
+                        );
+                }
+
+                let fraseUSP = "Unión safeno-poplítea visible";
+                if (
+                    compUSPInicial === "competente" &&
+                    postTxModificaCompetenciaUSP
+                ) {
+                    fraseUSP +=
+                        ", presenta hallazgos post-tratamiento (ver sección correspondiente)";
+                } else if (compUSPInicial === "competente") {
+                    fraseUSP += " y competente";
+                } else {
+                    // incompetente
+                    fraseUSP += " e incompetente";
+                    // Opcional: Añadir nota si era incompetente Y hubo post-tx
+                    // if (postTxModificaCompetenciaUSP) fraseUSP += " (con hallazgos post-tx)";
+                }
+                // Añadir diámetro (sin cambios en esta lógica)
+                if (!isNaN(diamUSP))
+                    fraseUSP += ` (${diamUSP.toFixed(1)} mm, ${clasificar(
+                        diamUSP
+                    )})`;
+                frasesMenor.push(fraseUSP); // Añadir a las frases de la VSMenor
+            } else {
+                frasesMenor.push("Unión safeno-poplítea no visualizada");
+            }
+
+            // 2. Manejar Tronco Safena Menor (Pierna)
+            const estadosSafMenor = ["proximal", "medio", "distal"].map((t) => {
+                const estSM = data?.[`sm_${t}_estado`] || "competente";
+                const diamSM = parseFloat(
+                    String(data?.[`sm_${t}_diametro`] || "").replace(",", ".")
+                );
+                const traySM = data?.[`sm_${t}_trayecto`] || "intrafascial";
+                return {
+                    tercio: t,
+                    estado: estSM,
+                    diametro: diamSM,
+                    clasif: isNaN(diamSM) ? "" : clasificar(diamSM),
+                    trayecto: traySM,
+                };
+            });
+            let descCompSM = describirPatronCompetencia(
+                estadosSafMenor,
+                "de la pierna"
+            );
+            let competenciaInicialSSVEraCompetente =
+                descCompSM.startsWith("competente");
+
+            let postTxModificaCompetenciaSSV = false;
+            if (data?.incluir_posttx && data?.hallazgosPostTx) {
+                const ssvPostTxKeys = [
+                    "posttx_ssv_pierna_prox",
+                    "posttx_ssv_pierna_medio",
+                    "posttx_ssv_pierna_distal",
+                ];
+                postTxModificaCompetenciaSSV =
+                    hayIntervencionPostTxSignificativa(
+                        data.hallazgosPostTx,
+                        ssvPostTxKeys
+                    );
+            }
+
+            // Añadir frase de competencia (modificada si aplica)
+            if (
+                competenciaInicialSSVEraCompetente &&
+                postTxModificaCompetenciaSSV
+            ) {
+                frasesMenor.push(
+                    "Presenta hallazgos post-tratamiento en pierna (ver sección correspondiente)."
+                );
+            } else {
+                frasesMenor.push(
+                    descCompSM.charAt(0).toUpperCase() + descCompSM.slice(1)
+                );
+            }
+
+            // Añadir diámetros y trayecto (siempre)
+            const fraseDiamSM = describirDiametros(estadosSafMenor);
+            if (fraseDiamSM) {
+                frasesMenor.push(
+                    fraseDiamSM
+                        .replace(/^El diámetro medido/, "Diámetro medido")
+                        .replace(
+                            /^Los diámetros medidos son:/,
+                            "Diámetros medidos:"
+                        )
+                );
+            }
+            const epifascialesSM = estadosSafMenor
+                .filter((e) => e.trayecto === "epifascial")
+                .map((e) => e.tercio);
+            if (epifascialesSM.length > 0)
+                frasesMenor.push(
+                    `Trayecto epifascial en ${describirTercios(
+                        epifascialesSM
+                    )} de la pierna`
+                );
+
+            // Unir frases de VSMenor y añadir al bloque de texto de esta sección
+            textoMenor += "- " + unirFrases(frasesMenor);
+
+            // 3. Manejar Vena de Giacomini (si está presente)
+            if (data?.giacomini_presente) {
+                let frasesGiacomini = [];
+                frasesGiacomini.push(
+                    "Se observa como variación anatómica la Vena de Giacomini"
+                );
+                const estadosGiacomini = ["proximal", "medio", "distal"].map(
+                    (tercio) => {
+                        const estado =
+                            data?.[`giacomini_${tercio}_estado`] ||
+                            "competente";
+                        const diametro = parseFloat(
+                            String(
+                                data?.[`giacomini_${tercio}_diametro`] || ""
+                            ).replace(",", ".")
+                        );
+                        return {
+                            tercio: tercio,
+                            estado: estado,
+                            diametro: diametro,
+                            clasif: isNaN(diametro) ? "" : clasificar(diametro),
+                        };
+                    }
+                );
+
+                let competenciaG = describirPatronCompetencia(
+                    estadosGiacomini,
+                    "del muslo"
+                );
+                let competenciaInicialGiacEraCompetente =
+                    competenciaG.startsWith("competente");
+
+                let postTxModificaCompetenciaGiac = false;
+                if (data?.incluir_posttx && data?.hallazgosPostTx) {
+                    const giacPostTxKeys = [
+                        "posttx_giacomini_prox",
+                        "posttx_giacomini_medio",
+                        "posttx_giacomini_distal",
+                    ];
+                    postTxModificaCompetenciaGiac =
+                        hayIntervencionPostTxSignificativa(
+                            data.hallazgosPostTx,
+                            giacPostTxKeys
+                        );
+                }
+
+                // Añadir frase de competencia (modificada si aplica)
+                if (
+                    competenciaInicialGiacEraCompetente &&
+                    postTxModificaCompetenciaGiac
+                ) {
+                    frasesGiacomini.push(
+                        `la cual presenta hallazgos post-tratamiento (ver sección correspondiente)`
+                    );
+                } else {
+                    frasesGiacomini.push(
+                        `la cual se encuentra ${competenciaG}`
+                    );
+                }
+
+                // Añadir diámetros (siempre)
+                const fraseDiamG = describirDiametros(estadosGiacomini);
+                if (fraseDiamG) {
+                    frasesGiacomini.push(
+                        fraseDiamG
+                            .replace(/^El diámetro medido/, "Diámetro medido")
+                            .replace(
+                                /^Los diámetros medidos son:/,
+                                "Diámetros medidos:"
+                            )
+                    );
+                }
+                // Añadir la información de Giacomini como un nuevo punto
+                textoMenor += `\n- ${unirFrases(frasesGiacomini)}`;
+            }
+
+            // 4. Manejar Extensión Craneal VSMenor al Muslo (si está presente)
+            if (data?.extension_muslo) {
+                let frasesExtension = [];
+                const compExtInicial = data?.muslo_comp || "competente";
+                const diamExt = parseFloat(
+                    String(data?.muslo_diametro || "").replace(",", ".")
+                );
+                const termExt = data?.muslo_terminacion || "";
+
+                let postTxModificaCompetenciaExtSsv = false;
+                if (data?.incluir_posttx && data?.hallazgosPostTx) {
+                    postTxModificaCompetenciaExtSsv =
+                        hayIntervencionPostTxSignificativa(
+                            data.hallazgosPostTx,
+                            ["posttx_ext_ssv_muslo"]
+                        );
+                }
+
+                let fraseExt = `Presenta extensión craneal a muslo`;
+                // Añadir frase de competencia (modificada si aplica)
+                if (
+                    compExtInicial === "competente" &&
+                    postTxModificaCompetenciaExtSsv
+                ) {
+                    fraseExt += `, con hallazgos post-tratamiento (ver sección correspondiente)`;
+                } else if (compExtInicial === "competente") {
+                    fraseExt += `, la cual es competente`;
+                } else {
+                    // incompetente
+                    fraseExt += `, la cual es incompetente`;
+                    // if (postTxModificaCompetenciaExtSsv) fraseExt += " (con hallazgos post-tx)";
+                }
+                // Añadir diámetro y terminación (siempre)
+                if (!isNaN(diamExt))
+                    fraseExt += ` (Diámetro: ${diamExt.toFixed(1)} mm)`;
+                frasesExtension.push(fraseExt);
+                if (termExt) frasesExtension.push(`Termina en ${termExt}`);
+                // Añadir la información de la Extensión como un nuevo punto
+                textoMenor += `\n- ${unirFrases(frasesExtension)}`;
+            }
+
+            // Añadir el texto completo de esta sección (VSMenor + Giacomini + Extensión) al resultado final del lado
+            textoLado += textoMenor.trim() + "\n\n";
+        } catch (errorVSMenor) {
+            console.error(
+                `Error generando sección VSMenor y Rel. para lado ${side}:`,
+                errorVSMenor
+            );
+            textoLado += `\n\n *** ERROR AL GENERAR SECCIÓN VENA SAFENA MENOR Y RELACIONADAS ***\n\n`;
+        }
+        // --- Fin Sección VSMenor ---
+        let textoProfundo = `**Sistema Venoso Profundo ${nombreLado}:**\n`;
+        let hallazgosProfundoEncontrados = false;
+        if (data.sistema_profundo && data.sistema_profundo.length > 0) {
+            data.sistema_profundo.forEach((vasoData) => {
+                const vasoInfo = vasosProfundos.find(
+                    (v) => v.id === vasoData.id
+                );
+                if (!vasoInfo) return;
+                const comp = vasoData.competencia || "competente";
+                const hayTrombo = vasoData.trombosis === "si";
+                const tiempoT = vasoData.tiempo_trombo || "";
+                const hallazgosT = vasoData.hallazgos_trombo || [];
+                const iliacaExt = vasoInfo.iliaca
+                    ? !!vasoData.iliaca_ext
+                    : false;
+                let descVaso =
+                    vasoInfo.grupo === "femoral"
+                        ? `${vasoInfo.nombre} de Vena Femoral`
+                        : vasoInfo.nombre;
+                let hallazgosDelVaso = [];
+                let extensionIliacaFrase = "";
+                if (comp === "incompetente") {
+                    hallazgosDelVaso.push("presenta incompetencia valvular");
+                }
+                if (hayTrombo && tiempoT) {
+                    let tiempoFem = tiempoT;
+                    if (tiempoT === "agudo") tiempoFem = "aguda";
+                    else if (tiempoT === "subagudo") tiempoFem = "subaguda";
+                    else if (tiempoT === "cronico") tiempoFem = "crónica";
+                    let descTrombosis = `muestra signos de trombosis ${tiempoFem}`;
+                    const hallazgosTraducidos = hallazgosT
+                        .map((h) => traductorHallazgosTrombosis[h])
+                        .filter((hTrad) => hTrad);
+                    if (hallazgosTraducidos.length > 0) {
+                        const listaFormateada =
+                            formatearListaHallazgos(hallazgosTraducidos);
+                        const primerHallazgoLower =
+                            listaFormateada.charAt(0).toLowerCase() +
+                            listaFormateada.slice(1);
+                        descTrombosis += `, consistentes en ${primerHallazgoLower}`;
+                    }
+                    hallazgosDelVaso.push(descTrombosis);
+                }
+                if (iliacaExt && vasoInfo.iliaca) {
+                    extensionIliacaFrase =
+                        "Se evidencia extensión a vena ilíaca externa; se recomienda realización de estudios adicionales para evaluación del segmento iliocavo.";
+                }
+                if (hallazgosDelVaso.length > 0 || extensionIliacaFrase) {
+                    hallazgosProfundoEncontrados = true;
+                    let lineaVaso = `- ${descVaso}: `;
+                    if (hallazgosDelVaso.length === 1) {
+                        lineaVaso +=
+                            hallazgosDelVaso[0].charAt(0).toUpperCase() +
+                            hallazgosDelVaso[0].slice(1);
+                    } else if (hallazgosDelVaso.length > 1) {
+                        const ultimoHallazgo = hallazgosDelVaso.pop();
+                        lineaVaso += `${hallazgosDelVaso.join(
+                            ", "
+                        )} y ${ultimoHallazgo}`;
+                    }
+                    lineaVaso += ".";
+                    if (extensionIliacaFrase) {
+                        lineaVaso += ` ${extensionIliacaFrase}`;
+                    }
+                    textoProfundo += lineaVaso + "\n";
+                }
+            });
+        }
+        if (!hallazgosProfundoEncontrados) {
+            textoProfundo += "- Sin hallazgos patológicos significativos.\n";
+        }
+        textoLado += textoProfundo.trim() + "\n\n";
+        const abdObservado = data.abd_perineales_observadas || "no";
+        let textoAbdPel = `**Tributarias Abdominales/Pélvicas (${nombreLado}):**\n`;
+        if (abdObservado === "si") {
+            const org = data.abd_per_origen || [];
+            const tray = data.abd_per_trayecto || [];
+            const dren = data.abd_per_drenaje || null;
+            const ref = data.abd_per_reflujo;
+            let fraseAbd = "Se identifican tributarias";
+            const orgFormateado = formatearListaConY(org);
+            if (orgFormateado) {
+                fraseAbd += ` de origen ${orgFormateado}`;
+            } else {
+                fraseAbd += " de origen no especificado";
+            }
+            const trayFormateado = formatearListaConY(tray);
+            if (trayFormateado) {
+                fraseAbd += ` con trayecto ${trayFormateado}`;
+            }
+            if (dren === "No Identificado") {
+                fraseAbd += ", sin identificar el sitio de drenaje";
+            } else if (dren) {
+                let dTxt = "";
+                switch (dren) {
+                    case "Unión Safeno-Femoral":
+                        dTxt = "la Unión Safeno-Femoral";
+                        break;
+                    case "Colaterales del Muslo":
+                        dTxt = "Colaterales del Muslo";
+                        break;
+                    case "Vena Safena Mayor":
+                        dTxt = "la Vena Safena Mayor";
+                        break;
+                    case "Vena Safena Anterior":
+                        dTxt = "la Vena Safena Anterior";
+                        break;
+                }
+                if (dTxt) {
+                    fraseAbd += `, drenando en ${dTxt}`;
+                }
+            }
+            if (ref) {
+                fraseAbd += ", con reflujo centrífugo";
+            }
+            fraseAbd +=
+                ". (Hallazgos sugestivos de hipertensión venosa pélvica, se recomienda considerar estudios adicionales)";
+            textoAbdPel += "- " + fraseAbd + "\n";
+        } else {
+            textoAbdPel +=
+                "- No se observan tributarias de origen abdominal o pélvico.\n";
+        }
+        textoLado += textoAbdPel.trim() + "\n\n";
+        // Párrafo 7: Tributarias Incompetentes MMII (CORREGIDO)
+        const hayTrib = data.hay_tributarias;
+        if (hayTrib && data.tributarias && data.tributarias.length > 0) {
+            textoLado += `**Tributarias Incompetentes del Miembro Inferior ${nombreLado}:**\n`;
+            data.tributarias.forEach((t, i) => {
+                // Definir variables locales para esta iteración
+                const z = t.zona;
+                const o = t.orientacion;
+                const dNum = parseFloat(
+                    String(t.distancia || "").replace(",", ".")
+                );
+                const r = t.referencia;
+                const orig = t.origen;
+                const con = t.conecta;
+                // Obtener el estado guardado
+                const estadoTrib = t.estado || "incompetente"; // Obtener el estado guardado
+
+                // Validar que los datos básicos existan antes de generar la frase
+                if (z && o && !isNaN(dNum) && r && orig && con) {
+                    // **** INICIO CÓDIGO MODIFICADO (Paso 4) ****
+                    // Construir la frase base
+                    let f = `- Tributaria en ${z} ${o}, a ${dNum.toFixed(
+                        1
+                    )} cm ${r}`;
+
+                    // Añadir descripción del estado basado en el valor guardado
+                    switch (estadoTrib) {
+                        case "trombosada_aguda":
+                            f += ", con signos de trombosis aguda/subaguda";
+                            break;
+                        case "trombosada_cronica":
+                            f += ", con signos de trombosis crónica";
+                            break;
+                        case "incompetente_trombosada_aguda":
+                            f +=
+                                ", incompetente y con signos de trombosis aguda/subaguda";
+                            break;
+                        case "incompetente_trombosada_cronica":
+                            f +=
+                                ", incompetente y con signos de trombosis crónica";
+                            break;
+                        case "incompetente":
+                        default: // Si es solo incompetente (o valor por defecto/inesperado)
+                            f += ", incompetente";
+                            break;
+                    }
+
+                    // Añadir origen y conexión (sin cambios respecto a antes)
+                    f += `, con origen en ${orig}`;
+                    if (con !== "sin conexión visible") {
+                        f += `, conecta con ${con}`;
+                        // Lógica intersafénica (sin cambios)
+                        if (
+                            orig?.toLowerCase().includes("safena") &&
+                            con?.toLowerCase().includes("safena") &&
+                            orig !== con
+                        ) {
+                            f += " (configuración intersafénica)";
+                        }
+                    }
+                    // Añadir la frase completa al texto del lado
+                    textoLado += f + ".\n";
+                    // **** FIN CÓDIGO MODIFICADO ****
+                } else {
+                    // Opcional: Log si faltan datos para generar la frase de una tributaria guardada
+                    console.warn(
+                        `[generarTextoParaLado] Faltan datos para generar texto de Tributaria índice ${i} en lado ${side}. Datos:`,
+                        t
+                    );
+                }
+            });
+            textoLado += "\n"; // Añadir un salto de línea después de listar las tributarias
+        } else if (hayTrib) {
+            // Si el checkbox está marcado pero no hay tributarias en la lista
+            textoLado += `**Tributarias Incompetentes del Miembro Inferior ${nombreLado}:** Se indica presencia, pero no se detallan.\n\n`;
+        } else {
+            // Si el checkbox no está marcado
+            textoLado += `**Tributarias Incompetentes del Miembro Inferior ${nombreLado}:** No se observan tributarias incompetentes en el presente estudio.\n\n`;
+        }
+        // --- Fin Sección Tributarias MMII ---
+        const hayPerf = data.hay_perforantes;
+        if (hayPerf && data.perforantes && data.perforantes.length > 0) {
+            textoLado += `**Perforantes Incompetentes del Miembro Inferior ${nombreLado}:**\n`;
+            data.perforantes.forEach((p, i) => {
+                const z = p.zona;
+                const c = p.cara;
+                const dNum = parseFloat(
+                    String(p.distancia || "").replace(",", ".")
+                );
+                const r = p.referencia;
+                const con = p.conexion;
+                const nom = p.nombre || "";
+                if (z && c && !isNaN(dNum) && r && con) {
+                    textoLado += `- Perforante ${
+                        nom ? `(${nom}) ` : ""
+                    }en ${z} ${c}, a ${dNum.toFixed(1)} cm ${r}${
+                        con !== "sin conexión superficial visible"
+                            ? `, conecta con ${con}`
+                            : ""
+                    }.\n`;
+                }
+            });
+            textoLado += "\n";
+        } else if (hayPerf) {
+            textoLado += `**Perforantes Incompetentes del Miembro Inferior ${nombreLado}:** Se indica presencia, pero no se detallan.\n\n`;
+        } else {
+            textoLado += `**Perforantes Incompetentes del Miembro Inferior ${nombreLado}:** No se observan perforantes incompetentes en el presente estudio.\n\n`;
+        }
+        if (data.incluir_posttx && data.hallazgosPostTx) {
+            const textoPostTxLado = generarTextoPostTratamientoParaLado(
+                data.hallazgosPostTx
+            );
+            if (textoPostTxLado) {
+                textoLado += "\n\n" + textoPostTxLado.trim();
+            }
+        }
+    } catch (error) {
+        console.error(`Error generando texto para lado ${side}:`, error);
+        textoLado += `\n\n *** ERROR AL GENERAR TEXTO PARA ESTE LADO (${side.toUpperCase()}) ***\n`;
+    }
+    return textoLado;
+}
+function updateLivePreview() {
+    try {
+        const salida = document.getElementById("texto_unificado");
+        if (!salida) return;
+        saveCurrentFormState(ladoActivo);
+        
+        const previewText = generarTextoParaLado(
+            ladoActivo,
+            datosEstudio[ladoActivo]
+        );
+        salida.innerText = previewText.trim();
+    } catch (error) {
+        console.error("ERROR actualizando previsualización en vivo:", error);
+        const salida = document.getElementById("texto_unificado");
+        if (salida) {
+            salida.innerText = "Error al generar previsualización.";
+        }
+    }
+}
+function generarTextoBilateralCompleto() {
+    let textoCompleto = "";
+    const salidaBilateral = document.getElementById("texto_bilateral_completo");
+    if (!salidaBilateral) return "";
+    const nombre = obtenerValor("nombre");
+    const apellido = obtenerValor("apellido");
+    const documento = obtenerValor("documento");
+    const sexo = obtenerValor("sexo");
+    const fechaHora = obtenerValor("fecha_hora");
+    let preamble =
+        "Se realiza estudio con transductor lineal de alta resolución en modo B, Doppler color y Doppler pulsado. ";
+    preamble += sexo === "Femenino" ? "La paciente" : "El paciente";
+    if (nombre) preamble += ` ${nombre} ${apellido}`;
+    if (documento) preamble += ` con documento de identidad No. ${documento}`;
+    preamble += sexo === "Femenino" ? " fue evaluada" : " fue evaluado";
+    if (fechaHora) {
+        try {
+            const fechaObj = new Date(fechaHora);
+            if (!isNaN(fechaObj.getTime())) {
+                preamble += ` el ${fechaObj.toLocaleDateString("es-CO", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                })} a las ${fechaObj.toLocaleTimeString("es-CO", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                })}, `;
+            } else {
+                preamble += `, `;
+            }
+        } catch (e) {
+            preamble += `, `;
+        }
+    } else {
+        preamble += ", ";
+    }
+    preamble +=
+        "en posición ortostática y/o en Trendelenburg inverso según el segmento. Se emplearon maniobras de compresión distal y Valsalva. Se valoró el sistema venoso superficial, profundo y perforante según recomendaciones de la UIP.\n\n";
+    textoCompleto += preamble;
+    let hayDatosDerecho = hasAnyChange('derecho');
+    let hayDatosIzquierdo = hasAnyChange('izquierdo');
+    /* Falta deepCompare */ if (hayDatosDerecho && hayDatosIzquierdo) {
+        textoCompleto += "**LADO DERECHO:**\n\n";
+        textoCompleto += generarTextoParaLado("derecho", datosEstudio.derecho);
+        textoCompleto += "\n\n**LADO IZQUIERDO:**\n\n";
+        textoCompleto += generarTextoParaLado(
+            "izquierdo",
+            datosEstudio.izquierdo
+        );
+    } else if (hayDatosDerecho) {
+        textoCompleto += "**LADO DERECHO:**\n\n";
+        textoCompleto += generarTextoParaLado("derecho", datosEstudio.derecho);
+    } else if (hayDatosIzquierdo) {
+        textoCompleto += "**LADO IZQUIERDO:**\n\n";
+        textoCompleto += generarTextoParaLado(
+            "izquierdo",
+            datosEstudio.izquierdo
+        );
+    } else {
+        textoCompleto +=
+            "No se han ingresado datos significativos para ningún lado.";
+    }
+    salidaBilateral.innerText = textoCompleto.trim();
+    return textoCompleto.trim();
+}
+
+// --- Funciones Post-Tx (Completas) ---
+function toggleSeccionPostTx() {
+    const seccion = document.getElementById("seccion_posttx");
+    const checkbox = document.getElementById("incluir_posttx");
+    if (seccion && checkbox) {
+        seccion.style.display = checkbox.checked ? "block" : "none";
+        if (!checkbox.checked) {
+            hallazgosPostTx = {};
+            updateAllPostTxButtonStyles();
+            seccion.querySelectorAll("details[open]").forEach((detail) => {
+                detail.removeAttribute("open");
+            });
+            document.getElementById("posttx-tributarias-container").innerHTML =
+                "";
+            postTxTributariaCounter = 0;
+            document.getElementById("posttx-perforantes-container").innerHTML =
+                "";
+            postTxPerforanteCounter = 0;
+        }
+        updateLivePreview();
+    }
+}
+function inicializarAcordeonPostTx() {
+    const seccionPostTx = document.getElementById("seccion_posttx");
+    if (!seccionPostTx) return;
+    seccionPostTx.querySelectorAll("details").forEach((detail) => {
+        detail.addEventListener("toggle", (event) => {
+            if (detail.open) {
+                const parentContent = detail.parentElement;
+                if (
+                    parentContent &&
+                    parentContent.classList.contains("details-content")
+                ) {
+                    parentContent
+                        .querySelectorAll(":scope > details[open]")
+                        .forEach((sibling) => {
+                            if (sibling !== detail) {
+                                closeDetailAndDescendantsPostTx(sibling);
+                            }
+                        });
+                } else if (
+                    parentContent.id === "seccion_posttx" &&
+                    detail.classList.contains("level-1")
+                ) {
+                    parentContent
+                        .querySelectorAll(":scope > details.level-1[open]")
+                        .forEach((sibling) => {
+                            if (sibling !== detail) {
+                                closeDetailAndDescendantsPostTx(sibling);
+                            }
+                        });
+                }
+            }
+        });
+    });
+}
+function closeDetailAndDescendantsPostTx(detailElement) {
+    if (detailElement.hasAttribute("open")) {
+        detailElement.removeAttribute("open");
+    }
+    detailElement.querySelectorAll("details[open]").forEach((descendant) => {
+        descendant.removeAttribute("open");
+    });
+}
+function seleccionarHallazgosPostTx(targetId, buttonElement) {
+    currentPostTxEditingButton = buttonElement;
+    const modal = document.getElementById("posttx-modal");
+    const targetLabelElement = document.getElementById(
+        "posttx-hallazgo-target-label"
+    );
+    const targetIdField = document.getElementById("posttx-hallazgo-target-id");
+    const munonCmInput = document.getElementById("posttx_hallazgo_munon_cm");
+    let descriptiveLabel = targetId;
+    let currentElement = buttonElement;
+    const labels = [];
+    const containerLimit = document.getElementById("seccion_posttx");
+    while (
+        currentElement &&
+        currentElement !== containerLimit &&
+        currentElement !== document.body
+    ) {
+        const parentDetail = currentElement.closest("details");
+        if (parentDetail && containerLimit.contains(parentDetail)) {
+            const summary = parentDetail.querySelector(":scope > summary");
+            if (summary) {
+                if (
+                    !parentDetail.classList.contains("level-1") ||
+                    labels.length > 0
+                ) {
+                    labels.unshift(summary.textContent.trim());
+                }
+            }
+            currentElement = parentDetail.parentElement;
+        } else if (
+            currentElement.classList?.contains("posttx-hallazgos-container")
+        ) {
+            const spanLabel = currentElement.querySelector("span");
+            if (spanLabel && !labels.includes(spanLabel.textContent.trim())) {
+                labels.push(spanLabel.textContent.trim().replace(":", ""));
+            }
+            currentElement = currentElement.parentElement;
+        } else if (currentElement.classList?.contains("dynamic-item")) {
+            const strongLabel = currentElement.querySelector("strong");
+            if (strongLabel) labels.push(strongLabel.textContent.trim());
+            currentElement = currentElement.parentElement;
+        } else {
+            currentElement = currentElement.parentElement;
+        }
+    }
+    if (
+        labels.length > 1 &&
+        document
+            .getElementById(targetId.replace("posttx_", "posttx-det-"))
+            ?.classList.contains("level-1")
+    ) {
+        labels.shift();
+    }
+    descriptiveLabel = labels.join(" > ");
+    if (!descriptiveLabel) {
+        const spanLabel = buttonElement.previousElementSibling;
+        descriptiveLabel = spanLabel
+            ? spanLabel.textContent.trim().replace(":", "")
+            : targetId;
+    }
+    targetLabelElement.textContent = descriptiveLabel;
+    targetIdField.value = targetId;
+    const savedData = hallazgosPostTx[targetId] || {};
+    munonCmInput.value = savedData.munonCm || "";
+    munonCmInput.style.display = savedData.hallazgos?.includes(
+        "Muñón Residual (en unión)"
+    )
+        ? "inline-block"
+        : "none";
+    const checkboxes = modal.querySelectorAll('input[name="posttx_hallazgo"]');
+    checkboxes.forEach((cb) => {
+        cb.checked = savedData.hallazgos?.includes(cb.value);
+    });
+    modal.style.display = "block";
+}
+function handleHallazgoChangePostTx(inputElement) {
+    const modal = document.getElementById("posttx-modal");
+    const targetId = document.getElementById("posttx-hallazgo-target-id").value;
+    const munonCmInput = document.getElementById("posttx_hallazgo_munon_cm");
+    const munonCheckbox = modal.querySelector(
+        'input[name="posttx_hallazgo"][value="Muñón Residual (en unión)"]'
+    );
+    if (!targetId) return;
+    if (
+        inputElement.type === "checkbox" &&
+        inputElement.value === "Muñón Residual (en unión)"
+    ) {
+        munonCmInput.style.display = inputElement.checked
+            ? "inline-block"
+            : "none";
+        if (!inputElement.checked) {
+            munonCmInput.value = "";
+        }
+    }
+    const checkboxes = modal.querySelectorAll('input[name="posttx_hallazgo"]');
+    const currentHallazgos = [];
+    checkboxes.forEach((cb) => {
+        if (cb.checked) {
+            currentHallazgos.push(cb.value);
+        }
+    });
+    hallazgosPostTx[targetId] = {
+        hallazgos: currentHallazgos,
+        munonCm: munonCheckbox?.checked ? munonCmInput.value : "",
+    };
+    updateLivePreview();
+}
+function guardarYCerrarModalPostTx() {
+    const targetId = document.getElementById("posttx-hallazgo-target-id").value;
+    if (currentPostTxEditingButton) {
+        updatePostTxButtonStyle(
+            currentPostTxEditingButton,
+            hallazgosPostTx[targetId]?.hallazgos
+        );
+    }
+    cerrarModalHallazgosPostTx();
+}
+function cerrarModalHallazgosPostTx() {
+    document.getElementById("posttx-modal").style.display = "none";
+    currentPostTxEditingButton = null;
+}
+function updatePostTxButtonStyle(button, hallazgosArray) {
+    if (button) {
+        const hasData = hallazgosArray && hallazgosArray.length > 0;
+        button.classList.toggle("has-findings", hasData);
+    }
+}
+function updateAllPostTxButtonStyles() {
+    const seccionPostTx = document.getElementById("seccion_posttx");
+    if (!seccionPostTx) return;
+    seccionPostTx.querySelectorAll(".hallazgos-btn").forEach((button) => {
+        const onclickAttr = button.getAttribute("onclick");
+        const match = onclickAttr
+            ? onclickAttr.match(/seleccionarHallazgosPostTx\('([^']+)'/)
+            : null;
+        if (match && match[1]) {
+            const targetId = match[1];
+            updatePostTxButtonStyle(
+                button,
+                hallazgosPostTx[targetId]?.hallazgos
+            );
+        }
+    });
+}
+function addPostTxTributaria() {
+    postTxTributariaCounter++;
+    const i = postTxTributariaCounter;
+    const targetId = `posttx_tributaria_${i}`;
+    const container = document.getElementById("posttx-tributarias-container");
+    if (!container) return;
+    const newItem = document.createElement("div");
+    newItem.className = "dynamic-item";
+    newItem.id = targetId;
+    newItem.innerHTML = ` <button type="button" class="remove-btn" onclick="removePostTxItem(this)">X</button> <strong>Tributaria Post-Tx #${i}</strong><br> <label>Zona Anatómica:</label> <select name="posttx_trib_zona_${i}" onchange="updatePostTxReferencia(this)"> <option value="">Seleccionar...</option> <option value="Muslo">Muslo</option> <option value="Pierna">Pierna</option> </select><br> <label>Cara:</label> <select name="posttx_trib_cara_${i}" onchange="updatePostTxReferencia(this)"> <option value="">Seleccionar...</option> <option value="Anterior">Anterior</option> <option value="Posterior">Posterior</option> <option value="Medial">Medial</option> <option value="Lateral">Lateral</option> </select><br> <label>Distancia...</label> <input type="number" step="0.1" name="posttx_trib_dist_${i}" placeholder="Ej: 15"> <label>Referencia:</label> <input type="text" name="posttx_trib_ref_${i}" value="" readonly style="background-color: #eee;"><br> <button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('${targetId}', this)">Seleccionar Hallazgos</button> `;
+    container.appendChild(newItem);
+    newItem.querySelectorAll("input, select").forEach((el) => {
+        el.addEventListener("change", updateLivePreview);
+        el.addEventListener("input", updateLivePreview);
+    });
+    updatePostTxReferencia(newItem.querySelector("select"));
+    updateLivePreview();
+}
+function addPostTxPerforante() {
+    postTxPerforanteCounter++;
+    const i = postTxPerforanteCounter;
+    const targetId = `posttx_perforante_${i}`;
+    const container = document.getElementById("posttx-perforantes-container");
+    if (!container) return;
+    const newItem = document.createElement("div");
+    newItem.className = "dynamic-item";
+    newItem.id = targetId;
+    newItem.innerHTML = ` <button type="button" class="remove-btn" onclick="removePostTxItem(this)">X</button> <strong>Perforante Post-Tx #${i}</strong><br> <label>Zona Anatómica:</label> <select name="posttx_perf_zona_${i}" onchange="updatePostTxReferencia(this)"> <option value="">Seleccionar...</option> <option value="Muslo">Muslo</option> <option value="Pierna">Pierna</option> </select><br> <label>Cara:</label> <select name="posttx_perf_cara_${i}" onchange="updatePostTxReferencia(this)"> <option value="">Seleccionar...</option> <option value="Anterior">Anterior</option> <option value="Posterior">Posterior</option> <option value="Medial">Medial</option> <option value="Lateral">Lateral</option> </select><br> <label>Distancia...</label> <input type="number" step="0.1" name="posttx_perf_dist_${i}" placeholder="Ej: 18"> <label>Referencia:</label> <input type="text" name="posttx_perf_ref_${i}" value="" readonly style="background-color: #eee;"><br> <label>Nombre...</label> <input type="text" name="posttx_perf_nombre_${i}" placeholder="Ej: Cockett II, Boyd"><br> <button type="button" class="hallazgos-btn" onclick="seleccionarHallazgosPostTx('${targetId}', this)">Seleccionar Hallazgos</button> `;
+    container.appendChild(newItem);
+    newItem.querySelectorAll("input, select").forEach((el) => {
+        el.addEventListener("change", updateLivePreview);
+        el.addEventListener("input", updateLivePreview);
+    });
+    updatePostTxReferencia(newItem.querySelector("select"));
+    updateLivePreview();
+}
+function removePostTxItem(button) {
+    const item = button.closest(".dynamic-item");
+    if (item) {
+        const targetId = item.id;
+        delete hallazgosPostTx[targetId];
+        item.remove();
+        updateLivePreview();
+    } else {
+        console.warn("WARN: No se encontró item POST-TX para eliminar.");
+    }
+}
+function updatePostTxReferencia(selectElement) {
+    const item = selectElement.closest(".dynamic-item");
+    if (!item) return;
+    const zonaSelect = item.querySelector(
+        'select[name^="posttx_"][name*="_zona_"]'
+    );
+    const caraSelect = item.querySelector(
+        'select[name^="posttx_"][name*="_cara_"]'
+    );
+    const refInput = item.querySelector(
+        'input[name^="posttx_"][name*="_ref_"]'
+    );
+    if (!zonaSelect || !caraSelect || !refInput) return;
+    const zona = zonaSelect.value;
+    const cara = caraSelect.value;
+    let referenciaDefecto = "";
+    if (zona === "Muslo") {
+        referenciaDefecto =
+            cara === "Anterior" ? "Pliegue Inguinal" : "Pliegue poplíteo";
+    } else if (zona === "Pierna") {
+        if (cara === "Posterior") {
+            referenciaDefecto = "Punto de apoyo calcáneo";
+        } else if (cara === "Medial") {
+            referenciaDefecto = "Maléolo interno";
+        } else if (cara === "Lateral") {
+            referenciaDefecto = "Maléolo externo";
+        } else {
+            referenciaDefecto = "Maléolo interno";
+        }
+    }
+    refInput.value = referenciaDefecto;
+    updateLivePreview();
+}
+function generarTextoPostTratamientoParaLado(hallazgosData) {
+    if (!hallazgosData || Object.keys(hallazgosData).length === 0) return null;
+    let informePostTx = "HALLAZGOS POST-TRATAMIENTO:\n";
+    let hayHallazgosPostTx = false;
+    const descripcionesPostTx = {
+        posttx_usf: "la Unión Safeno-Femoral",
+        posttx_gsv_muslo_prox:
+            "la Vena Safena Mayor en el tercio proximal del muslo",
+        posttx_gsv_muslo_medio:
+            "la Vena Safena Mayor en el tercio medio del muslo",
+        posttx_gsv_muslo_distal:
+            "la Vena Safena Mayor en el tercio distal del muslo",
+        posttx_gsv_pierna_prox:
+            "la Vena Safena Mayor en el tercio proximal de la pierna",
+        posttx_gsv_pierna_medio:
+            "la Vena Safena Mayor en el tercio medio de la pierna",
+        posttx_gsv_pierna_distal:
+            "la Vena Safena Mayor en el tercio distal de la pierna",
+        posttx_usp: "la Unión Safeno-Poplítea",
+        posttx_ssv_pierna_prox:
+            "la Vena Safena Menor en el tercio proximal de la pierna",
+        posttx_ssv_pierna_medio:
+            "la Vena Safena Menor en el tercio medio de la pierna",
+        posttx_ssv_pierna_distal:
+            "la Vena Safena Menor en el tercio distal de la pierna",
+        posttx_giacomini_prox:
+            "la Vena de Giacomini en su tercio proximal (muslo)",
+        posttx_giacomini_medio:
+            "la Vena de Giacomini en su tercio medio (muslo)",
+        posttx_giacomini_distal:
+            "la Vena de Giacomini en su tercio distal (muslo)",
+        posttx_ext_ssv_muslo:
+            "la extensión proximal de la Safena Menor al muslo",
+        posttx_aasv_muslo_prox:
+            "la Vena Safena Anterior Accesoria en el tercio proximal del muslo",
+        posttx_aasv_muslo_medio:
+            "la Vena Safena Anterior Accesoria en el tercio medio del muslo",
+        posttx_aasv_muslo_distal:
+            "la Vena Safena Anterior Accesoria en el tercio distal del muslo",
+    };
+    const idsFijosOrdenados = Object.keys(descripcionesPostTx);
+    idsFijosOrdenados.forEach((targetId) => {
+        if (hallazgosData[targetId]) {
+            const data = hallazgosData[targetId];
+            const hallazgos = data?.hallazgos || [];
+            if (hallazgos.length > 0) {
+                hayHallazgosPostTx = true;
+                const descripcion = descripcionesPostTx[targetId] || targetId;
+                const esUnion =
+                    targetId.includes("usf") || targetId.includes("usp");
+                let frases = hallazgos.map((h) =>
+                    generarFraseHallazgoPostTx(
+                        descripcion,
+                        h,
+                        data.munonCm,
+                        esUnion
+                    )
+                );
+                frases = frases.filter((f) => f);
+                if (frases.length > 0) {
+                    let primeraFrase = frases.shift();
+                    primeraFrase =
+                        primeraFrase.charAt(0).toUpperCase() +
+                        primeraFrase.slice(1);
+                    let textoSegmento = `- ${primeraFrase}`;
+                    if (frases.length > 0) {
+                        const frasesRestantes = frases.map((f) =>
+                            f.replace(/^en .*?, se /, "se ")
+                        );
+                        textoSegmento +=
+                            ". Adicionalmente, " +
+                            frasesRestantes.join(". Se observa también ");
+                    }
+                    informePostTx += textoSegmento + "\n";
+                }
+            }
+        }
+    });
+    /* Pendiente: Lógica para elementos dinámicos post-tx */ return hayHallazgosPostTx
+        ? informePostTx
+        : null;
+}
+function generarFraseHallazgoPostTx(
+    descripcionVaso,
+    hallazgo,
+    munonCm = "",
+    esUnion = false
+) {
+    const inicioFrase = `en ${descripcionVaso}, se evidencia`;
+    let verboObservan = `en ${descripcionVaso}, se observan`;
+    switch (hallazgo) {
+        case "Ausencia":
+            return `${inicioFrase} ausencia...`;
+        case "Trombosis Aguda/Subaguda":
+            return `${inicioFrase} ocupación...`;
+        case "Trombosis Crónica Organizada":
+            return `${inicioFrase} ocupación...`;
+        case "Fibrosis/Cicatriz/Cordón Fibrótico":
+            return `${verboObservan} cambios fibróticos...`;
+        case "Recanalización Parcial":
+            return `${inicioFrase} recanalización parcial...`;
+        case "Recanalización Completa (Permeable)":
+            return `${inicioFrase} recanalización completa...`;
+        case "Reflujo (Persistente/Nuevo)":
+            return `${inicioFrase} reflujo venoso...`;
+        case "Neovascularización (en zona de unión)":
+            return `${verboObservan}n vasos de neovascularización...`;
+        case "Colaterales Incompetentes Conectadas (en unión)":
+            return `${verboObservan}n tributarias/colaterales incompetentes...`;
+        case "Remanente Safeno Conectado (en unión)":
+            return `${inicioFrase} conexión con un remanente...`;
+        case "Muñón Residual (en unión)":
+            let fraseMunon = `${inicioFrase} la presencia de un muñón residual`;
+            if (munonCm && !isNaN(parseFloat(munonCm.replace(",", ".")))) {
+                fraseMunon += ` de aprox. ${parseFloat(
+                    munonCm.replace(",", ".")
+                ).toFixed(1)} cm`;
+            }
+            fraseMunon += `${esUnion ? " a nivel de la unión" : ""}`;
+            return fraseMunon;
+        default:
+            return "";
+    }
+}
+
+// --- Funciones UI Sistema Profundo (Completas y con Logs) ---
+function construirSistemaProfundoUI() {
+    try {
+        console.log("[DEBUG] Iniciando construirSistemaProfundoUI...");
+        console.log("[DEBUG] Buscando #vasos-profundos-container...");
+        const container = document.getElementById("vasos-profundos-container");
+        console.log("[DEBUG] Resultado búsqueda container:", container);
+        if (!container) {
+            console.error(
+                "[DEBUG] ¡ERROR CRÍTICO! Contenedor '#vasos-profundos-container' NO encontrado dentro de construirSistemaProfundoUI."
+            );
+            return;
+        }
+        console.log("[DEBUG] Contenedor encontrado. Limpiando innerHTML...");
+        container.innerHTML = "";
+        console.log("[DEBUG] Creando grupos femoral e infra...");
+        const femoralGrupo = document.createElement("details");
+        femoralGrupo.className = "profundo-grupo";
+        femoralGrupo.id = "det-vf";
+        femoralGrupo.innerHTML = `<summary>Vena Femoral (Tercios)</summary><div class="details-content"></div>`;
+        const femoralContent = femoralGrupo.querySelector(".details-content");
+        const infraGrupo = document.createElement("details");
+        infraGrupo.className = "profundo-grupo";
+        infraGrupo.id = "det-vi";
+        infraGrupo.innerHTML = `<summary>Venas Infracondíleas</summary><div class="details-content"></div>`;
+        const infraContent = infraGrupo.querySelector(".details-content");
+        let detailsFemoralComun = null;
+        let detailsPoplitea = null;
+        console.log("[DEBUG] Grupos creados.");
+        console.log("[DEBUG] Iniciando bucle sobre vasosProfundos...");
+        vasosProfundos.forEach((vaso, index) => {
+            const fieldset = document.createElement("fieldset");
+            fieldset.className = "vaso-profundo-item";
+            const legend = document.createElement("legend");
+            legend.textContent = vaso.nombre;
+            legend.style.fontWeight = "normal";
+            legend.style.fontSize = "0.9em";
+            legend.style.marginBottom = "5px";
+            const compLabel = document.createElement("label");
+            compLabel.textContent = "Comp:";
+            const compSelect = document.createElement("select");
+            compSelect.id = `profundo_${vaso.id}_competencia`;
+            compSelect.name = `profundo_${vaso.id}_competencia`;
+            compSelect.innerHTML = `<option value="competente" selected>Competente</option><option value="incompetente">Incompetente</option>`;
+            const trombLabel = document.createElement("label");
+            trombLabel.textContent = "Trombosis?";
+            const radioNoLabel = document.createElement("label");
+            const radioNo = document.createElement("input");
+            radioNo.type = "radio";
+            radioNo.name = `profundo_trombosis_${vaso.id}`;
+            radioNo.value = "no";
+            radioNo.checked = true;
+            radioNoLabel.appendChild(radioNo);
+            radioNoLabel.appendChild(document.createTextNode(" No"));
+            const radioSiLabel = document.createElement("label");
+            const radioSi = document.createElement("input");
+            radioSi.type = "radio";
+            radioSi.name = `profundo_trombosis_${vaso.id}`;
+            radioSi.value = "si";
+            radioSiLabel.appendChild(radioSi);
+            radioSiLabel.appendChild(document.createTextNode(" Sí"));
+            const subcampoDiv = document.createElement("div");
+            subcampoDiv.className = "subcampo oculto";
+            subcampoDiv.id = `grupo_trombosis_${vaso.id}`;
+            const tiempoLabel = document.createElement("label");
+            tiempoLabel.textContent = "Tiempo:";
+            const tiempoSelect = document.createElement("select");
+            tiempoSelect.id = `profundo_${vaso.id}_tiempo_trombo`;
+            tiempoSelect.name = `profundo_${vaso.id}_tiempo_trombo`;
+            tiempoSelect.innerHTML = `<option value="">--</option><option value="agudo">Agudo</option><option value="subagudo">Subagudo</option><option value="cronico">Crónico</option>`;
+            subcampoDiv.appendChild(tiempoLabel);
+            subcampoDiv.appendChild(tiempoSelect);
+            subcampoDiv.appendChild(document.createElement("br"));
+            const hallazgosLabel = document.createElement("label");
+            hallazgosLabel.textContent = "Hallazgos:";
+            subcampoDiv.appendChild(hallazgosLabel);
+            const hallazgosDiv = document.createElement("div");
+            hallazgosDiv.id = `hallazgos_trombo_${vaso.id}`;
+            hallazgosDiv.style.fontSize = "0.9em";
+            hallazgosDiv.style.paddingLeft = "10px";
+            subcampoDiv.appendChild(hallazgosDiv);
+            let iliacaCheck = null;
+            if (vaso.iliaca) {
+                subcampoDiv.appendChild(document.createElement("br"));
+                const iliacaLabel = document.createElement("label");
+                iliacaCheck = document.createElement("input");
+                iliacaCheck.type = "checkbox";
+                iliacaCheck.id = `profundo_${vaso.id}_iliaca_ext`;
+                iliacaCheck.name = `profundo_${vaso.id}_iliaca_ext`;
+                iliacaLabel.appendChild(iliacaCheck);
+                iliacaLabel.appendChild(
+                    document.createTextNode(" Extensión a Ilíaca Externa")
+                );
+                subcampoDiv.appendChild(iliacaLabel);
+            }
+            const borrarBtn = document.createElement("button");
+            borrarBtn.type = "button";
+            borrarBtn.className = "borrar-btn";
+            borrarBtn.textContent = "Limpiar";
+            fieldset.appendChild(legend);
+            fieldset.appendChild(compLabel);
+            fieldset.appendChild(compSelect);
+            fieldset.appendChild(trombLabel);
+            fieldset.appendChild(radioNoLabel);
+            fieldset.appendChild(radioSiLabel);
+            fieldset.appendChild(subcampoDiv);
+            fieldset.appendChild(borrarBtn);
+            compSelect.addEventListener("change", updateLivePreview);
+            radioSi.addEventListener("change", () => {
+                subcampoDiv.classList.remove("oculto");
+                updateLivePreview();
+            });
+            radioNo.addEventListener("change", () => {
+                subcampoDiv.classList.add("oculto");
+                popularHallazgosTrombo(vaso.id, "");
+                tiempoSelect.value = "";
+                updateLivePreview();
+            });
+            tiempoSelect.addEventListener("change", () => {
+                try {
+                    popularHallazgosTrombo(vaso.id, tiempoSelect.value);
+                } catch (e) {
+                    console.error(
+                        `Error populando hallazgos para ${vaso.id}`,
+                        e
+                    );
+                }
+                updateLivePreview();
+            });
+            if (iliacaCheck)
+                iliacaCheck.addEventListener("change", updateLivePreview);
+            borrarBtn.onclick = () => borrarHallazgosProfundo(vaso.id);
+            if (vaso.grupo === "femoral") {
+                if (femoralContent) femoralContent.appendChild(fieldset);
+                else
+                    console.error(
+                        `[DEBUG] Error: femoralContent es null para ${vaso.id}`
+                    );
+            } else if (vaso.grupo === "infracondilea") {
+                if (infraContent) infraContent.appendChild(fieldset);
+                else
+                    console.error(
+                        `[DEBUG] Error: infraContent es null para ${vaso.id}`
+                    );
+            } else {
+                const detailsIndividual = document.createElement("details");
+                detailsIndividual.className = "profundo-individual";
+                detailsIndividual.id = `det-${vaso.id}`;
+                detailsIndividual.innerHTML = `<summary>${vaso.nombre}</summary><div class="details-content"></div>`;
+                const detailsContent =
+                    detailsIndividual.querySelector(".details-content");
+                if (detailsContent) detailsContent.appendChild(fieldset);
+                else
+                    console.error(
+                        `[DEBUG] Error: detailsContent es null para ${vaso.id}`
+                    );
+                if (vaso.id === "femoral_comun")
+                    detailsFemoralComun = detailsIndividual;
+                else if (vaso.id === "poplitea")
+                    detailsPoplitea = detailsIndividual;
+            }
+        });
+        console.log("[DEBUG] Fin bucle sobre vasosProfundos.");
+        console.log("[DEBUG] Añadiendo elementos al contenedor principal...");
+        if (detailsFemoralComun) container.appendChild(detailsFemoralComun);
+        container.appendChild(femoralGrupo);
+        if (detailsPoplitea) container.appendChild(detailsPoplitea);
+        container.appendChild(infraGrupo);
+        console.log("[DEBUG] Elementos añadidos al contenedor principal.");
+        container.addEventListener("change", function (event) {
+            if (
+                event.target.type === "checkbox" &&
+                event.target.name.startsWith("profundo_hallazgo_")
+            ) {
+                updateLivePreview();
+            }
+        });
+        console.log("[DEBUG] construirSistemaProfundoUI completado con éxito.");
+    } catch (error) {
+        console.error(
+            "ERROR GRAVE CATCH en construirSistemaProfundoUI:",
+            error
+        );
+    }
+}
+function popularHallazgosTrombo(vasoId, tiempo) {
+    const divH = document.getElementById(`hallazgos_trombo_${vasoId}`);
+    if (!divH) {
+        console.error(`ERROR: No se encontró div #hallazgos_trombo_${vasoId}`);
+        return;
+    }
+    divH.innerHTML = "";
+    const ops =
+        {
+            agudo: [
+                "Dilatación",
+                "Trombo Hipoecoico",
+                "Incompresible",
+                "Flujo Ausente",
+                "Fasicidad Ausente",
+            ],
+            subagudo: [
+                "Trombo Iso/Hiperecoico",
+                "Compresión Parcial",
+                "Recanalización Parcial",
+            ],
+            cronico: [
+                "Engrosamiento Parietal",
+                "Recanalización",
+                "Bandas/Septos",
+                "Deterioro Valvular",
+                "Flujo Presente/Ausente",
+                "Compresibilidad Parcial/Total",
+            ],
+        }[tiempo] || [];
+    ops.forEach((op) => {
+        const lbl = document.createElement("label");
+        lbl.style.cssText = "display:block; font-weight:normal;";
+        const chk = document.createElement("input");
+        chk.type = "checkbox";
+        chk.name = `profundo_hallazgo_${vasoId}`;
+        chk.value = op;
+        lbl.appendChild(chk);
+        lbl.appendChild(document.createTextNode(" " + op));
+        divH.appendChild(lbl);
+    });
+}
+function borrarHallazgosProfundo(vasoId) {
+    document.getElementById(`profundo_${vasoId}_competencia`).value =
+        "competente";
+    document.querySelector(
+        `input[name="profundo_trombosis_${vasoId}"][value="no"]`
+    ).checked = true;
+    const grupoTrombosis = document.getElementById(`grupo_trombosis_${vasoId}`);
+    if (grupoTrombosis) grupoTrombosis.classList.add("oculto");
+    const tiempoTrombo = document.getElementById(
+        `profundo_${vasoId}_tiempo_trombo`
+    );
+    if (tiempoTrombo) tiempoTrombo.value = "";
+    const hallazgosTrombo = document.getElementById(
+        `hallazgos_trombo_${vasoId}`
+    );
+    if (hallazgosTrombo) hallazgosTrombo.innerHTML = "";
+    const iliacaChk = document.getElementById(`profundo_${vasoId}_iliaca_ext`);
+    if (iliacaChk) iliacaChk.checked = false;
+    updateLivePreview();
+}
+
+// --- Funciones UI Pre-Tx (Completas) ---
+function toggleAbdPerineales(estado) {
+    const form = document.getElementById("formulario_abd_perineales");
+    if (form) form.style.display = estado ? "block" : "none";
+}
+function toggleTributarias() {
+    const act = document.getElementById("hay_tributarias")?.checked;
+    const grp = document.getElementById("grupo_tributarias");
+    if (grp) grp.style.display = act ? "block" : "none";
+    if (!act) {
+        const cont = document.getElementById("contenedor_tributarias");
+        if (cont) cont.innerHTML = "";
+        contadorTrib = 0;
+    }
+}
+function agregarTributaria() {
+    const i = contadorTrib;
+    contadorTrib++;
+    const cont = document.getElementById("contenedor_tributarias");
+    if (!cont) return;
+    const div = document.createElement("div");
+    div.className = "tributaria dynamic-item";
+    div.setAttribute("data-index", i);
+    div.style.cssText =
+        "margin-bottom: 15px; padding: 10px; border: 1px solid #eee; background-color: #f9f9f9; border-radius: 4px;";
+    div.innerHTML = `<strong>Tributaria ${
+        i + 1
+    }:</strong> <button type="button" onclick="removeItem(this)" class="remove-btn">X</button><br>
+            <label>Zona:</label> <select name="trib_zona_${i}" onchange="actualizarReferenciaTrib(${i})"> <option value="muslo">Muslo</option> <option value="pierna">Pierna</option> </select>
+            <label>Orientación:</label> <select name="trib_orientacion_${i}" onchange="actualizarReferenciaTrib(${i})"> <option value="anterior">Anterior</option> <option value="posterior">Posterior</option> <option value="medial">Medial</option> <option value="lateral">Lateral</option> </select><br>
+            <label>Distancia (cm):</label> <input type="number" step="0.1" name="trib_distancia_${i}" placeholder="##,#">
+            <label>Referencia:</label> <select name="trib_referencia_${i}" id="trib_referencia_${i}"></select><br>
+            <label>Origen:</label> <select name="trib_origen_${i}"> <option value="Vena Safena Mayor">Vena Safena Mayor</option> <option value="Vena Safena Menor">Vena Safena Menor</option> <option value="Vena Safena Anterior">Vena Safena Anterior</option><option value="Desconocido">Desconocido</option> </select>
+            <label>Conecta con:</label> <select name="trib_conecta_${i}"> <option value="sin conexión visible">Sin conexión visible</option> <option value="Vena Safena Mayor">Vena Safena Mayor</option> <option value="Vena Safena Menor">Vena Safena Menor</option> <option value="Vena Safena Anterior">Vena Safena Anterior</option> <option value="Perforante">Perforante</option> <option value="Sistema Profundo">Sistema Profundo</option></select>
+            <label style="margin-left: 10px; border-left: 2px solid blue; padding-left: 5px;">Estado:</label>
+            <select name="trib_estado_${i}">
+                <option value="incompetente" selected>Incompetente</option>
+                <option value="trombosada_aguda">Trombosada (Aguda/Sub)</option>
+                <option value="trombosada_cronica">Trombosada (Crónica)</option>
+                <option value="incompetente_trombosada_aguda">Incompetente y Tromb. (Aguda/Sub)</option>
+                <option value="incompetente_trombosada_cronica">Incompetente y Tromb. (Crónica)</option>
+            </select>`;
+    cont.appendChild(div);
+    div.querySelectorAll("input, select").forEach((el) => {
+        el.addEventListener("input", updateLivePreview);
+        el.addEventListener("change", updateLivePreview);
+    });
+    actualizarReferenciaTrib(i);
+}
+function actualizarReferenciaTrib(i) {
+    const zonaSelect = document.querySelector(`select[name="trib_zona_${i}"]`);
+    const orientacionSelect = document.querySelector(
+        `select[name="trib_orientacion_${i}"]`
+    );
+    const rSel = document.getElementById(`trib_referencia_${i}`);
+    if (!zonaSelect || !orientacionSelect || !rSel) return;
+    const z = zonaSelect.value;
+    const o = orientacionSelect.value;
+    rSel.innerHTML = "";
+    if (z === "muslo") {
+        rSel.add(new Option("del pliegue inguinal", "del pliegue inguinal"));
+        rSel.add(new Option("del pliegue poplíteo", "del pliegue poplíteo"));
+    } else if (z === "pierna") {
+        if (o === "posterior") {
+            rSel.add(
+                new Option(
+                    "del punto de apoyo calcáneo",
+                    "del punto de apoyo calcáneo"
+                )
+            );
+        } else if (o === "medial") {
+            rSel.add(new Option("del maléolo interno", "del maléolo interno"));
+        } else if (o === "lateral") {
+            rSel.add(new Option("del maléolo externo", "del maléolo externo"));
+        } else {
+            rSel.add(new Option("del maléolo interno", "del maléolo interno"));
+        }
+        rSel.add(
+            new Option("de la tuberosidad tibial", "de la tuberosidad tibial")
+        );
+    }
+}
+function togglePerforantes() {
+    const act = document.getElementById("hay_perforantes")?.checked;
+    const grp = document.getElementById("grupo_perforantes");
+    if (grp) grp.style.display = act ? "block" : "none";
+    if (!act) {
+        const cont = document.getElementById("contenedor_perforantes");
+        if (cont) cont.innerHTML = "";
+        contadorPerf = 0;
+    }
+}
+function agregarPerforante() {
+    const i = contadorPerf;
+    contadorPerf++;
+    const cont = document.getElementById("contenedor_perforantes");
+    if (!cont) return;
+    const div = document.createElement("div");
+    div.className = "perforante dynamic-item";
+    div.setAttribute("data-index", i);
+    div.style.cssText =
+        "margin-bottom: 15px; padding: 10px; border: 1px solid #eee; background-color: #f9f9f9; border-radius: 4px;";
+    div.innerHTML = `<strong>Perforante ${
+        i + 1
+    }:</strong> <button type="button" onclick="removeItem(this)" class="remove-btn">X</button><br> <label>Zona:</label> <select name="perf_zona_${i}" onchange="actualizarRestriccionesPerf(${i})"> <option value="muslo">Muslo</option> <option value="pierna" selected>Pierna</option> </select> <label>Cara:</label> <select name="perf_cara_${i}" onchange="actualizarRestriccionesPerf(${i})"> <option value="anterior">Anterior</option> <option value="posterior">Posterior</option> <option value="medial" selected>Medial</option> <option value="lateral">Lateral</option> </select><br> <div id="formulario_${i}"> <label>Distancia (cm):</label> <input type="number" step="0.1" name="perf_distancia_${i}" placeholder="##,#"> <label>Referencia:</label> <select name="perf_referencia_${i}" id="perf_referencia_${i}"></select><br> <label>Nombre (Opc):</label> <input type="text" name="perf_nombre_${i}" placeholder="Ej: Cockett, Boyd"><br> <label>Conecta con:</label> <select name="perf_conexion_${i}"> <option value="Vena Safena Mayor">Vena Safena Mayor</option> <option value="Vena Safena Menor">Vena Safena Menor</option> <option value="Vena Safena Anterior">Vena Safena Anterior</option> <option value="Tributaria">Tributaria</option> <option value="sin conexión superficial visible">Sin conexión superficial visible</option> </select> </div> <div id="alerta_${i}" class="oculto" style="color: red;">⚠️ Combinación zona/cara no aplica o referencia no estándar.</div> `;
+    cont.appendChild(div);
+    div.querySelectorAll("input, select").forEach((el) => {
+        el.addEventListener("input", updateLivePreview);
+        el.addEventListener("change", updateLivePreview);
+    });
+    actualizarRestriccionesPerf(i);
+}
+function actualizarRestriccionesPerf(i) {
+    const zonaSelect = document.querySelector(`select[name="perf_zona_${i}"]`);
+    const caraSelect = document.querySelector(`select[name="perf_cara_${i}"]`);
+    const rSel = document.getElementById(`perf_referencia_${i}`);
+    const form = document.getElementById(`formulario_${i}`);
+    const alerta = document.getElementById(`alerta_${i}`);
+    if (!zonaSelect || !caraSelect || !rSel || !form || !alerta) {
+        console.error(
+            `Error: Elementos no encontrados para perforante índice ${i}`
+        );
+        return;
+    }
+    const z = zonaSelect.value;
+    const c = caraSelect.value;
+    rSel.innerHTML = "";
+    let mostrarForm = true;
+    let textoAlerta = "";
+    if (z === "muslo") {
+        rSel.add(new Option("del pliegue inguinal", "del pliegue inguinal"));
+        rSel.add(new Option("del pliegue poplíteo", "del pliegue poplíteo"));
+        if (c === "anterior" || c === "lateral") {
+            textoAlerta = `Atención: Perforante localizada en 'Muslo / ${c}'. Zona infrecuente. Confirmar.`;
+        }
+    } else if (z === "pierna") {
+        rSel.add(new Option("del maléolo interno", "del maléolo interno"));
+        rSel.add(new Option("del maléolo externo", "del maléolo externo"));
+        rSel.add(
+            new Option(
+                "del punto de apoyo calcáneo",
+                "del punto de apoyo calcáneo"
+            )
+        );
+        rSel.add(
+            new Option("de la tuberosidad tibial", "de la tuberosidad tibial")
+        );
+    }
+    form.style.display = mostrarForm ? "block" : "none";
+    if (textoAlerta) {
+        alerta.textContent = textoAlerta;
+        alerta.style.display = "block";
+    } else {
+        alerta.textContent = "";
+        alerta.style.display = "none";
+    }
+}
+function removeItem(button) {
+    const item = button.closest(".dynamic-item");
+    if (item) {
+        item.remove();
+        updateLivePreview();
+    } else {
+        console.warn(
+            "WARN: No se encontró item PRE-TX para eliminar en removeItem."
+        );
+    }
+}
+
+// --- Inicialización y Listeners ---
+document.addEventListener("DOMContentLoaded", () => {
+    try {
+        construirSistemaProfundoUI();
+    } catch (error) {
+        console.error("ERROR construyendo UI Sistema Profundo:", error);
+    }
+    try {
+        datosEstudio.derecho = getDefaultState();
+        loadFormState("derecho");
+    } catch (error) {
+        console.error(
+            "ERROR durante inicialización de estado o loadFormState inicial:",
+            error
+        );
+        const salida = document.getElementById("texto_unificado");
+        if (salida) {
+            salida.innerText = "Error al inicializar el formulario.";
+        }
+    }
+    try {
+        document
+            .getElementById("lado_derecho_radio")
+            .addEventListener("change", () => switchSide("derecho"));
+        document
+            .getElementById("lado_izquierdo_radio")
+            .addEventListener("change", () => switchSide("izquierdo"));
+    } catch (e) {
+        console.error("Error añadiendo listeners al selector de lado:", e);
+    }
+    // --- Restauración del Acordeón ---
+    try {
+        document
+            .querySelectorAll(".accordion-section > summary")
+            .forEach((summary) => {
+                summary.addEventListener("click", (event) => {
+                    const detailsElement = summary.parentElement;
+                    if (!detailsElement.hasAttribute("open")) {
+                        document
+                            .querySelectorAll(".accordion-section[open]")
+                            .forEach((openDetail) => {
+                                if (openDetail !== detailsElement) {
+                                    openDetail.removeAttribute("open");
+                                }
+                            });
+                    }
+                });
+            });
+    } catch (e) {
+        console.error("Error añadiendo listener de acordeón:", e);
+    }
+    // --- Fin Restauración Acordeón ---
+    try {
+        document
+            .getElementById("tipo_incompetencia_safena_mayor")
+            ?.addEventListener("change", function () {
+                const t = this.value;
+                const d = document.getElementById("segmentos_tercios_mayor");
+                if (!d) return;
+                const m =
+                    t === "competente" ||
+                    t.includes("segmentaria") ||
+                    t.includes("axial");
+                d.style.display = m ? "block" : "none";
+                d.querySelectorAll(".bloque_tercio_mayor").forEach((dv) => {
+                    const s = dv.querySelector(".estado_tercio_mayor");
+                    if (!s) return;
+                    s.style.display = t.includes("segmentaria")
+                        ? "inline-block"
+                        : "none";
+                    if (t.includes("segmentaria") && s.options.length === 0) {
+                        s.innerHTML = `<option value="competente">Competente</option><option value="incompetente">Incompetente</option>`;
+                    }
+                    if (!t.includes("segmentaria")) {
+                        s.style.display = "none";
+                    }
+                });
+                updateLivePreview();
+            });
+        document
+            .getElementById("trayecto_fascial_mayor")
+            ?.addEventListener("change", function () {
+                const e = document.getElementById(
+                    "epifascial_segmentario_mayor"
+                );
+                if (e)
+                    e.style.display =
+                        this.value === "epifascial" ? "block" : "none";
+                updateLivePreview();
+            });
+        document
+            .getElementById("trayecto_fascial_anterior")
+            ?.addEventListener("change", function () {
+                const e = document.getElementById(
+                    "epifascial_segmentario_anterior"
+                );
+                if (e)
+                    e.style.display =
+                        this.value === "epifascial" ? "block" : "none";
+                updateLivePreview();
+            });
+        document.getElementsByName("usp_visible").forEach((r) =>
+            r.addEventListener("change", () => {
+                const c = document.getElementById("campo_diametro_usp");
+                if (c)
+                    c.style.display =
+                        obtenerRadioValor("usp_visible") === "si"
+                            ? "block"
+                            : "none";
+                updateLivePreview();
+            })
+        );
+        document
+            .getElementById("giacomini_presente")
+            ?.addEventListener("change", function () {
+                const c = document.getElementById("giacominiCampos");
+                if (c) c.style.display = this.checked ? "block" : "none";
+                updateLivePreview();
+            });
+        document
+            .getElementById("extension_muslo")
+            ?.addEventListener("change", function () {
+                const c = document.getElementById("extensionCampos");
+                if (c) c.style.display = this.checked ? "block" : "none";
+                updateLivePreview();
+            });
+        document
+            .getElementById("hay_tributarias")
+            ?.addEventListener("change", function () {
+                toggleTributarias();
+                updateLivePreview();
+            });
+        document
+            .getElementById("hay_perforantes")
+            ?.addEventListener("change", function () {
+                togglePerforantes();
+                updateLivePreview();
+            });
+        document.getElementsByName("abd_perineales_observadas").forEach((r) =>
+            r?.addEventListener("change", (e) => {
+                toggleAbdPerineales(e.target.value === "si");
+                updateLivePreview();
+            })
+        );
+        document
+            .getElementById("incluir_posttx")
+            ?.addEventListener("change", toggleSeccionPostTx);
+    } catch (e) {
+        console.error("Error añadiendo listeners de visibilidad:", e);
+    }
+    const formCompleto = document.getElementById(
+        "doppler-form-completo-final-v35"
+    );
+    if (formCompleto) {
+        try {
+            formCompleto.addEventListener("change", function (event) {
+                const target = event.target;
+                const isHandledElsewhere =
+                    [
+                        "lado_derecho_radio",
+                        "lado_izquierdo_radio",
+                        "tipo_incompetencia_safena_mayor",
+                        "trayecto_fascial_mayor",
+                        "trayecto_fascial_anterior",
+                        "giacomini_presente",
+                        "extension_muslo",
+                        "hay_tributarias",
+                        "hay_perforantes",
+                        "incluir_posttx",
+                    ].includes(target.id) ||
+                    ["usp_visible", "abd_perineales_observadas"].includes(
+                        target.name
+                    ) ||
+                    target.closest("#posttx-modal");
+                if (
+                    target.closest("form") === formCompleto &&
+                    ["INPUT", "SELECT", "TEXTAREA"].includes(target.tagName) &&
+                    !isHandledElsewhere
+                ) {
+                    updateLivePreview();
+                }
+            });
+            formCompleto.addEventListener("input", function (e) {
+                const target = e.target;
+                if (
+                    target.closest("form") === formCompleto &&
+                    (target.type === "number" || target.type === "text")
+                ) {
+                    if (
+                        target.id !== "edad" &&
+                        !target.closest("#posttx-modal")
+                    ) {
+                        updateLivePreview();
+                    }
+                }
+            });
+        } catch (e) {
+            console.error("Error añadiendo listeners generales al form:", e);
+        }
+    } else {
+        console.error(
+            "ERROR: No se encontró el formulario principal #doppler-form-completo-final-v35"
+        );
+    }
+    const btnCopiar = document.getElementById("btn_copiar_texto");
+    if (btnCopiar) {
+        try {
+            btnCopiar.addEventListener("click", function () {
+                console.log("Botón Copiar presionado.");
+                saveCurrentFormState(ladoActivo);
+                const textoBilateral = generarTextoBilateralCompleto();
+                if (!textoBilateral) {
+                    alert("No hay texto generado para copiar.");
+                    return;
+                }
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard
+                        .writeText(textoBilateral)
+                        .then(function () {
+                            const originalText = btnCopiar.textContent;
+                            btnCopiar.textContent = "¡Informe Copiado!";
+                            btnCopiar.disabled = true;
+                            setTimeout(() => {
+                                btnCopiar.textContent = originalText;
+                                btnCopiar.disabled = false;
+                            }, 2500);
+                        })
+                        .catch(function (err) {
+                            console.error(
+                                "Error al copiar texto bilateral: ",
+                                err
+                            );
+                            copiarTextoFallback(textoBilateral, btnCopiar);
+                        });
+                } else {
+                    console.warn("navigator.clipboard no disponible...");
+                    copiarTextoFallback(textoBilateral, btnCopiar);
+                }
+            });
+        } catch (e) {
+            console.error("Error añadiendo listener al botón copiar:", e);
+        }
+    } else {
+        console.error("ERROR: Botón #btn_copiar_texto no encontrado.");
+    }
+    function copiarTextoFallback(texto, buttonElement) {
+        try {
+            const textArea = document.createElement("textarea");
+            textArea.value = texto;
+            textArea.style.position = "fixed";
+            textArea.style.top = "-9999px";
+            textArea.style.left = "-9999px";
+            textArea.style.width = "1px";
+            textArea.style.height = "1px";
+            textArea.style.opacity = "0";
+            textArea.setAttribute("aria-hidden", "true");
+            document.body.appendChild(textArea);
+            textArea.select();
+            const successful = document.execCommand("copy");
+            document.body.removeChild(textArea);
+            if (successful) {
+                const originalText = buttonElement.textContent;
+                buttonElement.textContent = "¡Texto Copiado! (Fallback)";
+                buttonElement.disabled = true;
+                setTimeout(() => {
+                    buttonElement.textContent = originalText;
+                    buttonElement.disabled = false;
+                }, 2500);
+            } else {
+                throw new Error("document.execCommand('copy') no tuvo éxito.");
+            }
+        } catch (fallbackErr) {
+            console.error(
+                "Error en el fallback de copiado (execCommand): ",
+                fallbackErr
+            );
+            alert(
+                "No se pudo copiar el texto automáticamente. Por favor, selecciónelo y cópielo manualmente."
+            );
+        }
+    }
+    try {
+        inicializarAcordeonPostTx();
+    } catch (e) {
+        console.error("Error inicializando acordeón PostTx:", e);
+    }
+    try {
+        updateAllPostTxButtonStyles();
+    } catch (e) {
+        console.error("Error inicializando botones PostTx:", e);
+    }
+    try {
+        document
+            .getElementById("usar_fecha_hora_actual")
+            ?.addEventListener("change", function () {
+                if (this.checked) {
+                    const now = new Date();
+                    const localDateTimeString = `${now.getFullYear()}-${(
+                        now.getMonth() + 1
+                    )
+                        .toString()
+                        .padStart(2, "0")}-${now
+                        .getDate()
+                        .toString()
+                        .padStart(2, "0")}T${now
+                        .getHours()
+                        .toString()
+                        .padStart(2, "0")}:${now
+                        .getMinutes()
+                        .toString()
+                        .padStart(2, "0")}`;
+                    document.getElementById("fecha_hora").value =
+                        localDateTimeString;
+                } else {
+                    document.getElementById("fecha_hora").value = "";
+                }
+                updateLivePreview();
+            });
+        document.getElementById("edad")?.addEventListener("input", function () {
+            const e = parseInt(this.value);
+            const err = document.getElementById("edad_error");
+            if (!err) return;
+            if (e < 1 || e > 110 || isNaN(e)) {
+                this.setCustomValidity("Edad inválida");
+                err.style.display = "inline";
+            } else {
+                this.setCustomValidity("");
+                err.style.display = "none";
+            }
+        });
+    } catch (e) {
+        console.error("Error añadiendo listeners de fecha/edad:", e);
+    }
+    setTimeout(() => {
+        console.log("Disparando eventos change iniciales...");
+        try {
+            document
+                .getElementById("tipo_incompetencia_safena_mayor")
+                ?.dispatchEvent(new Event("change"));
+            document
+                .getElementById("trayecto_fascial_mayor")
+                ?.dispatchEvent(new Event("change"));
+            document
+                .getElementById("trayecto_fascial_anterior")
+                ?.dispatchEvent(new Event("change"));
+            document
+                .querySelector('input[name="usp_visible"]:checked')
+                ?.dispatchEvent(new Event("change"));
+            document
+                .getElementById("giacomini_presente")
+                ?.dispatchEvent(new Event("change"));
+            document
+                .getElementById("extension_muslo")
+                ?.dispatchEvent(new Event("change"));
+            document
+                .getElementById("hay_tributarias")
+                ?.dispatchEvent(new Event("change"));
+            document
+                .getElementById("hay_perforantes")
+                ?.dispatchEvent(new Event("change"));
+            document
+                .querySelector('[name="abd_perineales_observadas"]:checked')
+                ?.dispatchEvent(new Event("change"));
+            document
+                .getElementById("incluir_posttx")
+                ?.dispatchEvent(new Event("change"));
+            updateLivePreview();
+            console.log("Eventos change iniciales disparados.");
+        } catch (e) {
+            console.error("Error disparando eventos change iniciales:", e);
+        }
+    }, 150);
+});
+
+
+</script>
+
+</body>
+</html>
