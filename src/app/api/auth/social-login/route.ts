@@ -6,14 +6,18 @@ import { v4 as uuidv4 } from "uuid";
 import * as admin from "firebase-admin";
 import { generateAccessToken, generateRefreshToken } from "@/lib/jwt";
 import { getAppleSigningKey } from "./apple_auth";
+import { string } from "zod";
 
 if (!admin.apps.length) {
   // Initialize Firebase Admin SDK with service account credentials (ensure you set your env variables)
   admin.initializeApp({
     credential: admin.credential.cert({
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      privateKey: process.env.FIREBASE_PRIVATE_KEY.toString()?.replace(
+        /\\n/g,
+        "\n"
+      ),
+      projectId: process.env.FIREBASE_PROJECT_ID.toString(),
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL.toString(),
     }),
   });
 }
@@ -22,6 +26,7 @@ if (!admin.apps.length) {
 
 export async function POST(req: NextRequest) {
   try {
+   
     const { idToken, provider } = await req.json();
 
     if (!idToken || !["google", "apple"].includes(provider)) {
