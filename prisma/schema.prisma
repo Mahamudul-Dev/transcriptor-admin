@@ -50,7 +50,6 @@ model Module {
   tiers             ModuleTier[]
   packageModules    PackageModule[]
 
-  moduleUsage ModuleUsage[]
 }
 
 // Module tier model
@@ -141,7 +140,6 @@ model UserPackage {
 model ModuleUsage {
   id                String      @id @default(cuid())
   userId            String
-  moduleId          String
   moduleTierId      String
   textProductionCount        Int         @default(0)
   conclusionCount    Int         @default(0)
@@ -151,5 +149,5 @@ model ModuleUsage {
   // Relations
   user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   moduleTier        ModuleTier      @relation(fields: [moduleTierId], references: [id], onDelete: Cascade)
-  module            Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
 }
