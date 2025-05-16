@@ -8,25 +8,29 @@ import { generateAccessToken, generateRefreshToken } from "@/lib/jwt";
 import { getAppleSigningKey } from "./apple_auth";
 import { string } from "zod";
 
-if (!admin.apps.length) {
-  // Initialize Firebase Admin SDK with service account credentials (ensure you set your env variables)
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      privateKey: process.env.FIREBASE_PRIVATE_KEY.toString()?.replace(
-        /\\n/g,
-        "\n"
-      ),
-      projectId: process.env.FIREBASE_PROJECT_ID.toString(),
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL.toString(),
-    }),
-  });
+let app: admin.app.App | null = null;
+
+export function getFirebaseAdminApp() {
+  if (app) return app;
+
+  if (!admin.apps.length) {
+    app = admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+      }),
+    });
+  }
+
+  return app;
 }
   
 
 
 export async function POST(req: NextRequest) {
   try {
-   
+    const app = getFirebaseAdminApp();
     const { idToken, provider } = await req.json();
 
     if (!idToken || !["google", "apple"].includes(provider)) {
@@ -42,7 +46,7 @@ export async function POST(req: NextRequest) {
 
     // ✅ GOOGLE Verification
     if (provider === "google") {
-      const decodedToken = await getAuth().verifyIdToken(idToken); // Verifying Google ID token with Firebase
+      const decodedToken = await getAuth(app).verifyIdToken(idToken); // Verifying Google ID token with Firebase
       email = decodedToken.email || "";
       sub = decodedToken.uid;
       fullName = decodedToken.name || "Google User";
