@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
           moduleTier: {
             include: {
               module: true,
-              moduleUsage: true,
+              moduleUsage: true
             },
           }
         },
