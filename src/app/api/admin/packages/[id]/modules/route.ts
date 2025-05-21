@@ -56,7 +56,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                 entitlementName: string;
                 webviewUrl: string | null;
                 zipFileUrl: string | null;
-                iconUrl: string | null;
                 hasTextProduction: boolean;
                 hasConclusion: boolean;
                 hasMap: boolean;
@@ -197,7 +196,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
                 entitlementName: string;
                 webviewUrl: string | null;
                 zipFileUrl: string | null;
-                iconUrl: string | null;
                 hasTextProduction: boolean;
                 hasConclusion: boolean;
                 hasMap: boolean;

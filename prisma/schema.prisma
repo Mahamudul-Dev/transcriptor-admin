@@ -45,7 +45,7 @@ model Module {
   status            String      @default("active") // active, hold, deleted
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
-  
+  iconUrl             String?
   // Relations
   tiers             ModuleTier[]
   packageModules    PackageModule[]
@@ -60,7 +60,6 @@ model ModuleTier {
   entitlementName     String      @unique
   webviewUrl          String?     // URL for webview (nullable)
   zipFileUrl          String?
-  iconUrl             String?
   hasTextProduction   Boolean     @default(false)
   hasConclusion       Boolean     @default(false)
   hasMap              Boolean     @default(false)

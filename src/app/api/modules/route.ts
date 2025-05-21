@@ -15,49 +15,23 @@ export async function GET(req: NextRequest) {
     // Parse query parameters
     const url = new URL(req.url)
     const status = url.searchParams.get("status") || undefined
-    const isFiltered = url.searchParams.get("filtered") === "true"
 
     let modulesWithTiers: any[] = []
 
-    if(isFiltered){
-      modulesWithTiers = await prisma.userModule.findMany({
-        where: {
-          userId: user.userId,
-        },
-        include: {
-          moduleTier: {
-            include: {
-              module: true,
-              moduleUsage: true
-            },
-          }
-        },
-        orderBy: {
-          assignedAt: "desc",
-        },
-      })
-    } else {
-      modulesWithTiers = await prisma.module.findMany({
-        include: {
-          tiers: true,
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      })
-    }
+    modulesWithTiers = await prisma.module.findMany({
+      include: {
+        tiers: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
 
 
     if(status){
-      if(isFiltered){
-        modulesWithTiers = modulesWithTiers.filter(
-          (moduleTier) => moduleTier.module.status === status
-        );
-      } else {
-        modulesWithTiers = modulesWithTiers.filter(
-          (module) => module.status === status
-        );
-      }
+      modulesWithTiers = modulesWithTiers.filter(
+        (module) => module.status === status
+      );
     }
 
     return NextResponse.json(

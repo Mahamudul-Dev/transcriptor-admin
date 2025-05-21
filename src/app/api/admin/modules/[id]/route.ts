@@ -109,7 +109,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       entitlementName: string;
       webviewUrl: string | null;
       zipFileUrl: string | null;
-      iconUrl: string | null;
       hasTextProduction: boolean;
       hasConclusion: boolean;
       hasMap: boolean;
@@ -126,6 +125,26 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       const name = formData.get("name") as string
       const description = (formData.get("description") as string) || ""
       const status = (formData.get("status") as string) || "active"
+      const iconFile = formData.get(`iconFile`);
+      const isIconFileValid =
+        iconFile && typeof iconFile === "object" && "arrayBuffer" in iconFile;
+
+      let iconUrl = existingModule?.iconUrl || null;
+
+      if (isIconFileValid) {
+        try {
+          // Use direct function call instead of fetch
+          const folderPath = `icons/${existingModule?.name}`;
+          iconUrl = await uploadFile(iconFile, folderPath);
+          console.log(`Uploaded icon file for ${existingModule.name} module:`, iconUrl);
+        } catch (uploadError) {
+          console.error(
+            `Error uploading icon file for ${existingModule.name} module:`,
+            uploadError
+          );
+        }
+      }
+
 
       // Update the module
       await prisma.module.update({
@@ -134,6 +153,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
           name,
           description,
           status,
+          iconUrl
         },
       })
 
@@ -183,20 +203,19 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         // Get files
         // Get files (compatible with Node.js environment)
         const zipFile = formData.get(`${tier}_zipFile`);
-        const iconFile = formData.get(`${tier}_iconFile`);
+        
 
         // Optional: check if they are actually file-like objects
         const isZipFileValid =
           zipFile && typeof zipFile === "object" && "arrayBuffer" in zipFile;
-        const isIconFileValid =
-          iconFile && typeof iconFile === "object" && "arrayBuffer" in iconFile;
+        
 
         // Find existing tier
         const existingTier = existingTiers.find((t) => t.tier === tier);
 
         // Use existing URLs if files are not provided
         let zipFileUrl = existingTier?.zipFileUrl || null;
-        let iconUrl = existingTier?.iconUrl || null;
+        
 
         // Upload files if provided
         if (isZipFileValid) {
@@ -214,19 +233,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
           }
         }
 
-        if (isIconFileValid) {
-          try {
-            // Use direct function call instead of fetch
-            const folderPath = `icons/${module.id}/${tier}`;
-            iconUrl = await uploadFile(iconFile, folderPath);
-            console.log(`Uploaded icon file for ${tier} tier:`, iconUrl);
-          } catch (uploadError) {
-            console.error(
-              `Error uploading icon file for ${tier} tier:`,
-              uploadError
-            );
-          }
-        }
+        
 
         // Create the tier
         const updatedTier = await prisma.moduleTier.create({
@@ -236,7 +243,6 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
             entitlementName,
             webviewUrl,
             zipFileUrl,
-            iconUrl,
             hasTextProduction,
             hasConclusion,
             hasMap,

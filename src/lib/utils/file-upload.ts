@@ -111,8 +111,8 @@ export async function uploadModuleZip(
  * @param tier The tier of the module (basic, plus, premium)
  * @returns The URL of the uploaded file
  */
-export async function uploadModuleIcon(file: Blob, moduleId: string, tier: string): Promise<string> {
-  return uploadFile(file, `icons/${moduleId}/${tier}`)
+export async function uploadModuleIcon(file: Blob, module: string): Promise<string> {
+  return uploadFile(file, `icons/${module}`)
 }
 
 

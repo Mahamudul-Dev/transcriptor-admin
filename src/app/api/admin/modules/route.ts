@@ -83,14 +83,31 @@ export async function POST(req: NextRequest) {
       // Extract module data
       const name = formData.get("name") as string
       const description = (formData.get("description") as string) || ""
+      const iconFile = formData.get('iconFile');
+      const isIconFileValid =
+        iconFile && typeof iconFile === "object" && "arrayBuffer" in iconFile;
+        let iconUrl = null;
 
       console.log("Creating module with name:", name)
+
+      if (isIconFileValid) {
+        try {
+          // Use direct function call instead of fetch
+          iconUrl = await uploadModuleIcon(iconFile, name,);
+        } catch (uploadError) {
+          console.error(
+            `Error uploading icon file for ${name} module:`,
+            uploadError
+          );
+        }
+      }
 
       // Create the module first to get an ID
       const modulePack = await prisma.module.create({
         data: {
           name,
           description,
+          iconUrl
         },
       })
 
@@ -137,13 +154,12 @@ export async function POST(req: NextRequest) {
 
         // Get files (compatible with Node.js environment)
         const zipFile = formData.get(`${tier}_zipFile`);
-        const iconFile = formData.get(`${tier}_iconFile`);
+        
 
         // Optional: check if they are actually file-like objects
         const isZipFileValid =
           zipFile && typeof zipFile === "object" && "arrayBuffer" in zipFile;
-        const isIconFileValid =
-          iconFile && typeof iconFile === "object" && "arrayBuffer" in iconFile;
+        
 
 
 
@@ -151,7 +167,7 @@ export async function POST(req: NextRequest) {
         // Upload files if provided
         let folderPath = null;
         let moduleUploadDir = null;
-        let iconUrl = null;
+        
 
         console.log({
           zipFile,
@@ -176,18 +192,7 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        if (isIconFileValid) {
-          try {
-            // Use direct function call instead of fetch
-            iconUrl = await uploadModuleIcon(iconFile, modulePack.id, tier);
-            console.log(`Uploaded icon file for ${tier} tier:`, iconUrl);
-          } catch (uploadError) {
-            console.error(
-              `Error uploading icon file for ${tier} tier:`,
-              uploadError
-            );
-          }
-        }
+        
 
         console.log(`Creating tier ${tier} for module ${modulePack.id}`);
 
@@ -199,7 +204,6 @@ export async function POST(req: NextRequest) {
             entitlementName: "",
             webviewUrl: `${process.env.WEBVIEW_URL}?module=${modulePack.id}&tier=${tier}`,
             zipFileUrl: folderPath,
-            iconUrl,
             hasTextProduction,
             hasConclusion,
             hasMap,
