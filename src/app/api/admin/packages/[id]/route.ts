@@ -22,11 +22,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     const packageData = await prisma.package.findUnique({
       where: { id },
       include: {
-        packageModules: {
+        packageTiers: {
           include: {
-            module: {
+            moduleTier: {
               include: {
-                tiers: true,
+                module: true,
               },
             },
           },
@@ -102,7 +102,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       )
     }
 
-    const { name, entitlementName, isActive } = result.data
+    const { name, productId, isActive } = result.data
 
     // Check if the package exists
     const existingPackage = await prisma.package.findUnique({
@@ -114,16 +114,19 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     }
 
     // Check if the entitlement name is being changed and if it already exists
-    if (entitlementName && entitlementName !== existingPackage.entitlementName) {
-      const packageWithSameEntitlement = await prisma.package.findUnique({
-        where: { entitlementName },
+    if (productId && productId !== existingPackage.productId) {
+      const packageWithSameProductId = await prisma.package.findUnique({
+        where: { productId },
       })
 
-      if (packageWithSameEntitlement) {
+      if (packageWithSameProductId) {
         return NextResponse.json(
-          { success: false, message: "A package with this entitlement name already exists" },
-          { status: 409 },
-        )
+          {
+            success: false,
+            message: "A package with this product id already exists",
+          },
+          { status: 409 }
+        );
       }
     }
 
@@ -134,8 +137,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       updateData.name = name
     }
 
-    if (entitlementName !== undefined) {
-      updateData.entitlementName = entitlementName
+    if (productId !== undefined) {
+      updateData.productId = productId
     }
 
     if (isActive !== undefined) {

@@ -28,19 +28,17 @@ model User {
   updatedAt         DateTime    @updatedAt
   lastLoginAt       DateTime?
 
-  googleId     String?  @unique
-  appleId      String?  @unique
-
   // Relations
   userModules       UserModule[]
   userPackages      UserPackage[]
   moduleUsage       ModuleUsage[]
 }
 
+
 // Module model
 model Module {
   id                String      @id @default(cuid())
-  name              String
+  name              String      @unique
   description       String?
   status            String      @default("active") // active, hold, deleted
   createdAt         DateTime    @default(now())
@@ -48,7 +46,6 @@ model Module {
   iconUrl             String?
   // Relations
   tiers             ModuleTier[]
-  packageModules    PackageModule[]
 
 }
 
@@ -57,53 +54,59 @@ model ModuleTier {
   id                  String      @id @default(cuid())
   moduleId            String
   tier                String      // basic, plus, premium
-  entitlementName     String      @unique
-  webviewUrl          String?     // URL for webview (nullable)
+  productId           String      @unique  // RevenueCat product identifier
+  entitlementId       String      @unique  // RevenueCat entitlement identifier
+  webviewUrl          String?
   zipFileUrl          String?
   hasTextProduction   Boolean     @default(false)
   hasConclusion       Boolean     @default(false)
   hasMap              Boolean     @default(false)
 
-  textProductionLimit Int         @default(-1)  // -1 for unlimited
+  textProductionLimit Int         @default(-1)
   conclusionLimit     Int         @default(5)
   mapLimit            Int         @default(5)
-  
+
   createdAt           DateTime    @default(now())
   updatedAt           DateTime    @updatedAt
-  
+
   // Relations
   module              Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  moduleUsage ModuleUsage[]
-  users       UserModule[]
+  moduleUsage         ModuleUsage[]
+  users               UserModule[]
+  packageTiers        PackageTier[]
 }
+
 
 // Package model
 model Package {
   id                String      @id @default(cuid())
-  entitlementName   String      @unique
-  name              String
+  name              String      @unique
+  description       String?
+  productId         String      @unique  // RevenueCat product identifier
   isActive          Boolean     @default(true)
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
-  
+
   // Relations
-  packageModules    PackageModule[]
+  packageTiers      PackageTier[]
   userPackages      UserPackage[]
 }
 
+
 // Package-Module relationship
-model PackageModule {
-  id                String      @id @default(cuid())
-  packageId         String
-  moduleId          String
-  createdAt         DateTime    @default(now())
-  
+model PackageTier {
+  id            String       @id @default(cuid())
+  packageId     String
+  moduleTierId  String
+  createdAt     DateTime     @default(now())
+
   // Relations
-  package           Package     @relation(fields: [packageId], references: [id], onDelete: Cascade)
-  module            Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  
-  @@unique([packageId, moduleId])
+  package       Package      @relation(fields: [packageId], references: [id], onDelete: Cascade)
+  moduleTier    ModuleTier   @relation(fields: [moduleTierId], references: [id], onDelete: Cascade)
+
+  @@unique([packageId, moduleTierId])
 }
+
 
 // User access to modules
 model UserModule {

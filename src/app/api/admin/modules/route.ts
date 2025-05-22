@@ -4,6 +4,7 @@ import { getUserFromRequest } from "@/lib/auth"
 import { createModuleSchema } from "@/lib/validations/module"
 import { uploadModuleIcon, uploadModuleZip } from "@/lib/utils/file-upload"
 import { moduleUsageTrackerInjection } from "@/lib/utils/usage-limit"
+import { text } from "stream/consumers"
 
 
 // GET /api/admin/modules - Get all modules (admin only)
@@ -102,6 +103,17 @@ export async function POST(req: NextRequest) {
         }
       }
 
+      const moduleExists = await prisma.module.findUnique({
+        where: { name },
+      })
+
+      if (moduleExists) {
+        return NextResponse.json({
+          success: false,
+          message: "Module with the same name already exists",
+        })
+      }
+
       // Create the module first to get an ID
       const modulePack = await prisma.module.create({
         data: {
@@ -116,6 +128,8 @@ export async function POST(req: NextRequest) {
       // Process tiers
       const tiers = ["basic", "plus", "premium"]
       const createdTiers = []
+      const formattedName = modulePack.name.toLowerCase().replace(/\s+/g, "_");
+      
 
       for (const tier of tiers) {
         // Get tier-specific data
@@ -196,12 +210,16 @@ export async function POST(req: NextRequest) {
 
         console.log(`Creating tier ${tier} for module ${modulePack.id}`);
 
+        const productId = `module_${formattedName}_${tier}`;
+        const entitlementId = `entitlement_${formattedName}_${tier}`;
+
         // Create the tier
         const createdTier = await prisma.moduleTier.create({
           data: {
             moduleId: modulePack.id,
             tier,
-            entitlementName: "",
+            productId: productId,
+            entitlementId: entitlementId,
             webviewUrl: `${process.env.WEBVIEW_URL}?module=${modulePack.id}&tier=${tier}`,
             zipFileUrl: folderPath,
             hasTextProduction,
@@ -214,13 +232,6 @@ export async function POST(req: NextRequest) {
         });
 
         console.log(`Created tier ${tier} for module ${modulePack.id}`);
-
-        await prisma.moduleTier.update({
-          where: { id: createdTier.id },
-          data: {
-            entitlementName: `${modulePack.id}-${createdTier.id}-${tier}`,
-          },
-        });
 
         // script injection
         moduleUsageTrackerInjection(
@@ -263,6 +274,7 @@ export async function POST(req: NextRequest) {
       }
 
       const { name, description, tiers } = result.data
+      const formattedName = name.toLowerCase().replace(/\s+/g, "_");
 
       // Create the module
       const modulePack = await prisma.module.create({
@@ -272,21 +284,24 @@ export async function POST(req: NextRequest) {
           tiers: {
             create: tiers.map((tier) => {
               // Generate the entitlementName based on module name and tier
-              const slugifiedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_")
-              const entitlementName = `mod_${slugifiedName}_${tier.tier}`
-
+              const productId = `module_${formattedName}_${tier}`;
+              const entitlementId = `entitlement_${formattedName}_${tier}`;
               return {
+                moduleId: modulePack.id,
                 tier: tier.tier,
-                entitlementName,
-                revCatEntitlementName: tier.revCatEntitlementName,
+                entitlementId,
                 webviewUrl: tier.webviewUrl,
                 zipFileUrl: tier.zipFileUrl,
-                iconUrl: tier.iconUrl,
+                productId,
                 hasTextProduction: tier.hasTextProduction,
                 hasConclusion: tier.hasConclusion,
                 hasMap: tier.hasMap,
-                usageLimit: tier.usageLimit || 50, // Default to 50 if not provided
+                textProductionLimit: tier.textProductionLimit,
+                mapLimit: tier.mapLimit,
+                conclusionLimit: tier.conclusionLimit,
               }
+
+        
             }),
           },
         },

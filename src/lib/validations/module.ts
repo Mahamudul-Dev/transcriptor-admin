@@ -1,34 +1,41 @@
 import { z } from "zod"
 
-// Schema for module tier
 const moduleTierSchema = z.object({
   tier: z.enum(["basic", "plus", "premium"]),
-  entitlementName: z.string().optional(), // Now optional as it will be auto-generated
-  revCatEntitlementName: z.string().min(1, "RevenueCat entitlement name is required"),
-  webviewUrl: z.string().optional(),
-  zipFileUrl: z.string().optional(),
-  iconUrl: z.string().optional(),
-  hasTextProduction: z.boolean().default(false),
-  hasConclusion: z.boolean().default(false),
-  hasMap: z.boolean().default(false),
-  price: z.number().optional(),
-  usageLimit: z.number().default(50), // -1 for unlimited
-})
+  productId: z.string().min(1, "RevenueCat productId is required"),
+  entitlementId: z.string().min(1, "RevenueCat entitlementId is required"),
+
+  webviewUrl: z.string().url().optional(),
+  zipFileUrl: z.string().url().optional(),
+
+  hasTextProduction: z.boolean().optional().default(false),
+  hasConclusion: z.boolean().optional().default(false),
+  hasMap: z.boolean().optional().default(false),
+
+  textProductionLimit: z.number().int().default(-1),
+  conclusionLimit: z.number().int().default(5),
+  mapLimit: z.number().int().default(5),
+});
+
 
 // Schema for creating a module
 export const createModuleSchema = z.object({
   name: z.string().min(1, "Module name is required"),
   description: z.string().optional(),
+  iconUrl: z.string().url().optional(),
+
   tiers: z.array(moduleTierSchema).min(1, "At least one tier is required"),
-})
+});
+
 
 // Schema for updating a module
 export const updateModuleSchema = z.object({
-  name: z.string().min(1, "Module name is required").optional(),
+  name: z.string().min(1).optional(),
   description: z.string().optional(),
+  iconUrl: z.string().url().optional(),
   status: z.enum(["active", "hold", "deleted"]).optional(),
   tiers: z.array(moduleTierSchema).optional(),
-})
+});
 
 // Schema for module filters
 export const moduleFilterSchema = z.object({
@@ -36,7 +43,8 @@ export const moduleFilterSchema = z.object({
   activeSubscriber: z.boolean().optional(),
   minPrice: z.number().optional(),
   maxPrice: z.number().optional(),
-})
+});
+
 
 // Schema for file upload
 export const fileUploadSchema = z.object({

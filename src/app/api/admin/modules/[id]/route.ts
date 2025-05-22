@@ -24,11 +24,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       where: { id },
       include: {
         tiers: true,
-        _count: {
-          select: {
-            packageModules: true,
-          },
-        },
       },
     })
 
@@ -39,13 +34,16 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     // Get usage statistics
     const usageStats = await prisma.moduleUsage.findMany({
       where: {
-        moduleTierId: id,
+        moduleTierId: {
+          in: module.tiers.map((tier) => tier.id),
+        },
       },
       orderBy: {
         lastUpdated: "desc",
       },
       take: 10, // Get top 10 users by usage
       include: {
+        moduleTier: true,
         user: {
           select: {
             id: true,
@@ -106,9 +104,10 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       updatedAt: Date;
       moduleId: string;
       tier: string;
-      entitlementName: string;
-      webviewUrl: string | null;
-      zipFileUrl: string | null;
+      productId: string;
+      entitlementId: string;
+      webviewUrl: string;
+      zipFileUrl: string;
       hasTextProduction: boolean;
       hasConclusion: boolean;
       hasMap: boolean;
@@ -168,8 +167,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 
       for (const tier of tiers) {
         // Get tier-specific data
-        const slugifiedName = name.toLowerCase().replace(/[^a-z0-9]/g, "_");
-        const entitlementName = `mod_${slugifiedName}_${tier}`;
+        const formattedName = name
+          .toLowerCase()
+          .replace(/\s+/g, "_");
         const webviewUrl =
           (formData.get(`${tier}_webviewUrl`) as string) || null;
         const hasTextProduction =
@@ -233,6 +233,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
           }
         }
 
+        const productId = `module_${formattedName}_${tier}`;
+        const entitlementId = `entitlement_${formattedName}_${tier}`;
+
         
 
         // Create the tier
@@ -240,7 +243,8 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
           data: {
             moduleId: id,
             tier,
-            entitlementName,
+            productId,
+            entitlementId,
             webviewUrl,
             zipFileUrl,
             hasTextProduction,
@@ -317,23 +321,25 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         await prisma.moduleTier.createMany({
           data: tiers.map((tier) => {
             // Generate the entitlementName based on module name and tier
-            const slugifiedName = name
-              ? name.toLowerCase().replace(/[^a-z0-9]/g, "_")
-              : existingModule.name.toLowerCase().replace(/[^a-z0-9]/g, "_")
-            const entitlementName = `mod_${slugifiedName}_${tier.tier}`
+            const formattedName = name
+              ? name.toLowerCase().replace(/\s+/g, "_")
+              : existingModule.name.toLowerCase().replace(/\s+/g, "_");
+              const productId = `module_${formattedName}_${tier}`;
+              const entitlementId = `entitlement_${formattedName}_${tier}`;
 
             return {
               moduleId: id,
               tier: tier.tier,
-              entitlementName,
-              revCatEntitlementName: tier.revCatEntitlementName,
+              entitlementId,
+              productId,
               webviewUrl: tier.webviewUrl,
               zipFileUrl: tier.zipFileUrl,
-              iconUrl: tier.iconUrl,
               hasTextProduction: tier.hasTextProduction,
               hasConclusion: tier.hasConclusion,
               hasMap: tier.hasMap,
-              usageLimit: tier.usageLimit || 50, // Default to 50 if not provided
+              textProductionLimit: tier.textProductionLimit,
+              mapLimit: tier.mapLimit,
+              conclusionLimit: tier.conclusionLimit,
             }
           }),
         })

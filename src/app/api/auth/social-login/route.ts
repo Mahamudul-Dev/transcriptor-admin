@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
 
       email = decodedPayload.email || "";
       sub = decodedPayload.sub;
-      fullName = "Apple User";
+      fullName = decodedPayload.name || "Apple User";
     }
 
     // 🔍 Find or create user
@@ -59,8 +59,6 @@ export async function POST(req: NextRequest) {
       where: {
         OR: [
           { email },
-          { googleId: provider === "google" ? sub : undefined },
-          { appleId: provider === "apple" ? sub : undefined },
         ],
       },
     });
@@ -71,8 +69,6 @@ export async function POST(req: NextRequest) {
           email,
           password: "",
           fullName,
-          googleId: provider === "google" ? sub : undefined,
-          appleId: provider === "apple" ? sub : undefined,
           isAdmin: false,
         },
       });

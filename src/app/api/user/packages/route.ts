@@ -23,13 +23,12 @@ export async function GET(req: NextRequest) {
       include: {
         package: {
           include: {
-            packageModules: {
+            packageTiers: {
               include: {
-                module: {
-                  select: {
-                    id: true,
-                    name: true,
-                  },
+                moduleTier: {
+                  include: {
+                    module: true,
+                  }
                 },
               },
             },
@@ -42,15 +41,17 @@ export async function GET(req: NextRequest) {
     const formattedPackages = userPackages.map((up) => ({
       id: up.package.id,
       name: up.package.name,
-      entitlementName: up.package.entitlementName,
+      productId: up.package.productId,
       assignedAt: up.assignedAt,
       expiresAt: up.expiresAt,
-      moduleCount: up.package.packageModules.length,
-      modules: up.package.packageModules.map((pm) => ({
-        id: pm.module.id,
-        name: pm.module.name,
+      moduleTiersCount: up.package.packageTiers.length,
+      moduleTiers: up.package.packageTiers.map((pm) => ({
+        id: pm.moduleTierId,
+        tier: pm.moduleTier.tier,
+        productId: pm.moduleTier.productId,
+        entitlementId: pm.moduleTier.entitlementId
       })),
-    }))
+    }));
 
     return NextResponse.json({
       success: true,

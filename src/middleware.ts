@@ -15,6 +15,8 @@ export function middleware(request: NextRequest) {
   // Check if the path requires authentication
   const requiresAuth = authPaths.some((path) => pathname.startsWith(path))
 
+  console.log(pathname);
+
   // Check if the path requires admin access
   const requiresAdmin = adminPaths.some((path) => pathname.startsWith(path))
 

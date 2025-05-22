@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma"
 import { getUserFromRequest } from "@/lib/auth"
 import { addModulesToPackageSchema } from "@/lib/validations/package"
 
-// GET /api/admin/packages/[id]/modules - Get modules in a package (admin only)
+// GET /api/admin/packages/[id]/modules - Get module tiers in a package (admin only)
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     // Verify authentication and admin status
@@ -28,14 +28,14 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     }
 
     // Get modules in the package
-    const packageModules = await prisma.packageModule.findMany({
+    const packageModules = await prisma.packageTier.findMany({
       where: {
         packageId: id,
       },
       include: {
-        module: {
+        moduleTier: {
           include: {
-            tiers: true,
+            module: true,
           },
         },
       },
@@ -43,42 +43,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
     return NextResponse.json({
       success: true,
-      modules: packageModules.map(
-        (
-          pm: {
-            module: {
-              tiers: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                moduleId: string;
-                tier: string;
-                entitlementName: string;
-                webviewUrl: string | null;
-                zipFileUrl: string | null;
-                hasTextProduction: boolean;
-                hasConclusion: boolean;
-                hasMap: boolean;
-                textProductionLimit: number;
-                conclusionLimit: number;
-                mapLimit: number;
-              }[];
-            } & {
-              status: string;
-              name: string;
-              id: string;
-              createdAt: Date;
-              updatedAt: Date;
-              description: string | null;
-            };
-          } & {
-            id: string;
-            createdAt: Date;
-            packageId: string;
-            moduleId: string;
-          }
-        ) => pm.module
-      ),
+      modules: packageModules.map((pm) => pm.moduleTier.module)
     });
   } catch (error) {
     console.error("Error fetching package modules:", error)
@@ -89,7 +54,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-// POST /api/admin/packages/[id]/modules - Add modules to a package (admin only)
+// POST /api/admin/packages/[id]/modules - Add module tiers to a package (admin only)
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     // Verify authentication and admin status
@@ -114,7 +79,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       )
     }
 
-    const { moduleIds } = result.data
+    const { moduleTierIds } = result.data
 
     // Check if the package exists
     const packageExists = await prisma.package.findUnique({
@@ -126,55 +91,60 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
 
     // Check if all modules exist
-    const modules = await prisma.module.findMany({
+    const moduleTiers = await prisma.moduleTier.findMany({
       where: {
         id: {
-          in: moduleIds,
+          in: moduleTierIds,
         },
       },
-    })
+    });
 
-    if (modules.length !== moduleIds.length) {
-      return NextResponse.json({ success: false, message: "One or more modules not found" }, { status: 404 })
+    if (moduleTiers.length !== moduleTierIds.length) {
+      return NextResponse.json(
+        { success: false, message: "One or more modules not found" },
+        { status: 404 }
+      );
     }
 
     // Get existing package modules
-    const existingPackageModules = await prisma.packageModule.findMany({
+    const existingPackageTiers = await prisma.packageTier.findMany({
       where: {
         packageId: id,
-        moduleId: {
-          in: moduleIds,
+        moduleTierId: {
+          in: moduleTierIds,
         },
       },
       select: {
-        moduleId: true,
+        moduleTierId: true,
       },
     })
 
-    const existingModuleIds = existingPackageModules.map(
-      (pm: { moduleId: string }) => pm.moduleId
+    const existingModuleTierIds = existingPackageTiers.map(
+      (pm: { moduleTierId: string }) => pm.moduleTierId
     );
-    const newModuleIds = moduleIds.filter((moduleId: string) => !existingModuleIds.includes(moduleId))
+    const newModuleIds = moduleTierIds.filter(
+      (moduleTierId: string) => !existingModuleTierIds.includes(moduleTierId)
+    );
 
     // Add new modules to the package
     if (newModuleIds.length > 0) {
-      await prisma.packageModule.createMany({
-        data: newModuleIds.map((moduleId) => ({
+      await prisma.packageTier.createMany({
+        data: newModuleIds.map((moduleTierId) => ({
           packageId: id,
-          moduleId,
+          moduleTierId,
         })),
       })
     }
 
     // Get updated package modules
-    const updatedPackageModules = await prisma.packageModule.findMany({
+    const updatedPackageModules = await prisma.packageTier.findMany({
       where: {
         packageId: id,
       },
       include: {
-        module: {
+        moduleTier: {
           include: {
-            tiers: true,
+            module: true,
           },
         },
       },
@@ -183,42 +153,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({
       success: true,
       message: `${newModuleIds.length} modules added to the package`,
-      modules: updatedPackageModules.map(
-        (
-          pm: {
-            module: {
-              tiers: {
-                id: string;
-                createdAt: Date;
-                updatedAt: Date;
-                moduleId: string;
-                tier: string;
-                entitlementName: string;
-                webviewUrl: string | null;
-                zipFileUrl: string | null;
-                hasTextProduction: boolean;
-                hasConclusion: boolean;
-                hasMap: boolean;
-                textProductionLimit: number;
-                conclusionLimit: number;
-                mapLimit: number;
-              }[];
-            } & {
-              id: string;
-              status: string;
-              name: string;
-              createdAt: Date;
-              updatedAt: Date;
-              description: string | null;
-            };
-          } & {
-            id: string;
-            createdAt: Date;
-            packageId: string;
-            moduleId: string;
-          }
-        ) => pm.module
-      ),
+      modules: updatedPackageModules.map((pm) => pm.moduleTier.module),
     });
   } catch (error) {
     console.error("Error adding modules to package:", error)

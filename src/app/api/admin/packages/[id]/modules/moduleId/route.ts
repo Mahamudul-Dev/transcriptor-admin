@@ -2,8 +2,8 @@ import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getUserFromRequest } from "@/lib/auth"
 
-// DELETE /api/admin/packages/[id]/modules/[moduleId] - Remove a module from a package (admin only)
-export async function DELETE(req: NextRequest, { params }: { params: { id: string; moduleId: string } }) {
+// DELETE /api/admin/packages/[id]/modules/[moduleId] - Remove a module tier from a package (admin only)
+export async function DELETE(req: NextRequest, { params }: { params: { id: string; moduleTierId: string } }) {
   try {
     // Verify authentication and admin status
     const user = getUserFromRequest(req)
@@ -15,7 +15,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ success: false, message: "Admin access required" }, { status: 403 })
     }
 
-    const { id, moduleId } = params
+    const { id, moduleTierId } = params
 
     // Check if the package exists
     const packageExists = await prisma.package.findUnique({
@@ -27,30 +27,36 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     }
 
     // Check if the module exists
-    const moduleExists = await prisma.module.findUnique({
-      where: { id: moduleId },
-    })
+    const moduleTierExists = await prisma.moduleTier.findUnique({
+      where: { id: moduleTierId },
+    });
 
-    if (!moduleExists) {
-      return NextResponse.json({ success: false, message: "Module not found" }, { status: 404 })
+    if (!moduleTierExists) {
+      return NextResponse.json(
+        { success: false, message: "Module not found" },
+        { status: 404 }
+      );
     }
 
     // Check if the module is in the package
-    const packageModule = await prisma.packageModule.findFirst({
+    const packageTier = await prisma.packageTier.findFirst({
       where: {
         packageId: id,
-        moduleId,
+        moduleTierId,
       },
     })
 
-    if (!packageModule) {
-      return NextResponse.json({ success: false, message: "Module is not in the package" }, { status: 404 })
+    if (!packageTier) {
+      return NextResponse.json(
+        { success: false, message: "Module is not in the package" },
+        { status: 404 }
+      );
     }
 
     // Remove the module from the package
-    await prisma.packageModule.delete({
+    await prisma.packageTier.delete({
       where: {
-        id: packageModule.id,
+        id: packageTier.id,
       },
     })
 

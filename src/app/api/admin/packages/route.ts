@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
       include: {
         _count: {
           select: {
-            packageModules: true,
+            packageTiers: true,
             userPackages: true,
           },
         },
@@ -77,11 +77,11 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { name, entitlementName, isActive } = result.data
+    const { name, description, isActive } = result.data
 
     // Check if a package with the same entitlement name already exists
     const existingPackage = await prisma.package.findUnique({
-      where: { entitlementName },
+      where: { name },
     })
 
     if (existingPackage) {
@@ -91,11 +91,15 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    const formattedName = name.toLowerCase().replace(/\s+/g, "_");
+    const productId = `pkg_${formattedName}`;
+
     // Create the package
     const newPackage = await prisma.package.create({
       data: {
         name,
-        entitlementName,
+        description,
+        productId,
         isActive,
       },
     })
