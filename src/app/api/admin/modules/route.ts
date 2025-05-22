@@ -91,10 +91,42 @@ export async function POST(req: NextRequest) {
 
       console.log("Creating module with name:", name)
 
+      const moduleExists = await prisma.module.findUnique({
+        where: { name },
+      });
+
+      if (moduleExists) {
+        return NextResponse.json({
+          success: false,
+          message: "Module with the same name already exists",
+        });
+      }
+
+      
+
+      
+
+      // Create the module first to get an ID
+      const modulePack = await prisma.module.create({
+        data: {
+          name,
+          description
+        },
+      })
+
       if (isIconFileValid) {
         try {
           // Use direct function call instead of fetch
-          iconUrl = await uploadModuleIcon(iconFile, name,);
+          const icon = await uploadModuleIcon(iconFile, modulePack.id);
+          iconUrl = `${process.env.API_BASE_URL}/api/upload?module=${modulePack.id}&file=${icon}`;
+          await prisma.module.update({
+            where: {
+              id: modulePack.id,
+            },
+            data: {
+              iconUrl,
+            },
+          })
         } catch (uploadError) {
           console.error(
             `Error uploading icon file for ${name} module:`,
@@ -102,26 +134,6 @@ export async function POST(req: NextRequest) {
           );
         }
       }
-
-      const moduleExists = await prisma.module.findUnique({
-        where: { name },
-      })
-
-      if (moduleExists) {
-        return NextResponse.json({
-          success: false,
-          message: "Module with the same name already exists",
-        })
-      }
-
-      // Create the module first to get an ID
-      const modulePack = await prisma.module.create({
-        data: {
-          name,
-          description,
-          iconUrl
-        },
-      })
 
       console.log("Module created successfully:", modulePack.id)
 
@@ -173,9 +185,6 @@ export async function POST(req: NextRequest) {
         // Optional: check if they are actually file-like objects
         const isZipFileValid =
           zipFile && typeof zipFile === "object" && "arrayBuffer" in zipFile;
-        
-
-
 
 
         // Upload files if provided
@@ -234,14 +243,16 @@ export async function POST(req: NextRequest) {
         console.log(`Created tier ${tier} for module ${modulePack.id}`);
 
         // script injection
-        moduleUsageTrackerInjection(
-          moduleUploadDir!,
-          textProductionId,
-          mapProductionId,
-          conclutionProductionId,
-          createdTier.id,
-          process.env.API_BASE_URL || "http://localhost:3000"
-        );
+        if(isZipFileValid){
+          moduleUsageTrackerInjection(
+            moduleUploadDir!,
+            textProductionId,
+            mapProductionId,
+            conclutionProductionId,
+            createdTier.id,
+            process.env.API_BASE_URL || "http://localhost:3000"
+          );
+        }
 
         console.log(`Tier ${tier} created successfully:`, createdTier.id);
         createdTiers.push(createdTier);
@@ -249,7 +260,7 @@ export async function POST(req: NextRequest) {
 
       // Get the complete module with tiers
       const completeModule = await prisma.module.findUnique({
-        where: { id: module.id },
+        where: { id: modulePack.id },
         include: {
           tiers: true,
         },

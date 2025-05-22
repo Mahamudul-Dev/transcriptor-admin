@@ -11,6 +11,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
     }
 
+    console.log(user);
+
     // Get modules the user has direct access to
     const userModules = await prisma.userModule.findMany({
       where: {

@@ -58,7 +58,7 @@ export async function uploadFile(
     const buffer = Buffer.from(arrayBuffer);
 
     const publicDir = path.join(process.cwd(), "public");
-    const uploadDir = path.join(publicDir, folder);
+    let uploadDir = path.join(publicDir, folder);
 
     // Ensure the folder exists
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -78,7 +78,10 @@ export async function uploadFile(
       const targetPath = path.join(uploadDir, "index.html");
       fs.writeFileSync(targetPath, buffer);
     } else {
-      throw new Error("Only .zip and .html files are supported.");
+      const fileName = `${uuidv4()}.${ext}`;
+      const filePath = path.join(uploadDir, fileName);
+      fs.writeFileSync(filePath, buffer);
+      uploadDir = fileName
     }
 
     return uploadDir;
@@ -111,8 +114,8 @@ export async function uploadModuleZip(
  * @param tier The tier of the module (basic, plus, premium)
  * @returns The URL of the uploaded file
  */
-export async function uploadModuleIcon(file: Blob, module: string): Promise<string> {
-  return uploadFile(file, `icons/${module}`)
+export async function uploadModuleIcon(file: Blob, moduleId: string): Promise<string> {
+  return uploadFile(file, `modules/${moduleId}/icon`);
 }
 
 
