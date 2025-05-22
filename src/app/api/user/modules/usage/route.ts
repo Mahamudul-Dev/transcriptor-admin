@@ -25,11 +25,14 @@ export async function GET(req: NextRequest) {
             },
         });
         await prisma.userModule.createMany({
-            data: modules.flatMap((module) => module.tiers.map((tier) => ({
-                userId: user.userId,
-                moduleTierId: tier.id
-            })))
-        })
+          data: modules.flatMap((module) =>
+            module.tiers.map((tier) => ({
+              userId: user.userId,
+              moduleTierId: tier.id,
+            }))
+          ),
+          skipDuplicates: true,
+        });
 
         const userModuels = await prisma.userModule.findMany({
             where: {
