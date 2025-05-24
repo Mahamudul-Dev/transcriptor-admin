@@ -146,4 +146,6 @@ model ModuleUsage {
   // Relations
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   moduleTier ModuleTier @relation(fields: [moduleTierId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, moduleTierId])
 }

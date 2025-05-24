@@ -19,37 +19,71 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
       // Update usage for the module tier
 
       if (actionType === "text") {
-        usage = await prisma.moduleUsage.updateMany({
+        usage = await prisma.moduleUsage.upsert({
           where: {
-            userId: userId,
-            moduleTierId: params.id,
+            // Assuming a unique constraint on userId + moduleTierId
+            userId_moduleTierId: {
+              userId,
+              moduleTierId: params.id,
+            },
           },
-          data: {
+          update: {
+            // Update whatever count here
             textProductionCount: { increment: 1 },
           },
+          create: {
+            userId,
+            moduleTierId: params.id,
+            textProductionCount: 1,
+            mapCount: 0,
+            conclusionCount: 0,
+          },
         });
+        
       }
 
       if (actionType === "map") {
-        usage = await prisma.moduleUsage.updateMany({
+        usage = await prisma.moduleUsage.upsert({
           where: {
-            userId: userId,
-            moduleTierId: params.id,
+            // Assuming a unique constraint on userId + moduleTierId
+            userId_moduleTierId: {
+              userId,
+              moduleTierId: params.id,
+            },
           },
-          data: {
+          update: {
+            // Update whatever count here
             mapCount: { increment: 1 },
+          },
+          create: {
+            userId,
+            moduleTierId: params.id,
+            textProductionCount: 1,
+            mapCount: 0,
+            conclusionCount: 0,
           },
         });
       }
 
       if (actionType === "conclusion") {
-        usage = await prisma.moduleUsage.updateMany({
+        usage = await prisma.moduleUsage.upsert({
           where: {
-            userId: userId,
-            moduleTierId: params.id,
+            // Assuming a unique constraint on userId + moduleTierId
+            userId_moduleTierId: {
+              userId,
+              moduleTierId: params.id,
+            },
           },
-          data: {
+          update: {
+            // Update whatever count here
             conclusionCount: { increment: 1 },
+          },
+          create: {
+            userId,
+            moduleTierId: params.id,
+            textProductionCount: 1,
+            mapCount: 0,
+            conclusionCount: 0,
           },
         });
       }
