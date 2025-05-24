@@ -25,35 +25,21 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // if (!tierId) {
-  //   return NextResponse.json(
-  //     { error: "TierId param is required" },
-  //     { status: 400 }
-  //   );
-  // }
+  if (!tier) {
+    return NextResponse.json(
+      { error: "Tier param is required" },
+      { status: 400 }
+    );
+  }
 
-  // // check if user has access to the module
-  // const user = getUserFromRequest(req);
-  // if (!user) {
-  //   return NextResponse.json(
-  //     { success: false, message: "Authentication required" },
-  //     { status: 401 }
-  //   );
-  // }
-
-  // const userModule = await prisma.userModule.findFirst({
-  //   where: {
-  //     userId: user.userId,
-  //     moduleTierId: tierId,
-  //   },
-  // });
-
-  // if (!userModule) {
-  //   return NextResponse.json(
-  //     { success: false, message: "Unauthorized! You don't have access to this module/tier" },
-  //     { status: 403 }
-  //   );
-  // }
+  // check if user has access to the module
+  const user = getUserFromRequest(req);
+  if (!user) {
+    return NextResponse.json(
+      { success: false, message: "Authentication required" },
+      { status: 401 }
+    );
+  }
 
   const indexPath = path.join(
     process.cwd(),
