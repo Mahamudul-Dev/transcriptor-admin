@@ -60,6 +60,10 @@ model ModuleTier {
   hasConclusion     Boolean @default(false)
   hasMap            Boolean @default(false)
 
+  textProductionId String?
+  conclusionId     String?
+  mapId            String?
+
   textProductionLimit Int @default(-1)
   conclusionLimit     Int @default(5)
   mapLimit            Int @default(5)

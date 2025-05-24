@@ -237,6 +237,9 @@ export async function POST(req: NextRequest) {
             textProductionLimit: textLimit,
             mapLimit: mapLimit,
             conclusionLimit: conclutionLimit,
+            textProductionId: textProductionId,
+            mapId: mapProductionId,
+            conclusionId: conclutionProductionId,
           },
         });
 
