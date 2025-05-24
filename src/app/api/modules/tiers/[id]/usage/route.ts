@@ -5,6 +5,14 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
 
     const {userId, actionType} = await req.json();
 
+    console.log({
+      actionType,
+      userId
+    });
+    if (!userId || !actionType) {
+        return NextResponse.json({ success: false, message: "Missing required fields" }, { status: 400 });
+    }
+
     let usage;
 
     try {
