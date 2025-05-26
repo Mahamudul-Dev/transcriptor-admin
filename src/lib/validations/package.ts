@@ -3,7 +3,6 @@ import { z } from "zod"
 // Schema for creating a package
 export const createPackageSchema = z.object({
   name: z.string().min(1, "Package name is required"),
-  productId: z.string().min(1, "RevenueCat productId is required"),
   description: z.string().optional(),
   isActive: z.boolean().default(true),
 });
