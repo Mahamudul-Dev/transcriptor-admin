@@ -18,6 +18,19 @@ export async function GET(req: NextRequest) {
 
     let modulesWithTiers: any[] = []
 
+    const userModules = await prisma.userModule.findMany({
+      where: {
+        userId: user.userId,
+      },
+      include: {
+        moduleTier: {
+          select: {
+            moduleId: true
+          }
+        },
+      },
+    });
+
     modulesWithTiers = await prisma.module.findMany({
       include: {
         tiers: true,
@@ -33,6 +46,12 @@ export async function GET(req: NextRequest) {
         (module) => module.status === status
       );
     }
+
+    // asign has access field to each module object
+    modulesWithTiers = modulesWithTiers.map((module) => {
+      const hasAccess = userModules.some((userModule) => userModule.moduleTier.moduleId === module.id);
+      return { ...module, hasAccess };
+    });
 
     return NextResponse.json(
       { success: true, modules: modulesWithTiers },
