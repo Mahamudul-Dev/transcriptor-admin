@@ -65,3 +65,49 @@ export async function GET(req: NextRequest) {
     )
   }
 }
+
+
+export async function POST(req: NextRequest) {
+  try {
+    const user = getUserFromRequest(req)
+    if (!user) {
+      return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
+    }
+
+    // parse productIds from the request body
+    const { productIds } = await req.json()
+
+    if(!productIds) {
+      return NextResponse.json({ success: false, message: "No productIds provided" }, { status: 400 })
+    }
+
+    const packages = await prisma.package.findMany({
+      where: {
+        productId: {
+          in: productIds
+        }
+      },
+      include: {
+        packageTiers: {
+          include: {
+            moduleTier: {
+              include: {
+                module: true,
+              }
+            },
+          },
+        },
+      },
+    });
+
+
+    
+
+    return NextResponse.json({
+      success: true,
+      packages,
+    });
+  } catch (error) {
+    
+  }
+}
