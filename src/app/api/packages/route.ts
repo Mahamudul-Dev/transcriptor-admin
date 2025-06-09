@@ -7,9 +7,9 @@ export async function GET(req: NextRequest) {
   try {
     // Verify authentication
     const user = getUserFromRequest(req)
-    if (!user) {
-      return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
-    }
+    // if (!user) {
+    //   return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
+    // }
 
     // Get all active packages
     const packages = await prisma.package.findMany({
@@ -33,27 +33,36 @@ export async function GET(req: NextRequest) {
     })
 
     // Get user's packages
-    const userPackages = await prisma.userPackage.findMany({
-      where: {
-        userId: user.userId,
-        OR: [
-          { expiresAt: null }, // Never expires
-          { expiresAt: { gt: new Date() } }, // Not expired yet
-        ],
-      },
-      select: {
-        packageId: true,
-      },
-    })
+    let userPackages: {
+      packageId: string;
+    }[];
+    
+    if(user !== null){
+      userPackages = await prisma.userPackage.findMany({
+        where: {
+          userId: user.userId,
+          OR: [
+            { expiresAt: null }, // Never expires
+            { expiresAt: { gt: new Date() } }, // Not expired yet
+          ],
+        },
+        select: {
+          packageId: true,
+        },
+      });
+    }
 
-    const userPackageIds = userPackages.map((up) => up.packageId)
+    let userPackageIds: string[];
+    if(userPackages !== undefined){
+      userPackageIds = userPackages.map((up) => up.packageId);
+    }
 
     // Format the response
     const formattedPackages = packages.map((pkg) => ({
       id: pkg.id,
       name: pkg.name,
       productId: pkg.productId,
-      hasAccess: userPackageIds.includes(pkg.id),
+      hasAccess: userPackageIds !== null ? userPackageIds.includes(pkg.id) : false,
       moduleTierCount: pkg.packageTiers.length,
       moduleTiers: pkg.packageTiers.map((pm) => ({
         id: pm.moduleTier.id,

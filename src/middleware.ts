@@ -11,7 +11,6 @@ const adminPaths = ["/api/admin", "/dashboard", "/modules", "/packages", "/users
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-
   // Check if the path requires authentication
   const requiresAuth = authPaths.some((path) => pathname.startsWith(path))
 

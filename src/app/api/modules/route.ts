@@ -8,9 +8,9 @@ export async function GET(req: NextRequest) {
   try {
     // Verify authentication
     const user = getUserFromRequest(req)
-    if (!user) {
-      return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
-    }
+    // if (!user) {
+    //   return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
+    // }
 
     // Parse query parameters
     const url = new URL(req.url)
@@ -18,18 +18,32 @@ export async function GET(req: NextRequest) {
 
     let modulesWithTiers: any[] = []
 
-    const userModules = await prisma.userModule.findMany({
-      where: {
-        userId: user.userId,
-      },
-      include: {
-        moduleTier: {
-          select: {
-            moduleId: true
-          }
+    let userModules: ({
+      moduleTier: {
+        moduleId: string;
+      };
+    } & {
+      userId: string;
+      id: string;
+      moduleTierId: string;
+      assignedAt: Date;
+      expiresAt: Date;
+    })[];
+    
+    if(user !== null){
+      userModules = await prisma.userModule.findMany({
+        where: {
+          userId: user.userId,
         },
-      },
-    });
+        include: {
+          moduleTier: {
+            select: {
+              moduleId: true,
+            },
+          },
+        },
+      });
+    }
 
     modulesWithTiers = await prisma.module.findMany({
       include: {
@@ -47,11 +61,15 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // asign has access field to each module object
-    modulesWithTiers = modulesWithTiers.map((module) => {
-      const hasAccess = userModules.some((userModule) => userModule.moduleTier.moduleId === module.id);
-      return { ...module, hasAccess };
-    });
+    if(userModules !== undefined){
+      // asign has access field to each module object
+      modulesWithTiers = modulesWithTiers.map((module) => {
+        const hasAccess = userModules.some(
+          (userModule) => userModule.moduleTier.moduleId === module.id
+        );
+        return { ...module, hasAccess };
+      });
+    }
 
     return NextResponse.json(
       { success: true, modules: modulesWithTiers },
