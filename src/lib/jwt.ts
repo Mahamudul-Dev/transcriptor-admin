@@ -18,9 +18,7 @@ const REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || "30d";
 
 // Generate access token
 export function generateAccessToken(payload: TokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN,
-  } as SignOptions);
+  return jwt.sign(payload, JWT_SECRET);
 }
 
 // Generate refresh token
