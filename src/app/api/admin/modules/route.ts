@@ -1,34 +1,39 @@
-import { type NextRequest, NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
-import { getUserFromRequest } from "@/lib/auth"
-import { createModuleSchema } from "@/lib/validations/module"
-import { uploadModuleIcon, uploadModuleZip } from "@/lib/utils/file-upload"
-import { moduleUsageTrackerInjection } from "@/lib/utils/usage-limit"
-import { text } from "stream/consumers"
-
+import { type NextRequest, NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { getUserFromRequest } from "@/lib/auth";
+import { createModuleSchema } from "@/lib/validations/module";
+import { uploadModuleIcon, uploadModuleZip } from "@/lib/utils/file-upload";
+import { moduleUsageTrackerInjection } from "@/lib/utils/usage-limit";
+import { text } from "stream/consumers";
 
 // GET /api/admin/modules - Get all modules (admin only)
 export async function GET(req: NextRequest) {
   try {
     // Verify authentication and admin status
-    const user = getUserFromRequest(req)
+    const user = getUserFromRequest(req);
     if (!user) {
-      return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
+      return NextResponse.json(
+        { success: false, message: "Authentication required" },
+        { status: 401 }
+      );
     }
 
     if (!user.isAdmin) {
-      return NextResponse.json({ success: false, message: "Admin access required" }, { status: 403 })
+      return NextResponse.json(
+        { success: false, message: "Admin access required" },
+        { status: 403 }
+      );
     }
 
     // Parse query parameters
-    const url = new URL(req.url)
-    const status = url.searchParams.get("status") || undefined
+    const url = new URL(req.url);
+    const status = url.searchParams.get("status") || undefined;
 
     // Build the query
-    const query: any = {}
+    const query: any = {};
 
     if (status) {
-      query.status = status
+      query.status = status;
     }
 
     // Get all modules
@@ -49,15 +54,18 @@ export async function GET(req: NextRequest) {
       orderBy: {
         createdAt: "desc",
       },
-    })
+    });
 
     return NextResponse.json({
       success: true,
       modules,
-    })
+    });
   } catch (error) {
-    console.error("Error fetching modules:", error)
-    return NextResponse.json({ success: false, message: "An error occurred while fetching modules" }, { status: 500 })
+    console.error("Error fetching modules:", error);
+    return NextResponse.json(
+      { success: false, message: "An error occurred while fetching modules" },
+      { status: 500 }
+    );
   }
 }
 
@@ -65,31 +73,37 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   try {
     // Verify authentication and admin status
-    const user = getUserFromRequest(req)
+    const user = getUserFromRequest(req);
     if (!user) {
-      return NextResponse.json({ success: false, message: "Authentication required" }, { status: 401 })
+      return NextResponse.json(
+        { success: false, message: "Authentication required" },
+        { status: 401 }
+      );
     }
 
     if (!user.isAdmin) {
-      return NextResponse.json({ success: false, message: "Admin access required" }, { status: 403 })
+      return NextResponse.json(
+        { success: false, message: "Admin access required" },
+        { status: 403 }
+      );
     }
 
     // Check if the request is multipart/form-data
-    const contentType = req.headers.get("content-type") || ""
+    const contentType = req.headers.get("content-type") || "";
 
     if (contentType.includes("multipart/form-data")) {
       // Handle multipart form data
-      const formData = await req.formData()
+      const formData = await req.formData();
 
       // Extract module data
-      const name = formData.get("name") as string
-      const description = (formData.get("description") as string) || ""
-      const iconFile = formData.get('iconFile');
+      const name = formData.get("name") as string;
+      const description = (formData.get("description") as string) || "";
+      const iconFile = formData.get("iconFile");
       const isIconFileValid =
         iconFile && typeof iconFile === "object" && "arrayBuffer" in iconFile;
-        let iconUrl = null;
+      let iconUrl = null;
 
-      console.log("Creating module with name:", name)
+      console.log("Creating module with name:", name);
 
       const moduleExists = await prisma.module.findUnique({
         where: { name },
@@ -102,17 +116,13 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      
-
-      
-
       // Create the module first to get an ID
       const modulePack = await prisma.module.create({
         data: {
           name,
-          description
+          description,
         },
-      })
+      });
 
       if (isIconFileValid) {
         try {
@@ -126,7 +136,7 @@ export async function POST(req: NextRequest) {
             data: {
               iconUrl,
             },
-          })
+          });
         } catch (uploadError) {
           console.error(
             `Error uploading icon file for ${name} module:`,
@@ -135,13 +145,12 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      console.log("Module created successfully:", modulePack.id)
+      console.log("Module created successfully:", modulePack.id);
 
       // Process tiers
-      const tiers = ["basic", "plus", "premium"]
-      const createdTiers = []
+      const tiers = ["basic", "plus", "premium"];
+      const createdTiers = [];
       const formattedName = modulePack.name.toLowerCase().replace(/\s+/g, "_");
-      
 
       for (const tier of tiers) {
         // Get tier-specific data
@@ -180,17 +189,14 @@ export async function POST(req: NextRequest) {
 
         // Get files (compatible with Node.js environment)
         const zipFile = formData.get(`${tier}_zipFile`);
-        
 
         // Optional: check if they are actually file-like objects
         const isZipFileValid =
           zipFile && typeof zipFile === "object" && "arrayBuffer" in zipFile;
 
-
         // Upload files if provided
         let folderPath = null;
         let moduleUploadDir = null;
-        
 
         console.log({
           zipFile,
@@ -215,38 +221,35 @@ export async function POST(req: NextRequest) {
           }
         }
 
-        
-
         console.log(`Creating tier ${tier} for module ${modulePack.id}`);
 
         const productId = `module_${formattedName}_${tier}`;
         const entitlementId = `entitlement_${formattedName}_${tier}`;
 
-        // Create the tier
-        const createdTier = await prisma.moduleTier.create({
-          data: {
-            moduleId: modulePack.id,
-            tier,
-            productId: productId,
-            entitlementId: entitlementId,
-            webviewUrl: `${process.env.WEBVIEW_URL}?module=${modulePack.id}&tier=${tier}`,
-            zipFileUrl: folderPath,
-            hasTextProduction,
-            hasConclusion,
-            hasMap,
-            textProductionLimit: textLimit,
-            mapLimit: mapLimit,
-            conclusionLimit: conclutionLimit,
-            textProductionId: textProductionId,
-            mapId: mapProductionId,
-            conclusionId: conclutionProductionId,
-          },
-        });
+        if (isZipFileValid) {
+          const createdTier = await prisma.moduleTier.create({
+            data: {
+              moduleId: modulePack.id,
+              tier,
+              productId: productId,
+              entitlementId: entitlementId,
+              webviewUrl: `${process.env.WEBVIEW_URL}?module=${modulePack.id}&tier=${tier}`,
+              zipFileUrl: folderPath,
+              hasTextProduction,
+              hasConclusion,
+              hasMap,
+              textProductionLimit: textLimit,
+              mapLimit: mapLimit,
+              conclusionLimit: conclutionLimit,
+              textProductionId: textProductionId,
+              mapId: mapProductionId,
+              conclusionId: conclutionProductionId,
+            },
+          });
 
-        console.log(`Created tier ${tier} for module ${modulePack.id}`);
+          console.log(`Created tier ${tier} for module ${modulePack.id}`);
 
-        // script injection
-        if(isZipFileValid){
+          // script injection
           moduleUsageTrackerInjection(
             moduleUploadDir!,
             textProductionId,
@@ -255,11 +258,13 @@ export async function POST(req: NextRequest) {
             createdTier.id,
             process.env.API_BASE_URL || "http://localhost:3000"
           );
-        }
 
-        console.log(`Tier ${tier} created successfully:`, createdTier.id);
-        createdTiers.push(createdTier);
+          console.log(`Tier ${tier} created successfully:`, createdTier.id);
+          createdTiers.push(createdTier);
+        }
       }
+
+      // Create the tier
 
       // Get the complete module with tiers
       const completeModule = await prisma.module.findUnique({
@@ -267,27 +272,31 @@ export async function POST(req: NextRequest) {
         include: {
           tiers: true,
         },
-      })
+      });
 
       return NextResponse.json({
         success: true,
         message: "Module created successfully",
         module: completeModule,
-      })
+      });
     } else {
       // Handle JSON request
-      const body = await req.json()
+      const body = await req.json();
 
       // Validate input
-      const result = createModuleSchema.safeParse(body)
+      const result = createModuleSchema.safeParse(body);
       if (!result.success) {
         return NextResponse.json(
-          { success: false, message: "Invalid input", errors: result.error.errors },
-          { status: 400 },
-        )
+          {
+            success: false,
+            message: "Invalid input",
+            errors: result.error.errors,
+          },
+          { status: 400 }
+        );
       }
 
-      const { name, description, tiers } = result.data
+      const { name, description, tiers } = result.data;
       const formattedName = name.toLowerCase().replace(/\s+/g, "_");
 
       // Create the module
@@ -313,32 +322,30 @@ export async function POST(req: NextRequest) {
                 textProductionLimit: tier.textProductionLimit,
                 mapLimit: tier.mapLimit,
                 conclusionLimit: tier.conclusionLimit,
-              }
-
-        
+              };
             }),
           },
         },
         include: {
           tiers: true,
         },
-      })
+      });
 
       return NextResponse.json({
         success: true,
         message: "Module created successfully",
         modulePack,
-      })
+      });
     }
   } catch (error) {
-    console.error("Error creating module:", error)
+    console.error("Error creating module:", error);
     return NextResponse.json(
       {
         success: false,
         message: "An error occurred while creating the module",
         error: (error as Error).message,
       },
-      { status: 500 },
-    )
+      { status: 500 }
+    );
   }
 }
