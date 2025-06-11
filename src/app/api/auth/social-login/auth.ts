@@ -38,7 +38,7 @@ export function getAppleSigningKey(
 export function getFirebaseAdminApp() {
   if (app) return app;
 
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/gm, "\n");
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n");
   console.log(privateKey);
 
   if (!admin.apps.length) {
