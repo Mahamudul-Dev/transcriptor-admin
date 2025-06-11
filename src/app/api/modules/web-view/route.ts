@@ -33,13 +33,13 @@ export async function GET(req: NextRequest) {
   }
 
   // check if user has access to the module
-  const user = getUserFromRequest(req);
-  if (!user) {
-    return NextResponse.json(
-      { success: false, message: "Authentication required" },
-      { status: 401 }
-    );
-  }
+  // const user = getUserFromRequest(req);
+  // if (!user) {
+  //   return NextResponse.json(
+  //     { success: false, message: "Authentication required" },
+  //     { status: 401 }
+  //   );
+  // }
 
   const indexPath = path.join(
     process.cwd(),
